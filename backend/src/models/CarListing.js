@@ -9,7 +9,10 @@ const CarListingSchema = new mongoose.Schema(
     firstRegistration: Date,
     fuelType: String,
     gearbox: String,
-    images: [String],
+    images: {
+      type: [String], // آرایه‌ای از URL عکس‌ها
+      default: [],
+    },
 
     // برای سینک با Kleinanzeigen
     kleinanzeigenAdId: { type: String, default: null },
