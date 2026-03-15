@@ -10,7 +10,7 @@ export default async function CarsPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold mb-6">Car Listings</h1>
+<h1 className="text-3xl font-semibold mb-6 text-[#101828]">Car Listings</h1>
 
       <div className="space-y-4">
         {cars.length === 0 && (
@@ -30,7 +30,7 @@ export default async function CarsPage() {
               />
             )}
 
-            <h2 className="text-xl font-medium">{car.title}</h2>
+<h2 className="text-xl font-semibold text-[#101828]">{car.title}</h2>
             <p className="text-gray-700">Price: {car.price} €</p>
             <p className="text-gray-700">Mileage: {car.mileage} km</p>
 
