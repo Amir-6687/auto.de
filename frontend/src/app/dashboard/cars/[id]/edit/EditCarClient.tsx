@@ -67,22 +67,38 @@ export default function EditCarClient({ id }: { id: string }) {
   // ذخیره تغییرات
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-
-    const uploadedNewImages = await uploadNewImages();
+  
+    let uploadedNewImages: string[] = [];
+  
+    try {
+      uploadedNewImages = await uploadNewImages();
+    } catch (err) {
+      console.error("UPLOAD FAILED:", err);
+      // به کاربر می‌توانی پیام بدهی یا ادامه بدهی بدون تصاویر جدید
+      uploadedNewImages = [];
+    }
+  
     const finalImages = [...existingImages, ...uploadedNewImages];
-
-    const res = await fetch(`${API_URL}/cars/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...car,
-        images: finalImages,
-        coverImage: coverImage,
-      }),
-    });
-
-    if (res.ok) {
-      router.push("/dashboard/cars");
+  
+    try {
+      const res = await fetch(`${API_URL}/cars/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...car,
+          images: finalImages,
+          coverImage: coverImage,
+        }),
+      });
+  
+      if (res.ok) {
+        router.push("/dashboard/cars");
+      } else {
+        const text = await res.text();
+        console.error("SAVE FAILED:", text);
+      }
+    } catch (err) {
+      console.error("SAVE ERROR:", err);
     }
   }
 

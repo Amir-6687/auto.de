@@ -2,48 +2,37 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const cloudinary = require("../config/cloudinary");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const fs = require("fs");
 
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: "auto-de",
-    allowed_formats: ["jpg", "jpeg", "png", "webp"],
-    resource_type: "image",
-  },
-});
+// ذخیره موقت فایل‌ها روی دیسک
+const upload = multer({ dest: "uploads/" });
 
-const upload = multer({ storage });
+router.post("/", upload.array("images", 10), async (req, res) => {
+  console.log("FILES RAW:", req.files);
 
-router.post("/", (req, res) => {
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ error: "No files received" });
+  }
 
-  upload.array("images", 10)(req, res, (err) => {
+  try {
+    const urls = [];
 
-    if (err) {
-      console.error("MULTER/CLOUDINARY ERROR:", err);
-      return res.status(500).json({ error: err.message });
+    for (const file of req.files) {
+      const result = await cloudinary.uploader.upload(file.path, {
+        folder: "auto-de",
+      });
+
+      urls.push(result.secure_url);
+
+      // حذف فایل موقت
+      fs.unlinkSync(file.path);
     }
 
-    console.log("FILES RECEIVED:", req.files);
-
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ error: "No files received" });
-    }
-
-    try {
-      const urls = req.files.map((file) => file.path);
-      console.log("UPLOADED URLS:", urls);
-
-      res.json({ urls });
-
-    } catch (error) {
-      console.error("UPLOAD ERROR:", error);
-      res.status(500).json({ error: error.message });
-    }
-
-  });
-
+    res.json({ urls });
+  } catch (err) {
+    console.error("UPLOAD ERROR:", err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;
-
