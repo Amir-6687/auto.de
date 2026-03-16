@@ -13,7 +13,7 @@ const CarListingSchema = new mongoose.Schema(
       type: [String], // آرایه‌ای از URL عکس‌ها
       default: [],
     },
-
+    coverImage: { type: String, default: null },
     // برای سینک با Kleinanzeigen
     kleinanzeigenAdId: { type: String, default: null },
     syncStatus: {
