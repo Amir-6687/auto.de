@@ -8,23 +8,21 @@ const fs = require("fs");
 const upload = multer({ dest: "uploads/" });
 
 router.post("/", upload.array("images", 10), async (req, res) => {
-  console.log("FILES RAW:", req.files);
-
-  if (!req.files || req.files.length === 0) {
-    return res.status(400).json({ error: "No files received" });
-  }
-
   try {
+    if (!req.files || req.files.length === 0) {
+      // مهم: همیشه آرایه برگردون
+      return res.json({ urls: [] });
+    }
+
     const urls = [];
 
     for (const file of req.files) {
       const result = await cloudinary.uploader.upload(file.path, {
         folder: "auto-de",
+        timeout: 60000,
       });
 
       urls.push(result.secure_url);
-
-      // حذف فایل موقت
       fs.unlinkSync(file.path);
     }
 
@@ -34,5 +32,6 @@ router.post("/", upload.array("images", 10), async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 module.exports = router;

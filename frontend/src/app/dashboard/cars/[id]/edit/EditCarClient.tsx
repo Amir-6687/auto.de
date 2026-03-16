@@ -45,18 +45,19 @@ export default function EditCarClient({ id }: { id: string }) {
   // آپلود عکس‌های جدید
   async function uploadNewImages() {
     if (newImages.length === 0) return [];
-
+  
     const formData = new FormData();
     newImages.forEach((img) => formData.append("images", img));
-
+  
     const res = await fetch(`${API_URL}/upload`, {
       method: "POST",
       body: formData,
     });
-
+  
     const data = await res.json();
-    return data.urls as string[];
+    return data.urls || [];
   }
+  
 
   // حذف عکس از گالری
   function removeImage(url: string) {
@@ -69,17 +70,17 @@ export default function EditCarClient({ id }: { id: string }) {
     e.preventDefault();
   
     let uploadedNewImages: string[] = [];
-  
-    try {
-      uploadedNewImages = await uploadNewImages();
-    } catch (err) {
-      console.error("UPLOAD FAILED:", err);
-      // به کاربر می‌توانی پیام بدهی یا ادامه بدهی بدون تصاویر جدید
-      uploadedNewImages = [];
-    }
-  
-    const finalImages = [...existingImages, ...uploadedNewImages];
-  
+
+try {
+  const result = await uploadNewImages();
+  uploadedNewImages = Array.isArray(result) ? result : [];
+} catch (err) {
+  console.error("UPLOAD FAILED:", err);
+  uploadedNewImages = [];
+}
+
+const finalImages = [...existingImages, ...uploadedNewImages];
+
     try {
       const res = await fetch(`${API_URL}/cars/${id}`, {
         method: "PUT",
