@@ -70,17 +70,27 @@ export default function EditCarClient({ id }: { id: string }) {
     e.preventDefault();
   
     let uploadedNewImages: string[] = [];
-
-try {
-  const result = await uploadNewImages();
-  uploadedNewImages = Array.isArray(result) ? result : [];
-} catch (err) {
-  console.error("UPLOAD FAILED:", err);
-  uploadedNewImages = [];
-}
-
-const finalImages = [...existingImages, ...uploadedNewImages];
-
+  
+    try {
+      uploadedNewImages = (await uploadNewImages()) || [];
+    } catch (err) {
+      console.error("UPLOAD FAILED:", err);
+      uploadedNewImages = [];
+    }
+  
+    const finalImages = [...existingImages, ...uploadedNewImages];
+  
+    // 🔥 تبدیل coverImage از blob به URL واقعی
+    let finalCoverImage = coverImage;
+  
+    // اگر coverImage یکی از preview ها بود (یعنی blob)
+    const blobIndex = previewImages.indexOf(coverImage || "");
+  
+    if (blobIndex !== -1) {
+      // یعنی کاربر cover را روی عکس جدید انتخاب کرده
+      finalCoverImage = uploadedNewImages[blobIndex] || null;
+    }
+  
     try {
       const res = await fetch(`${API_URL}/cars/${id}`, {
         method: "PUT",
@@ -88,7 +98,7 @@ const finalImages = [...existingImages, ...uploadedNewImages];
         body: JSON.stringify({
           ...car,
           images: finalImages,
-          coverImage: coverImage,
+          coverImage: finalCoverImage,
         }),
       });
   
@@ -102,6 +112,9 @@ const finalImages = [...existingImages, ...uploadedNewImages];
       console.error("SAVE ERROR:", err);
     }
   }
+  
+  
+  
 
   if (!car) return <p className="text-black">Loading...</p>;
 
