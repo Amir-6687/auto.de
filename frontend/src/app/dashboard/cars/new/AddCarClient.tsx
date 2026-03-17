@@ -186,14 +186,20 @@ export default function AddCarClient() {
 
       {/* Features */}
       <div>
-        <h3 className="font-semibold mb-2">Ausstattung</h3>
+      <h3 className="font-semibold mb-2 text-[#101828]">Ausstattung</h3>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-          {FEATURES.map((f, index) => (
-            <label key={index} className="flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={car.features.includes(f)} onChange={() => toggleFeature(f)} />
-              <span>{f}</span>
-            </label>
-          ))}
+        {FEATURES.map((f, index) => (
+  <label key={index} className="flex items-center gap-2 text-sm">
+    <input
+      type="checkbox"
+      checked={car.features.includes(f)}
+      onChange={() => toggleFeature(f)}
+    />
+    <span className="text-[#101828]">{f}</span>
+  </label>
+))}
+
         </div>
       </div>
 
@@ -211,7 +217,8 @@ export default function AddCarClient() {
 
       {/* Upload Images */}
       <div>
-        <h3 className="font-semibold mb-2">Bilder hochladen</h3>
+      <h3 className="font-semibold mb-2 text-[#101828]">Bilder hochladen</h3>
+
         <input type="file" multiple onChange={(e) => setImages(Array.from(e.target.files || []))} />
 
         {/* انتخاب کاور */}

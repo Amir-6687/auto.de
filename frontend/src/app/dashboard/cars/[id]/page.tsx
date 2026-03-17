@@ -50,7 +50,7 @@ export default async function CarPage({ params }: { params: { id: string } }) {
       {/* 🟨 امکانات */}
       {car.features && car.features.length > 0 && (
         <div>
-          <h2 className="text-xl font-semibold mb-3">Ausstattung</h2>
+<h2 className="text-xl font-semibold mb-3 text-[#101828]">Ausstattung</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-1 text-sm">
             {car.features.map((f) => (
               <li key={f}>✔ {f}</li>

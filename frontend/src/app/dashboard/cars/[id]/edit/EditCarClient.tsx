@@ -133,7 +133,8 @@ export default function EditCarClient({ id }: { id: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <h1 className="text-xl font-bold">Edit Car</h1>
+    <h1 className="text-xl font-bold text-[#101828]">Edit Car</h1>
+
 
       {/* Title + Price */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -175,18 +176,20 @@ export default function EditCarClient({ id }: { id: string }) {
 
       {/* Features */}
       <div>
-        <h3 className="font-semibold mb-2">Ausstattung</h3>
+      <h3 className="font-semibold mb-2 text-[#101828]">Ausstattung</h3>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-          {FEATURES.map((f) => (
-            <label key={f} className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={car.features.includes(f)}
-                onChange={() => toggleFeature(f)}
-              />
-              <span>{f}</span>
-            </label>
-          ))}
+        {FEATURES.map((f) => (
+  <label key={f} className="flex items-center gap-2 text-sm">
+    <input
+      type="checkbox"
+      checked={car.features.includes(f)}
+      onChange={() => toggleFeature(f)}
+    />
+    <span className="text-[#101828]">{f}</span>
+  </label>
+))}
+
         </div>
       </div>
 
@@ -235,7 +238,7 @@ export default function EditCarClient({ id }: { id: string }) {
 
       {/* Upload New Images */}
       <div>
-        <h3 className="font-semibold mb-2">Neue Bilder hochladen</h3>
+        <h3 className="font-semibold mb-2 text-[#101828]">Neue Bilder hochladen</h3>
         <input type="file" multiple onChange={(e) => setNewImages(Array.from(e.target.files || []))} />
 
         {newImages.length > 0 && (
