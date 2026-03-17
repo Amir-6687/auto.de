@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <nav className="space-y-4">
             <a href="/dashboard" className="block hover:text-gray-300">Dashboard</a>
             <a href="/dashboard/cars" className="block hover:text-gray-300">Car Listings</a>
-            <a href="/dashboard/cars/create" className="block hover:text-gray-300">Add New Car</a>
+            <a href="/dashboard/cars/new" className="block hover:text-gray-300">Add New Car</a>
           </nav>
         </aside>
   
