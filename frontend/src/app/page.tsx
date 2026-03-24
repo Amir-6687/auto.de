@@ -8,30 +8,32 @@ export default function Home() {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    // شروع Fade-out قبل از ریدایرکت
-    setTimeout(() => {
+    const fadeTimer = setTimeout(() => {
       setFadeOut(true);
-    }, 12000); // یک ثانیه قبل از پایان ویدیو
+    }, 12000);
 
-    // ریدایرکت نهایی
-    setTimeout(() => {
+    const redirectTimer = setTimeout(() => {
       router.push("/dashboard");
-    }, 8000);
+    }, 13000);
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(redirectTimer);
+    };
   }, [router]);
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
-
-      {/* ویدیو */}
       <video
         src="/181537-866999852.mp4"
         autoPlay
         muted
         playsInline
-        className="w-full h-full object-cover fade-in"
+        // className="w-full h-full object-cover sm:object-contain fade-in"
+        className="w-full h-full object-cover sm:object-contain fade-in"
+
       />
 
-      {/* لایهٔ Fade-out */}
       <div
         className={`absolute inset-0 bg-black transition-opacity duration-1000 ${
           fadeOut ? "opacity-100" : "opacity-0"
