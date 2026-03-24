@@ -29,7 +29,6 @@ export default function Home() {
         autoPlay
         muted
         playsInline
-        // className="w-full h-full object-cover sm:object-contain fade-in"
         className="w-full h-full object-cover sm:object-contain fade-in"
 
       />
