@@ -10,7 +10,10 @@ function Navbar() {
         <li><a href="/cars">Cars</a></li>
         <li><a href="/contact">Contact</a></li>
 
-        {/* Logout Button */}
+        {/* 🔥 لینک Admin */}
+        <li><a href="/admin">Admin</a></li>
+
+        {/* Logout */}
         <li>
           <button
             onClick={() => {
