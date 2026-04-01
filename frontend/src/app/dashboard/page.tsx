@@ -1,10 +1,18 @@
-export default function DashboardPage() {
-    return (
-      <div>
-  <h1 className="text-3xl font-semibold mb-4 text-[#101828]">Dashboard</h1>
-  <p className="text-[#101828]">Welcome to Auto-DE admin panel.</p>
-</div>
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
 
-    );
-  }
-  
+export default function Dashboard() {
+  return (
+    <div
+      className="w-full h-screen bg-cover bg-center bg-no-repeat relative"
+      style={{ backgroundImage: "url('/car-background.jpg')" }}
+    >
+      <div className="absolute inset-0 bg-black/40" />
+
+      <div className="relative z-10">
+        <Navbar />
+        <HeroSection />
+      </div>
+    </div>
+  );
+}

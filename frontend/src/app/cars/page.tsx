@@ -36,14 +36,14 @@ export default async function CarsPage() {
 
             <div className="flex gap-4 mt-3">
               <a
-                href={`/dashboard/cars/${car._id}/edit`}
-                className="text-blue-600 hover:underline"
+href={`/admin/cars/${car._id}/edit`}
+className="text-blue-600 hover:underline"
               >
                 Edit
               </a>
 
-              <form action={`/dashboard/cars/${car._id}/delete`} method="POST">
-                <button className="text-red-600 hover:underline">
+              <form action={`/admin/cars/${car._id}/delete`} method="POST">
+              <button className="text-red-600 hover:underline">
                   Delete
                 </button>
               </form>
