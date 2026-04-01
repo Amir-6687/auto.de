@@ -128,7 +128,8 @@ export default function EditCarClient({ id }: { id: string }) {
       }),
     });
 
-    router.push("/dashboard/cars");
+    router.push("/cars");
+
   };
 
   return (

@@ -136,7 +136,7 @@ export default function AddCarClient() {
         await updateCarWithImages(created._id, urls);
       }
 
-      router.push("/dashboard/cars");
+      router.push("/cars");
     } catch (err) {
       console.error("ERROR:", err);
     }

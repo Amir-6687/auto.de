@@ -8,5 +8,5 @@ export async function POST(req: Request, { params }: any) {
     method: "DELETE",
   });
 
-  return NextResponse.redirect("http://localhost:3000/dashboard/cars");
+  return NextResponse.redirect("http://localhost:3000/cars");
 }
