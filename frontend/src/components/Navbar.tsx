@@ -1,6 +1,17 @@
 "use client";
 
+import { AiOutlineLogin } from "react-icons/ai";
+import { IoMdLogOut } from "react-icons/io";
+import { useEffect, useState } from "react";
+
 function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const logged = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(logged);
+  }, []);
+
   return (
     <nav className="w-full flex justify-between items-center px-6 py-4 text-white">
       <h1 className="text-2xl font-bold">Auto-DE</h1>
@@ -10,21 +21,43 @@ function Navbar() {
         <li><a href="/cars">Cars</a></li>
         <li><a href="/contact">Contact</a></li>
 
-        {/* 🔥 لینک Admin */}
-        <li><a href="/admin">Admin</a></li>
+        {/* 🔥 فقط وقتی لاگین هست → Admin */}
+        {isLoggedIn && (
+          <li>
+            <a href="/admin" className="hover:text-blue-400 transition">
+              Admin
+            </a>
+          </li>
+        )}
 
-        {/* Logout */}
-        <li>
-          <button
-            onClick={() => {
-              localStorage.removeItem("isLoggedIn");
-              window.location.href = "/";
-            }}
-            className="bg-red-600 px-3 py-1 rounded hover:bg-red-700"
-          >
-            Logout
-          </button>
-        </li>
+        {/* 🔥 اگر لاگین نیست → Login Icon */}
+        {!isLoggedIn && (
+          <li>
+            <a
+              href="/login"
+              className="flex items-center gap-1 text-white hover:text-blue-400 transition"
+            >
+              <AiOutlineLogin size={22} />
+              Login
+            </a>
+          </li>
+        )}
+
+        {/* 🔥 اگر لاگین هست → Logout Icon */}
+        {isLoggedIn && (
+          <li>
+            <button
+              onClick={() => {
+                localStorage.removeItem("isLoggedIn");
+                window.location.href = "/";
+              }}
+              className="flex items-center gap-1 text-red-400 hover:text-red-500 transition"
+            >
+              <IoMdLogOut size={24} />
+              Logout
+            </button>
+          </li>
+        )}
       </ul>
     </nav>
   );
