@@ -13,52 +13,56 @@ function Navbar() {
   }, []);
 
   return (
-    <nav className="w-full flex justify-between items-center px-6 py-4 text-white">
-      <h1 className="text-2xl font-bold">Auto-DE</h1>
+    <nav className="fixed top-6 left-0 w-full z-50 flex justify-center">
+      {/* Glass Box in Center */}
+      <div
+        className="
+          flex items-center gap-8
+          px-10 py-4
+          rounded-2xl
+          backdrop-blur-xl
+          bg-white/10
+          border border-white/20
+          shadow-lg
+          text-white
+        "
+      >
+        <a href="/dashboard" className="hover:text-gray-300 transition">Home</a>
+        <a href="/cars" className="hover:text-gray-300 transition">Cars</a>
+        <a href="/contact" className="hover:text-gray-300 transition">Contact</a>
 
-      <ul className="flex gap-6 items-center">
-        <li><a href="/dashboard">Home</a></li>
-        <li><a href="/cars">Cars</a></li>
-        <li><a href="/contact">Contact</a></li>
-
-        {/* 🔥 فقط وقتی لاگین هست → Admin */}
         {isLoggedIn && (
-          <li>
-            <a href="/admin" className="hover:text-blue-400 transition">
-              Admin
-            </a>
-          </li>
+          <a href="/admin" className="hover:text-blue-400 transition">
+            Admin
+          </a>
         )}
+      </div>
 
-        {/* 🔥 اگر لاگین نیست → Login Icon */}
+      {/* Right Side Buttons */}
+      <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-4">
         {!isLoggedIn && (
-          <li>
-            <a
-              href="/login"
-              className="flex items-center gap-1 text-white hover:text-blue-400 transition"
-            >
-              <AiOutlineLogin size={22} />
-              Login
-            </a>
-          </li>
+          <a
+            href="/login"
+            className="flex items-center gap-1 text-white hover:text-blue-400 transition"
+          >
+            <AiOutlineLogin size={22} />
+            Login
+          </a>
         )}
 
-        {/* 🔥 اگر لاگین هست → Logout Icon */}
         {isLoggedIn && (
-          <li>
-            <button
-              onClick={() => {
-                localStorage.removeItem("isLoggedIn");
-                window.location.href = "/";
-              }}
-              className="flex items-center gap-1 text-red-400 hover:text-red-500 transition"
-            >
-              <IoMdLogOut size={24} />
-              Logout
-            </button>
-          </li>
+          <button
+            onClick={() => {
+              localStorage.removeItem("isLoggedIn");
+              window.location.href = "/";
+            }}
+            className="flex items-center gap-1 text-red-400 hover:text-red-500 transition"
+          >
+            <IoMdLogOut size={24} />
+            Logout
+          </button>
         )}
-      </ul>
+      </div>
     </nav>
   );
 }
