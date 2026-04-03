@@ -20,7 +20,7 @@ function Navbar() {
       <div className="flex items-center">
         <a href="/">
           <Image
-            src="/logo-02.png"
+            src="/4.png"
             alt="Auto-DE Logo"
             width={140}
             height={140}
@@ -45,7 +45,7 @@ function Navbar() {
       </div>
 
       {/* 🔥 LOGIN / LOGOUT RIGHT */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 pr-6">
         {!isLoggedIn && (
           <a
             href="/login"
