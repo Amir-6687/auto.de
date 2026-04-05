@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-
+import { NavbarProvider } from "@/context/NavbarContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,19 +19,14 @@ export const metadata: Metadata = {
   description: "Car management dashboard",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body
-        suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navbar />
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <NavbarProvider>
+          <Navbar />
+          {children}
+        </NavbarProvider>
       </body>
     </html>
   );

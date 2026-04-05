@@ -2,25 +2,33 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useNavbar } from "@/context/NavbarContext";
 
 export default function Home() {
   const router = useRouter();
   const [fadeOut, setFadeOut] = useState(false);
+  const { setHidden } = useNavbar();
 
   useEffect(() => {
+    // مخفی کردن Navbar هنگام نمایش انیمیشن
+    setHidden(true);
+
     const fadeTimer = setTimeout(() => {
       setFadeOut(true);
     }, 12000);
 
     const redirectTimer = setTimeout(() => {
+      // قبل از رفتن به dashboard، Navbar را دوباره نمایش بده
+      setHidden(false);
       router.push("/dashboard");
-    }, 13000);
+    }, 8500);
 
     return () => {
       clearTimeout(fadeTimer);
       clearTimeout(redirectTimer);
+      setHidden(false); // اگر کاربر صفحه را ترک کرد، Navbar را برگردان
     };
-  }, [router]);
+  }, [router, setHidden]);
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
@@ -30,7 +38,6 @@ export default function Home() {
         muted
         playsInline
         className="w-full h-full object-cover sm:object-contain fade-in"
-
       />
 
       <div

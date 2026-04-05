@@ -4,8 +4,10 @@ import { AiOutlineLogin } from "react-icons/ai";
 import { IoMdLogOut } from "react-icons/io";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useNavbar } from "@/context/NavbarContext";
 
 function Navbar() {
+  const { hidden } = useNavbar();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -14,9 +16,12 @@ function Navbar() {
   }, []);
 
   return (
-    <nav className="fixed top-6 left-0 w-full z-50 flex items-center justify-between px-2">
-      
-      {/* 🔥 LOGO LEFT */}
+    <nav
+      className={`fixed top-6 left-0 w-full z-50 flex items-center justify-between px-2 transition-all duration-300
+        ${hidden ? "opacity-0 pointer-events-none" : "opacity-100"}
+      `}
+    >
+      {/* LOGO LEFT */}
       <div className="flex items-center">
         <a href="/">
           <Image
@@ -29,7 +34,7 @@ function Navbar() {
         </a>
       </div>
 
-      {/* 🔥 GLASS MENU CENTER */}
+      {/* GLASS MENU CENTER */}
       <div className="absolute left-1/2 -translate-x-1/2">
         <div className="flex items-center gap-8 px-10 py-4 rounded-2xl backdrop-blur-xl bg-neutral-900/30 border border-white/20 shadow-lg text-white">
           <a href="/dashboard" className="hover:text-gray-300 transition">Home</a>
@@ -44,7 +49,7 @@ function Navbar() {
         </div>
       </div>
 
-      {/* 🔥 LOGIN / LOGOUT RIGHT */}
+      {/* LOGIN / LOGOUT RIGHT */}
       <div className="flex items-center gap-4 pr-6">
         {!isLoggedIn && (
           <a
