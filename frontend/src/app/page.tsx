@@ -18,20 +18,29 @@ export default function Home() {
     }, 12000);
 
     const redirectTimer = setTimeout(() => {
-      // قبل از رفتن به dashboard، Navbar را دوباره نمایش بده
       setHidden(false);
       router.push("/dashboard");
-    }, 8500);
+    }, 13000);
 
     return () => {
       clearTimeout(fadeTimer);
       clearTimeout(redirectTimer);
-      setHidden(false); // اگر کاربر صفحه را ترک کرد، Navbar را برگردان
+      setHidden(false);
     };
   }, [router, setHidden]);
 
+  // 🔥 کلیک روی کل صفحه → Skip فوری
+  const skipIntro = () => {
+    setFadeOut(true);
+    setHidden(false);
+    router.push("/dashboard");
+  };
+
   return (
-    <div className="relative w-full h-screen bg-black overflow-hidden">
+    <div
+      onClick={skipIntro}
+      className="relative w-full h-screen bg-black overflow-hidden cursor-pointer"
+    >
       <video
         src="/181537-866999852.mp4"
         autoPlay
@@ -40,6 +49,7 @@ export default function Home() {
         className="w-full h-full object-cover sm:object-contain fade-in"
       />
 
+      {/* افکت fade-out */}
       <div
         className={`absolute inset-0 bg-black transition-opacity duration-1000 ${
           fadeOut ? "opacity-100" : "opacity-0"
