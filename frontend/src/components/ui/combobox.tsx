@@ -144,11 +144,18 @@ const ComboboxInput = () => {
       prefixStyling={false}
       suffix={
         context?.inputValue ? (
-          <Button variant="unstyled" svgOnly className="fill-gray-700 -mr-3" onClick={onCloseClick}>
+          <Button
+            variant="unstyled"
+            svgOnly
+            className="fill-gray-700 -mr-3"
+            onClick={onCloseClick}
+          >
             <CloseIcon className={clsx(context?.errored && "fill-red-900")} />
           </Button>
         ) : (
-          <ArrowBottomIcon className={clsx("duration-200", context?.isOpen && "rotate-180")} />
+          <ArrowBottomIcon
+            className={clsx("duration-200", context?.isOpen && "rotate-180")}
+          />
         )
       }
       suffixStyling={context?.disabled ? "cursor-not-allowed" : "cursor-pointer"}
@@ -161,9 +168,14 @@ const ComboboxInput = () => {
       error={_errored}
       size={context?.size}
       ref={context?.inputRef}
-      className={clsx(context?.errored && "text-red-900")}
+      wrapperClassName="border-transparent bg-transparent shadow-none"
+      className={clsx(
+        "bg-transparent text-white placeholder:text-white/70",
+        context?.errored && "text-red-900"
+      )}
     />
   );
+  
 };
 
 interface ComboboxOptionProps {
