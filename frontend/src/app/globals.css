@@ -6,6 +6,19 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+
+
+@font-face {
+  font-family: "Saira Stencil";
+  src: url("/fonts/SairaStencil/SairaStencil-VariableFont_wdth,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+.placeholder-saira::placeholder {
+  font-family: "Saira Stencil", sans-serif;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /* -----------------------------

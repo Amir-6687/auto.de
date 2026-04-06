@@ -75,7 +75,7 @@ export const Input = ({
         )}
         <input
           className={clsx(
-            "w-full inline-flex appearance-none placeholder:text-gray-900 placeholder:opacity-70 outline-none",
+            "placeholder-saira w-full inline-flex appearance-none placeholder:text-gray-900 placeholder:opacity-70 outline-none",
             (size === "xSmall" || size === "mediumSmall") ? "px-2" : "px-3",
             disabled
               ? "cursor-not-allowed bg-gray-100 text-gray-700"
@@ -95,7 +95,8 @@ export const Input = ({
           <div className={clsx(
             "text-gray-700 fill-gray-700 h-full flex items-center justify-center",
             suffixStyling === true
-              ? "bg-background-200 border-l border-gray-alpha-400 px-3"
+  ? "bg-background-200 border-l border-gray-alpha-400 pr-4 pl-3"
+
               : `pr-3${!suffixStyling ? "" : ` ${suffixStyling}`}`,
             size === "large" ? "rounded-r-lg" : "rounded-r-md"
           )}>
