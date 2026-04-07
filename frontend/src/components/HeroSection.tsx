@@ -89,25 +89,27 @@ function HeroSection() {
       </p>
 
       <div className="w-full flex justify-center">
-        <div className="w-[50%] rounded-lg bg-black/40 backdrop-blur-md px-2 py-1">
-          <Combobox
-            placeholder="Search..."
-            value={selectedCar}
-            onChange={setSelectedCar}
-            size="large"
-            errored
-          >
-            <Combobox.Input />
-            <Combobox.List emptyMessage="No brand found">
-              {carBrands.map((car) => (
-                <Combobox.Option key={car.value} value={car.value}>
-                  {car.label}
-                </Combobox.Option>
-              ))}
-            </Combobox.List>
-          </Combobox>
-        </div>
-      </div>
+  <div className="w-[50%] rounded-lg bg-black/40 backdrop-blur-md">
+    <Combobox
+      placeholder="Search..."
+      value={selectedCar}
+      onChange={setSelectedCar}
+      size="large"
+      errored
+    >
+      <Combobox.Input inputClassName="w-full" />
+
+
+      <Combobox.List emptyMessage="No brand found">
+        {carBrands.map((car) => (
+          <Combobox.Option key={car.value} value={car.value}>
+            {car.label}
+          </Combobox.Option>
+        ))}
+      </Combobox.List>
+    </Combobox>
+  </div>
+</div>
     </div>
   );
 }

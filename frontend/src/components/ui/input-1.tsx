@@ -54,7 +54,8 @@ export const Input = ({
         <div className="capitalize text-[13px] text-gray-900">{label}</div>
       )}
       <div className={clsx(
-        "flex items-center duration-150 font-sans",
+  "flex items-center duration-150 font-sans px-3",
+
         error
           ? "shadow-error-input hover:shadow-error-input-hover"
           : "border border-gray-alpha-400 hover:border-gray-alpha-500 focus-within:border-transparent focus-within:shadow-focus-input",

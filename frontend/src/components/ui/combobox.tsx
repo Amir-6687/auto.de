@@ -108,7 +108,7 @@ export const Combobox = ({
   );
 };
 
-const ComboboxInput = () => {
+const ComboboxInput = (props: any) => {
   const context = useContext(ComboboxContext);
   const [_errored, set_errored] = useState<boolean>(context?.errored || false);
 
@@ -128,15 +128,6 @@ const ComboboxInput = () => {
     context?.onChangeInputValue("");
     context?.onChangeValue("");
   };
-
-  useEffect(() => {
-    const currentOption = context?.options.find((o) => o.value === context.value);
-    if (currentOption) context?.onChangeInputValue(currentOption.label);
-  }, [context?.options]);
-
-  useEffect(() => {
-    set_errored(context?.errored || false);
-  }, [context?.errored]);
 
   return (
     <Input
@@ -171,12 +162,13 @@ const ComboboxInput = () => {
       wrapperClassName="border-transparent bg-transparent shadow-none"
       className={clsx(
         "bg-transparent text-white placeholder:text-white/70",
-        context?.errored && "text-red-900"
+        context?.errored && "text-red-900",
+        props.className
       )}
     />
   );
-  
 };
+
 
 interface ComboboxOptionProps {
   value: string;
