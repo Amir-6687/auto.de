@@ -161,10 +161,11 @@ const ComboboxInput = (props: any) => {
       ref={context?.inputRef}
       wrapperClassName="border-transparent bg-transparent shadow-none"
       className={clsx(
-        "bg-transparent text-white placeholder:text-white/70",
+        "bg-transparent text-white placeholder:text-white/70 font-saira",
         context?.errored && "text-red-900",
         props.className
       )}
+      
     />
   );
 };
