@@ -235,14 +235,16 @@ const ComboboxList = ({
 
   return (
     <Material
-      ref={menuRef}
-      type="menu"
-      className={clsx(
-        "absolute w-full z-50 left-1/2 -translate-x-1/2",
-        context?.isOpen ? "opacity-100" : "opacity-0 pointer-events-none duration-200"
-      )}
-      style={{ maxWidth, ...position }}
-    >
+  ref={menuRef}
+  type="menu"
+  className={clsx(
+    "absolute w-full z-50 left-1/2 -translate-x-1/2",
+    "bg-black/40 backdrop-blur-md",   // ← افکت شیشه‌ای
+    context?.isOpen ? "opacity-100" : "opacity-0 pointer-events-none duration-200"
+  )}
+  style={{ maxWidth, ...position }}
+>
+
       <ul className="p-2">
         {filteredChildren.length > 0 ? (
           filteredChildren
