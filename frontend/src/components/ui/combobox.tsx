@@ -245,16 +245,17 @@ const ComboboxList = ({
   style={{ maxWidth, ...position }}
 >
 
-      <ul className="p-2">
+      <ul className="p-2 font-saira">
         {filteredChildren.length > 0 ? (
           filteredChildren
         ) : (
           <li className={clsx(
-            "flex justify-center items-center p-2 text-gray-900",
+            "flex justify-center items-center p-2 text-gray-900 font-saira",
             context?.size === "large" ? "text-base" : "text-sm"
           )}>
             {emptyMessage}
           </li>
+          
         )}
       </ul>
     </Material>
@@ -272,18 +273,20 @@ const ComboboxOption = ({ value, children }: ComboboxOptionProps) => {
 
   return (
     <li
-      className={clsx(
-        "flex justify-between items-center gap-2 cursor-pointer px-2 py-2.5 w-full rounded-md hover:bg-gray-alpha-100 active:bg-gray-alpha-100 font-sans text-gray-1000 fill-gray-1000",
-        context?.size === "large" ? "text-base" : "text-sm"
-      )}
-      onMouseDown={(e) => e.preventDefault()}
-      onClick={onClick}
-    >
-      {children}
-      {value === context?.value && <CheckIcon />}
-    </li>
+  className={clsx(
+    "flex justify-between items-center gap-2 cursor-pointer px-2 py-2.5 w-full rounded-md hover:bg-gray-alpha-100 active:bg-gray-alpha-100 font-saira text-white fill-white",
+    context?.size === "large" ? "text-base" : "text-sm"
+  )}
+  onMouseDown={(e) => e.preventDefault()}
+  onClick={onClick}
+>
+  {children}
+  {value === context?.value && <CheckIcon />}
+</li>
+
   );
 };
+
 
 Combobox.Input = ComboboxInput;
 Combobox.List = ComboboxList;

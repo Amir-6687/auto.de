@@ -19,6 +19,11 @@
   font-family: "Saira Stencil", sans-serif;
 }
 
+.font-saira {
+  font-family: "Saira Stencil", sans-serif;
+}
+
+
 @custom-variant dark (&:is(.dark *));
 
 /* -----------------------------
