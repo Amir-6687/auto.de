@@ -1,4 +1,6 @@
-import React from "react";
+ "use client";
+
+import React, { useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +22,59 @@ export const Contact2 = ({
   email = "email@example.com",
   web = { label: "shadcnblocks.com", url: "https://shadcnblocks.com" },
 }: Contact2Props) => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [fromEmail, setFromEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [status, setStatus] = useState<null | { ok: boolean; text: string }>(
+    null,
+  );
+
+  const name = useMemo(
+    () => [firstName.trim(), lastName.trim()].filter(Boolean).join(" "),
+    [firstName, lastName],
+  );
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus(null);
+    setIsSending(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name || "Anonymous",
+          email: fromEmail,
+          subject,
+          message,
+        }),
+      });
+      const data = (await res.json().catch(() => null)) as
+        | null
+        | { success?: boolean; error?: string };
+      if (!res.ok || !data?.success) {
+        setStatus({
+          ok: false,
+          text: data?.error || "Message could not be sent.",
+        });
+        return;
+      }
+      setStatus({ ok: true, text: "Message sent successfully." });
+      setFirstName("");
+      setLastName("");
+      setFromEmail("");
+      setSubject("");
+      setMessage("");
+    } catch {
+      setStatus({ ok: false, text: "Network error while sending message." });
+    } finally {
+      setIsSending(false);
+    }
+  }
+
   return (
     <section className="py-32">
       <div className="container">
@@ -56,35 +111,84 @@ export const Contact2 = ({
             </div>
           </div>
 
-          <div className="mx-auto flex max-w-screen-md flex-col gap-6 rounded-lg border p-10">
+          <form
+            onSubmit={onSubmit}
+            className="mx-auto flex max-w-screen-md flex-col gap-6 rounded-lg border p-10"
+          >
             <div className="flex gap-4">
               <div className="grid w-full items-center gap-1.5">
                 <Label htmlFor="firstname">First Name</Label>
-                <Input type="text" id="firstname" placeholder="First Name" />
+                <Input
+                  type="text"
+                  id="firstname"
+                  placeholder="First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  autoComplete="given-name"
+                />
               </div>
               <div className="grid w-full items-center gap-1.5">
                 <Label htmlFor="lastname">Last Name</Label>
-                <Input type="text" id="lastname" placeholder="Last Name" />
+                <Input
+                  type="text"
+                  id="lastname"
+                  placeholder="Last Name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  autoComplete="family-name"
+                />
               </div>
             </div>
 
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input type="email" id="email" placeholder="Email" />
+              <Input
+                type="email"
+                id="email"
+                placeholder="Email"
+                value={fromEmail}
+                onChange={(e) => setFromEmail(e.target.value)}
+                required
+                autoComplete="email"
+              />
             </div>
 
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="subject">Subject</Label>
-              <Input type="text" id="subject" placeholder="Subject" />
+              <Input
+                type="text"
+                id="subject"
+                placeholder="Subject"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+              />
             </div>
 
             <div className="grid w-full gap-1.5">
               <Label htmlFor="message">Message</Label>
-              <Textarea placeholder="Type your message here." id="message" />
+              <Textarea
+                placeholder="Type your message here."
+                id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+              />
             </div>
 
-            <Button className="w-full">Send Message</Button>
-          </div>
+            {status ? (
+              <p
+                className={
+                  status.ok ? "text-sm text-green-600" : "text-sm text-red-600"
+                }
+              >
+                {status.text}
+              </p>
+            ) : null}
+
+            <Button className="w-full" type="submit" disabled={isSending}>
+              {isSending ? "Sending..." : "Send Message"}
+            </Button>
+          </form>
         </div>
       </div>
     </section>
