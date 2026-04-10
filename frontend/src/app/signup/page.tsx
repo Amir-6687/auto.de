@@ -105,7 +105,7 @@ export default function SignupPage() {
 
           <button
             type="button"
-            onClick={() => signIn("google", { callbackUrl: "/admin" })}
+            onClick={() => signIn("google", { callbackUrl: "/" })}
             className="w-full flex items-center justify-center py-2.5 px-4 bg-white/90 hover:bg-white rounded-lg text-gray-700 font-semibold transition-all"
           >
             Continue with Google

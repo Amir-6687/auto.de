@@ -1,9 +1,9 @@
 const CarListing = require("../models/CarListing");
 
-// GET ALL
+// GET ALL (public: only active listings)
 exports.getAllCars = async (req, res) => {
   try {
-    const cars = await CarListing.find();
+    const cars = await CarListing.find({ status: "active" }).sort({ updatedAt: -1 });
     res.json(cars);
   } catch (err) {
     console.error("GetAllCars Error:", err);
@@ -11,10 +11,15 @@ exports.getAllCars = async (req, res) => {
   }
 };
 
-// GET ONE
+// GET ONE (public: only active; increments view count)
 exports.getCar = async (req, res) => {
   try {
     const car = await CarListing.findById(req.params.id);
+    if (!car || car.status !== "active") {
+      return res.status(404).json({ error: "Not found" });
+    }
+    car.viewCount = (car.viewCount || 0) + 1;
+    await car.save();
     res.json(car);
   } catch (err) {
     console.error("GetCar Error:", err);
@@ -65,6 +70,8 @@ exports.createCar = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
+      status: req.body.status || "active",
+      owner: req.body.owner || null,
 
       brand: req.body.brand,
       model: req.body.model,
@@ -101,6 +108,8 @@ exports.updateCar = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
+      status: req.body.status,
+      owner: req.body.owner,
 
       brand: req.body.brand,
       model: req.body.model,

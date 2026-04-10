@@ -36,6 +36,19 @@ export async function POST(req: Request) {
       text: `From: ${name || "Unknown"} <${email}>\n\n${message}`,
     });
 
+    const backend = process.env.BACKEND_API_URL || "http://localhost:5000";
+    const internal = process.env.INTERNAL_API_SECRET;
+    if (internal) {
+      await fetch(`${backend}/api/internal/contact-messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-internal-secret": internal,
+        },
+        body: JSON.stringify({ name, email, subject, message }),
+      }).catch(() => {});
+    }
+
     return Response.json({ success: true });
   } catch (error) {
     console.error(error);

@@ -6,10 +6,14 @@ import Image from "next/image";
 import { useNavbar } from "@/context/NavbarContext";
 import { signOut, useSession } from "next-auth/react";
 
+const STAFF_ROLES = new Set(["admin", "moderator", "super_admin"]);
+
 function Navbar() {
   const { hidden } = useNavbar();
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const isLoggedIn = status === "authenticated";
+  const role = session?.user?.role;
+  const showAdmin = !!role && STAFF_ROLES.has(role);
 
   return (
     <nav
@@ -37,7 +41,7 @@ function Navbar() {
           <a href="/cars" className="hover:text-gray-300 transition">Cars</a>
           <a href="/contact" className="hover:text-gray-300 transition">Contact</a>
 
-          {isLoggedIn && (
+          {showAdmin && (
             <a href="/admin" className="hover:text-blue-400 transition">
               Admin
             </a>

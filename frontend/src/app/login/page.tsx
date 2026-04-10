@@ -11,15 +11,18 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  function handleLogin(e: React.FormEvent) {
+  async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
-
-    if (password === "admin123") {
-      localStorage.setItem("isLoggedIn", "true");
-      router.push("/admin");
-    } else {
+    const res = await signIn("credentials", {
+      password,
+      redirect: false,
+      callbackUrl: "/admin",
+    });
+    if (res?.error) {
       alert("Wrong password");
+      return;
     }
+    router.push("/admin");
   }
 
   return (
@@ -44,7 +47,6 @@ export default function LoginPage() {
               type="email"
               className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 peer"
               placeholder=" "
-              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />

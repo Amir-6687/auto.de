@@ -2,6 +2,19 @@ const mongoose = require("mongoose");
 
 const CarListingSchema = new mongoose.Schema(
   {
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
+
+    status: {
+      type: String,
+      enum: ["pending", "active", "rejected"],
+      default: "active",
+    },
+    rejectionReason: { type: String, default: null },
+    moderatedAt: { type: Date, default: null },
+    moderatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
+
+    viewCount: { type: Number, default: 0 },
+
     // اصلی
     title: { type: String, required: true }, // می‌تونه ترکیب Marke + Modell باشه یا جدا نگه داریم
     description: String,

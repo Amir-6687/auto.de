@@ -19,6 +19,12 @@ app.use('/api/cars', carRoutes);
 const uploadRoutes = require('./routes/uploadRoutes');
 app.use('/api/upload', uploadRoutes);
 
+const requireInternal = require('./middleware/requireInternal');
+const internalRoutes = require('./routes/internalRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+app.use('/api/internal', requireInternal, internalRoutes);
+app.use('/api/admin', requireInternal, adminRoutes);
+
 // Test route
 app.get('/', (req, res) => {
   res.json({ message: 'Auto-DE backend is running' });
