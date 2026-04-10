@@ -2,14 +2,23 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function AdminPage() {
   const router = useRouter();
+  const { status } = useSession();
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (!isLoggedIn) router.push("/login");
-  }, []);
+    if (status === "unauthenticated") router.push("/login");
+  }, [router, status]);
+
+  if (status === "loading") {
+    return (
+      <div className="p-6">
+        <p className="text-gray-700">Loading…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-6">

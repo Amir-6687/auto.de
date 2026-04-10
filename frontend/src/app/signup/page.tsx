@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import VideoBackground from "@/components/ui/video-background";
 import { User, Lock, ArrowRight } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -92,6 +93,22 @@ export default function SignupPage() {
           >
             Sign Up
             <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
+          </button>
+
+          <div className="relative flex py-2 items-center">
+            <div className="flex-grow border-t border-gray-400/30"></div>
+            <span className="flex-shrink mx-4 text-gray-400 text-xs">
+              OR CONTINUE WITH
+            </span>
+            <div className="flex-grow border-t border-gray-400/30"></div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => signIn("google", { callbackUrl: "/admin" })}
+            className="w-full flex items-center justify-center py-2.5 px-4 bg-white/90 hover:bg-white rounded-lg text-gray-700 font-semibold transition-all"
+          >
+            Continue with Google
           </button>
 
           <p className="text-center text-xs text-gray-400">

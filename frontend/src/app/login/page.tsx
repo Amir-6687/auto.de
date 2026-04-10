@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import VideoBackground from "@/components/ui/video-background";
 import { User, Lock, ArrowRight } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -90,8 +91,9 @@ export default function LoginPage() {
           <button
             type="button"
             className="w-full flex items-center justify-center py-2.5 px-4 bg-white/90 hover:bg-white rounded-lg text-gray-700 font-semibold transition-all"
+            onClick={() => signIn("google", { callbackUrl: "/admin" })}
           >
-            Sign in with Google
+            Continue with Google
           </button>
 
           <p className="text-center text-xs text-gray-400">

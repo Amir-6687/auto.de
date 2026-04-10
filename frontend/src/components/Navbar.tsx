@@ -2,18 +2,14 @@
 
 import { AiOutlineLogin } from "react-icons/ai";
 import { IoMdLogOut } from "react-icons/io";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useNavbar } from "@/context/NavbarContext";
+import { signOut, useSession } from "next-auth/react";
 
 function Navbar() {
   const { hidden } = useNavbar();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const logged = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(logged);
-  }, []);
+  const { status } = useSession();
+  const isLoggedIn = status === "authenticated";
 
   return (
     <nav
@@ -63,10 +59,7 @@ function Navbar() {
 
         {isLoggedIn && (
           <button
-            onClick={() => {
-              localStorage.removeItem("isLoggedIn");
-              window.location.href = "/";
-            }}
+            onClick={() => signOut({ callbackUrl: "/" })}
             className="flex items-center gap-1 text-red-400 hover:text-red-500 transition"
           >
             <IoMdLogOut size={24} />

@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { NavbarProvider } from "@/context/NavbarContext";
 import CookieConsent from "@/components/CookieConsent";
+import AuthProvider from "@/components/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,12 +25,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <NavbarProvider>
-          <Navbar />
-          <CookieConsent />
+        <AuthProvider>
+          <NavbarProvider>
+            <Navbar />
+            <CookieConsent />
 
-          {children}
-        </NavbarProvider>
+            {children}
+          </NavbarProvider>
+        </AuthProvider>
       </body>
     </html>
   );
