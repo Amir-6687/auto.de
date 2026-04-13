@@ -27,8 +27,22 @@ export default function AdminShell({
 
   return (
     <div className="min-h-screen flex bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
-      <aside className="w-56 shrink-0 border-r border-zinc-200 dark:border-zinc-800 p-4 flex flex-col gap-1 bg-white dark:bg-zinc-900">
-        <div className="font-bold text-lg mb-4 tracking-tight">Auto.de Admin</div>
+      <aside className="w-56 shrink-0 border-r border-zinc-200 dark:border-zinc-800 p-4 flex flex-col gap-2 bg-white dark:bg-zinc-900">
+
+        {/* TITLE */}
+        <div className="font-bold text-lg tracking-tight mb-2">
+          Auto.de Admin
+        </div>
+
+        {/* BACK TO HOME BUTTON */}
+        <Link
+          href="/"
+          className="rounded-lg px-3 py-2 text-sm font-medium bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition text-zinc-800 dark:text-zinc-200"
+        >
+          ← Back to Home
+        </Link>
+
+        {/* NAVIGATION */}
         {nav.map((n) => {
           const active = path === n.href;
           return (
@@ -45,6 +59,8 @@ export default function AdminShell({
             </Link>
           );
         })}
+
+        {/* DARK MODE TOGGLE */}
         <button
           type="button"
           onClick={() => setDark((d) => !d)}
@@ -54,6 +70,7 @@ export default function AdminShell({
           {dark ? "Light mode" : "Dark mode"}
         </button>
       </aside>
+
       <main className="flex-1 p-6 overflow-auto">{children}</main>
     </div>
   );
