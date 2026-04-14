@@ -1,6 +1,7 @@
 "use client";
 
 import HeroSection from "@/components/HeroSection";
+import VehicleFilterBox from "@/components/VehicleFilterBox";
 import { useEffect } from "react";
 import { useNavbar } from "@/context/NavbarContext";
 
@@ -14,13 +15,21 @@ export default function Dashboard() {
 
   return (
     <div
-      className="w-full h-screen bg-cover bg-center bg-no-repeat relative"
+      className="w-full min-h-screen bg-cover bg-center bg-no-repeat relative"
       style={{ backgroundImage: "url('/car-background.jpg')" }}
     >
+      {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/40" />
 
-      <div className="relative z-10">
+      {/* Content */}
+      <div className="relative z-10 pt-32 px-4">
+        {/* Hero Section (Search Box داخلش هست) */}
         <HeroSection />
+
+        {/* فاصله بین سرچ و فیلتر */}
+        <div className="mt-10">
+          <VehicleFilterBox />
+        </div>
       </div>
     </div>
   );

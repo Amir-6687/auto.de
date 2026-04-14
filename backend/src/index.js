@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 console.log("ENV:", process.env.CLOUDINARY_CLOUD_NAME);
 
+
 const app = express();
 
 app.use(cors());
@@ -19,11 +20,15 @@ app.use('/api/cars', carRoutes);
 const uploadRoutes = require('./routes/uploadRoutes');
 app.use('/api/upload', uploadRoutes);
 
+const filtersRoute = require('./routes/filters');
+app.use('/api/filters', filtersRoute);
+
 const requireInternal = require('./middleware/requireInternal');
 const internalRoutes = require('./routes/internalRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 app.use('/api/internal', requireInternal, internalRoutes);
 app.use('/api/admin', requireInternal, adminRoutes);
+
 
 // Test route
 app.get('/', (req, res) => {
