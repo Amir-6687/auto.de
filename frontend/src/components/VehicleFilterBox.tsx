@@ -39,22 +39,22 @@ export default function VehicleFilterBox() {
 <div className="flex items-center justify-start gap-6 mb-4">
 
 <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-  <img src="/Icons/Car-01.png" className="w-14 h-7" />
-  <span className="text-xs mt-1">Kleinwagen</span>
+  <img src="/Icons/Car-01.png" className="w-14 h-7 object-contain brightness-65" />
+  <span className="text-xs mt-1">SUV</span>
 </div>
 
 <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-  <img src="/Icons/Car-02.png" className="w-14 h-5" />
+  <img src="/Icons/Car-02.png" className="w-14 h-5 object-contain brightness-65" />
   <span className="text-xs mt-1">Limousine</span>
 </div>
 
 <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-  <img src="/Icons/Car-03.png" className="w-14 h-5" />
+  <img src="/Icons/Car-03.png" className="w-14 h-5 object-contain brightness-65" />
   <span className="text-xs mt-1">Cabrio</span>
 </div>
 
 <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-  <img src="/Icons/Car-04.png" className="w-14 h-9" />
+  <img src="/Icons/Car-04.png" className="w-14 h-9 object-contain brightness-65" />
   <span className="text-xs mt-1">Van</span>
 </div>
 
