@@ -21,18 +21,43 @@ export default function VehicleFilterBox() {
 
   useEffect(() => {
     fetch("http://localhost:5000/api/filters")
-
       .then(res => res.json())
       .then(data => setFilters(data));
   }, []);
 
   return (
     <div className="w-full bg-white/80 backdrop-blur-xl rounded-xl shadow-lg p-6 mt-6">
+
       {/* Tabs */}
       <div className="flex gap-6 border-b pb-3 mb-4">
         <button className="text-blue-600 font-semibold border-b-2 border-blue-600 pb-1">
           Fahrzeuge
         </button>
+      </div>
+
+      {/* آیکون‌ها زیر تب Fahrzeuge */}
+      <div className="flex items-center justify-center gap-8 mb-8">
+
+        <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
+          <img src="/Icons/Car-01.png" className="w-14 h-14" />
+          <span className="text-sm mt-2">Kleinwagen</span>
+        </div>
+
+        <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
+          <img src="/Icons/Car-02.png" className="w-14 h-14" />
+          <span className="text-sm mt-2">Limousine</span>
+        </div>
+
+        <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
+          <img src="/Icons/Car-03.png" className="w-14 h-14" />
+          <span className="text-sm mt-2">Cabrio</span>
+        </div>
+
+        <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
+          <img src="/Icons/Car-04.png" className="w-14 h-14" />
+          <span className="text-sm mt-2">Van</span>
+        </div>
+
       </div>
 
       {/* Filters */}
