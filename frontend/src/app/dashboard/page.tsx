@@ -29,10 +29,11 @@ export default function Dashboard() {
         <HeroSection />
 
         {/* فاصله بین سرچ و فیلتر */}
-        <div className="mt-10 grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10">
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-stretch">
   <VehicleFilterBox />
   <BrandBox />
 </div>
+
 
       </div>
     </div>
