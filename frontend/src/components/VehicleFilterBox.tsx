@@ -36,7 +36,7 @@ export default function VehicleFilterBox() {
       </div>
 
       {/* آیکون‌ها زیر تب Fahrzeuge */}
-      <div className="flex items-center justify-center gap-8 mb-8">
+      <div className="flex items-center justify-start gap-8 mb-8">
 
         <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
           <img src="/Icons/Car-01.png" className="w-14 h-14" />
