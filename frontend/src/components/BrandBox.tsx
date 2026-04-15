@@ -23,20 +23,21 @@ export default function BrandBox() {
       </h3>
 
       <div className="grid grid-cols-3 gap-4">
-        {brands.map((brand, index) => (
-          <button
-            key={index}
-            className="flex items-center justify-center p-2 hover:opacity-80 transition"
-            onClick={() => console.log("Clicked:", brand.name)}
-          >
-            <img
-              src={brand.src}
-              alt={brand.name}
-              className="w-14 h-14 object-contain brightness-75"
-            />
-          </button>
-        ))}
-      </div>
+  {brands.map((brand, index) => (
+    <button
+      key={index}
+      className="flex items-center justify-center p-2 hover:opacity-80 transition cursor-pointer"
+      onClick={() => console.log("Clicked:", brand.name)}
+    >
+      <img
+        src={brand.src}
+        alt={brand.name}
+        className="w-14 h-14 object-contain brightness-75"
+      />
+    </button>
+  ))}
+</div>
+
     </div>
   );
 }
