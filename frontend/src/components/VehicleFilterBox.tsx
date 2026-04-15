@@ -36,29 +36,30 @@ export default function VehicleFilterBox() {
       </div>
 
       {/* آیکون‌ها زیر تب Fahrzeuge */}
-      <div className="flex items-center justify-start gap-8 mb-8">
+<div className="flex items-center justify-start gap-6 mb-4">
 
-        <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-          <img src="/Icons/Car-01.png" className="w-14 h-14" />
-          <span className="text-sm mt-2">Kleinwagen</span>
-        </div>
+<div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
+  <img src="/Icons/Car-01.png" className="w-14 h-7" />
+  <span className="text-xs mt-1">Kleinwagen</span>
+</div>
 
-        <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-          <img src="/Icons/Car-02.png" className="w-14 h-14" />
-          <span className="text-sm mt-2">Limousine</span>
-        </div>
+<div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
+  <img src="/Icons/Car-02.png" className="w-14 h-5" />
+  <span className="text-xs mt-1">Limousine</span>
+</div>
 
-        <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-          <img src="/Icons/Car-03.png" className="w-14 h-14" />
-          <span className="text-sm mt-2">Cabrio</span>
-        </div>
+<div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
+  <img src="/Icons/Car-03.png" className="w-14 h-5" />
+  <span className="text-xs mt-1">Cabrio</span>
+</div>
 
-        <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-          <img src="/Icons/Car-04.png" className="w-14 h-14" />
-          <span className="text-sm mt-2">Van</span>
-        </div>
+<div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
+  <img src="/Icons/Car-04.png" className="w-14 h-9" />
+  <span className="text-xs mt-1">Van</span>
+</div>
 
-      </div>
+</div>
+
 
       {/* Filters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
