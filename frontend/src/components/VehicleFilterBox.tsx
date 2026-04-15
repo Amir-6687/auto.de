@@ -26,7 +26,8 @@ export default function VehicleFilterBox() {
   }, []);
 
   return (
-    <div className="w-full bg-white/80 backdrop-blur-xl rounded-xl shadow-lg p-6 mt-6">
+    <div className="w-full max-w-4xl mx-auto bg-white/80 backdrop-blur-xl rounded-xl shadow-lg p-6 mt-6">
+
 
       {/* Tabs */}
       <div className="flex gap-6 border-b pb-3 mb-4">
