@@ -5,6 +5,7 @@ import NavbarWrapper from "@/components/NavbarWrapper";
 import CookieConsent from "@/components/CookieConsent";
 import AuthProvider from "@/components/AuthProvider";
 import { NavbarProvider } from "@/context/NavbarContext";
+import Footer4Col from "@/components/ui/footer-column";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <NavbarWrapper />
             <CookieConsent />
             {children}
+            <Footer4Col />
           </NavbarProvider>
         </AuthProvider>
       </body>
