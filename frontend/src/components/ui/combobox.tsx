@@ -246,7 +246,7 @@ const ComboboxList = ({
   style={{ maxWidth, ...position }}
 >
 
-      <ul className="p-2 font-saira max-h-44 overflow-y-auto">
+      <ul className="p-2 font-saira max-h-44 overflow-y-auto combobox-scrollbar">
         {filteredChildren.length > 0 ? (
           filteredChildren
         ) : (

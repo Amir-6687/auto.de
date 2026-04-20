@@ -273,3 +273,28 @@
     @apply font-sans;
   }
 }
+
+/* Combobox dropdown scrollbar (dark UI) */
+.combobox-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) rgba(255, 255, 255, 0.08);
+}
+
+.combobox-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.combobox-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+.combobox-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.combobox-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.38);
+}
