@@ -82,7 +82,7 @@ const contactInfo = [
 
 export default function Footer4Col() {
   return (
-    <footer className="relative mt-16 w-full overflow-hidden rounded-t-xl bg-black text-white">
+    <footer className="relative w-full overflow-hidden rounded-t-xl bg-black text-white">
       {/* red/black glow background */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-32 left-1/4 h-80 w-80 rounded-full bg-red-600/25 blur-3xl" />
