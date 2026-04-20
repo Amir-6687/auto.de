@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import BrandBox from "@/components/BrandBox";
 
 export default function VehicleFilterBox() {
   const [filters, setFilters] = useState({
@@ -26,8 +27,10 @@ export default function VehicleFilterBox() {
   }, []);
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white/80 backdrop-blur-xl rounded-xl shadow-lg p-6 mt-6">
+    <div className="w-full max-w-6xl mx-auto bg-white/80 backdrop-blur-xl rounded-xl shadow-lg p-6 mt-6">
 
+      <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex-1 min-w-0">
 
       {/* Tabs */}
       <div className="flex gap-6 border-b pb-3 mb-4">
@@ -134,6 +137,12 @@ export default function VehicleFilterBox() {
         <button className="bg-gray-200 px-6 py-3 rounded-lg">
           Neue Suche
         </button>
+      </div>
+        </div>
+
+        <aside className="w-full lg:w-[360px] shrink-0">
+          <BrandBox />
+        </aside>
       </div>
     </div>
   );
