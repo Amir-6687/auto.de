@@ -23,7 +23,7 @@ export default function Dashboard() {
       <div className="absolute inset-0 bg-black/40" />
 
       {/* Content */}
-      <div className="relative z-10 pt-32 px-4">
+      <div className="relative z-10 pt-32 px-4 pb-16">
         {/* Hero Section (Search Box داخلش هست) */}
         <HeroSection />
 
