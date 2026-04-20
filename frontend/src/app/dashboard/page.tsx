@@ -4,7 +4,6 @@ import HeroSection from "@/components/HeroSection";
 import VehicleFilterBox from "@/components/VehicleFilterBox";
 import { useEffect } from "react";
 import { useNavbar } from "@/context/NavbarContext";
-import BrandBox from "@/components/BrandBox";
 
 
 export default function Dashboard() {
@@ -29,10 +28,9 @@ export default function Dashboard() {
         <HeroSection />
 
         {/* فاصله بین سرچ و فیلتر */}
-        <div className="mt-10 grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-stretch">
-  <VehicleFilterBox />
-  <BrandBox />
-</div>
+        <div className="mt-10">
+          <VehicleFilterBox />
+        </div>
 
 
       </div>
