@@ -35,11 +35,12 @@ export default function VehicleFilterBox() {
       {/* Tabs */}
       <div className="flex gap-6 border-b pb-3 mb-4">
       <button
-  className="text-blue-600 font-semibold border-b-2 border-blue-600 pb-1"
-  style={{ fontFamily: "Saira Stencil, sans-serif" }}
+  className="font-semibold pb-1"
+  style={{ color: "#171717", fontFamily: "Saira Stencil, sans-serif" }}
 >
   Fahrzeuge
 </button>
+
 
       </div>
 
