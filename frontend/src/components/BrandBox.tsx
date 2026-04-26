@@ -3,7 +3,7 @@
 export default function BrandBox() {
   const brands = [
     { src: "/Icons/audi-logo-png-724.gif", name: "Audi" },
-    { src: "/Icons/dacia.png", name: "Dacia" },
+    { src: "/Icons/Dachia-logo.png", name: "Dacia" },
     { src: "/Icons/fiat.png", name: "Fiat" },
     { src: "/Icons/ford.png", name: "Ford" },
     { src: "/Icons/hyundai.png", name: "Hyundai" },
