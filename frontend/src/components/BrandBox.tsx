@@ -13,7 +13,7 @@ export default function BrandBox() {
     { src: "/Icons/Seat-logo.png", name: "Seat" },
     { src: "/Icons/Skoda-logo.png", name: "Skoda" },
     { src: "/Icons/Suzuki_Motor.png", name: "Suzuki" },
-    { src: "/Icons/vw.png", name: "Volkswagen" },
+    { src: "/Icons/VW-logo.png", name: "Volkswagen" },
   ];
 
   return (
