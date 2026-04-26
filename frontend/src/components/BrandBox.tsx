@@ -8,7 +8,7 @@ export default function BrandBox() {
     { src: "/Icons/Ford-logo.png", name: "Ford" },
     { src: "/Icons/hyundai-logo.png", name: "Hyundai" },
     { src: "/Icons/Kia-Motors-logo.png", name: "Kia" },
-    { src: "/Icons/opel.png", name: "Opel" },
+    { src: "/Icons/Opel-logo.png", name: "Opel" },
     { src: "/Icons/peugeot.png", name: "Peugeot" },
     { src: "/Icons/seat.png", name: "Seat" },
     { src: "/Icons/skoda.png", name: "Skoda" },
