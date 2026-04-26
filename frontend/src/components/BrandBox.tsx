@@ -18,9 +18,13 @@ export default function BrandBox() {
 
   return (
     <div className="w-full max-w-sm bg-white/80 backdrop-blur-xl rounded-xl shadow-lg p-6">
-      <h3 className="text-lg font-semibold mb-4 border-b pb-2">
-        Unsere beliebtesten Marken
-      </h3>
+      <h3
+  className="text-lg font-semibold mb-4 border-b pb-2"
+  style={{ fontFamily: "Saira Stencil, sans-serif" }}
+>
+  Unsere beliebtesten Marken
+</h3>
+
 
       <div className="grid grid-cols-3 gap-4">
   {brands.map((brand, index) => (
