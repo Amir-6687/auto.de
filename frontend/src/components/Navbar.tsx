@@ -64,8 +64,8 @@ function Navbar() {
       <div className="absolute left-1/2 -translate-x-1/2" ref={centerRef}>
         <div className="flex items-center gap-8 px-10 py-4 rounded-2xl backdrop-blur-xl bg-neutral-900/30 border border-white/20 shadow-lg text-white">
           {showSearch ? (
-            <div className="w-[260px]">
-              <Combobox
+            <div className="w-[520px] max-w-full">
+            <Combobox
                 placeholder="Search..."
                 value=""
                 onChange={() => {}}
