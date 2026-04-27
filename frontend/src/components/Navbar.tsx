@@ -66,11 +66,13 @@ function Navbar() {
           {showSearch ? (
             <div className="w-[520px] max-w-full">
             <Combobox
-                placeholder="Search..."
-                value=""
-                onChange={() => {}}
-                size="small"
-              >
+  placeholder="Search..."
+  value=""
+  onChange={() => {}}
+  size="small"
+  errored
+>
+
                 <Combobox.Input />
                 <Combobox.List>
                   <Combobox.Option value="audi">Audi</Combobox.Option>
