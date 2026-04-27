@@ -5,6 +5,8 @@ import { IoMdLogOut } from "react-icons/io";
 import Image from "next/image";
 import { useNavbar } from "@/context/NavbarContext";
 import { signOut, useSession } from "next-auth/react";
+import { LuSearch } from "react-icons/lu";
+
 
 const STAFF_ROLES = new Set(["admin", "moderator", "super_admin"]);
 
@@ -51,26 +53,33 @@ function Navbar() {
 
       {/* LOGIN / LOGOUT RIGHT */}
       <div className="flex items-center gap-4 pr-6">
-        {!isLoggedIn && (
-          <a
-            href="/login"
-            className="flex items-center gap-1 text-white hover:text-blue-400 transition"
-          >
-            <AiOutlineLogin size={22} />
-            Login
-          </a>
-        )}
 
-        {isLoggedIn && (
-          <button
-            onClick={() => signOut({ callbackUrl: "/" })}
-            className="flex items-center gap-1 text-red-400 hover:text-red-500 transition"
-          >
-            <IoMdLogOut size={24} />
-            Logout
-          </button>
-        )}
-      </div>
+  {/* SEARCH ICON */}
+  <button className="text-white hover:text-blue-400 transition">
+    <LuSearch size={22} />
+  </button>
+
+  {!isLoggedIn && (
+    <a
+      href="/login"
+      className="flex items-center gap-1 text-white hover:text-blue-400 transition"
+    >
+      <AiOutlineLogin size={22} />
+      Login
+    </a>
+  )}
+
+  {isLoggedIn && (
+    <button
+      onClick={() => signOut({ callbackUrl: "/" })}
+      className="flex items-center gap-1 text-red-400 hover:text-red-500 transition"
+    >
+      <IoMdLogOut size={24} />
+      Logout
+    </button>
+  )}
+</div>
+
     </nav>
   );
 }
