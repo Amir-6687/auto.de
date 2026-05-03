@@ -9,7 +9,7 @@ const slides = [
   { img: "/slider/Ford.webp" },
   { img: "/slider/hyundai.webp" },
   { img: "/slider/Kia.webp" },
-  { img: "/slider/7.jpg" },
+  { img: "/slider/opel.webp" },
   { img: "/slider/8.jpg" },
   { img: "/slider/9.jpg" },
   { img: "/slider/10.jpg" },
