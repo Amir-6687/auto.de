@@ -5,7 +5,7 @@ import React, { useState } from "react";
 const slides = [
   { img: "/slider/audi-e-tron-GT.jpg" },
   { img: "/slider/Dacia.webp" },
-  { img: "/slider/3.jpg" },
+  { img: "/slider/Fiat.jpg" },
   { img: "/slider/4.jpg" },
   { img: "/slider/5.jpg" },
   { img: "/slider/6.jpg" },
