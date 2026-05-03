@@ -3,26 +3,18 @@
 import React, { useState } from "react";
 
 const slides = [
-  {
-    img: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
-    text: ["BETWEEN SHADOW", "AND LIGHT"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
-    text: ["SILENCE SPEAKS", "THROUGH FORM"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429",
-    text: ["ESSENCE BEYOND", "PERCEPTION"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1500534623283-312aade485b7",
-    text: ["TRUTH IN", "EMPTINESS"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429",
-    text: ["SURRENDER TO", "THE VOID"],
-  },
+  { img: "/slider/audi-e-tron-GT.jpg" },
+  { img: "/slider/2.jpg" },
+  { img: "/slider/3.jpg" },
+  { img: "/slider/4.jpg" },
+  { img: "/slider/5.jpg" },
+  { img: "/slider/6.jpg" },
+  { img: "/slider/7.jpg" },
+  { img: "/slider/8.jpg" },
+  { img: "/slider/9.jpg" },
+  { img: "/slider/10.jpg" },
+  { img: "/slider/11.jpg" },
+  { img: "/slider/12.jpg" },
 ];
 
 export default function Slideshow() {
@@ -45,13 +37,7 @@ export default function Slideshow() {
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-        >
-          <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-4xl font-bold tracking-tight space-y-2">
-            {slide.text.map((t, j) => (
-              <span key={j}>{t}</span>
-            ))}
-          </div>
-        </div>
+        />
       ))}
 
       {/* Controls */}
