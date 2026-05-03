@@ -14,7 +14,7 @@ const slides = [
   { img: "/slider/seat.webp" },
   { img: "/slider/skoda.jpg" },
   { img: "/slider/suzuki.webp" },
-  { img: "/slider/12.jpg" },
+  { img: "/slider/vw.jpg" },
 ];
 
 export default function Slideshow() {
