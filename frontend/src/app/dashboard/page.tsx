@@ -21,21 +21,18 @@ export default function Dashboard() {
     >
       <div className="absolute inset-0 bg-black/40" />
 
-      <div className="relative z-10 pt-32 px-4 pb-16">
+      <div className="relative z-10 pt-48 px-4 pb-16">
+  <Slideshow />
 
-        {/* ⬇ اسلایدر اینجاست */}
-        <Slideshow />
+  <div className="mt-10">
+    <HeroSection />
+  </div>
 
-        {/* فاصله بین اسلایدر و Hero */}
-        <div className="mt-10">
-          <HeroSection />
-        </div>
+  <div className="mt-10">
+    <VehicleFilterBox />
+  </div>
+</div>
 
-        <div className="mt-10">
-          <VehicleFilterBox />
-        </div>
-
-      </div>
     </div>
   );
 }
