@@ -22,7 +22,10 @@ export default function Dashboard() {
       <div className="absolute inset-0 bg-black/40" />
 
       <div className="relative z-10 pt-48 px-4 pb-16">
-  <Slideshow />
+
+  <div className="max-w-6xl mx-auto">
+    <Slideshow />
+  </div>
 
   <div className="mt-10">
     <HeroSection />
@@ -31,7 +34,9 @@ export default function Dashboard() {
   <div className="mt-10">
     <VehicleFilterBox />
   </div>
+
 </div>
+
 
     </div>
   );
