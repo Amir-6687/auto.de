@@ -39,7 +39,7 @@ const data = {
     address: 'Kolkata, West Bengal, India',
   },
   company: {
-    name: 'Mvpblocks',
+    name: 'RayMotors',
     description:
       'Building beautiful and functional web experiences with modern technologies. We help startups and businesses create their digital presence.',
     logo: '/4.png',
