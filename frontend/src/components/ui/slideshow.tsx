@@ -6,7 +6,7 @@ const slides = [
   { img: "/slider/audi-e-tron-GT.jpg" },
   { img: "/slider/Dacia.webp" },
   { img: "/slider/Fiat.jpg" },
-  { img: "/slider/4.jpg" },
+  { img: "/slider/Ford.webp" },
   { img: "/slider/5.jpg" },
   { img: "/slider/6.jpg" },
   { img: "/slider/7.jpg" },
