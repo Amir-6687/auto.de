@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const slides = [
   { img: "/slider/audi-e-tron-GT.jpg" },
@@ -23,6 +23,15 @@ export default function Slideshow() {
   const nextSlide = () => setCurrent((prev) => (prev + 1) % slides.length);
   const prevSlide = () =>
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+
+  // 🔥 Auto Slide
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 4000); // هر 4 ثانیه
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="relative w-full h-[60vh] overflow-hidden rounded-xl">
