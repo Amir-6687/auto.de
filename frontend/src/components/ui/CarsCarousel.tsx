@@ -146,37 +146,44 @@ export default function CarsCarousel() {
 
   return (
     <div className="relative mt-10">
-      {/* Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-500">
-        {visibleCars.map((car, i) => (
-          <PropertyCard
-            key={i}
-            imageUrl={car.imageUrl}
-            title={car.title}
-            price={car.price}
-            pricePeriod="per day"
-            description={car.description}
-            stats={car.stats}
-            actionLabel="View"
-          />
-        ))}
-      </div>
-
-      {/* Controls */}
-      <button
+  
+      {/* Container to center cards and add left/right spacing */}
+      <div className="max-w-6xl mx-auto relative">
+  
+        {/* Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-500">
+          {visibleCars.map((car, i) => (
+            <PropertyCard
+              key={i}
+              imageUrl={car.imageUrl}
+              title={car.title}
+              price={car.price}
+              pricePeriod="per day"
+              description={car.description}
+              stats={car.stats}
+              actionLabel="View"
+            />
+          ))}
+        </div>
+  
+        {/* Controls */}
+        <button
   onClick={prev}
-  className="absolute left-2 top-1/2 -translate-y-1/2 text-white text-4xl z-50 bg-black/40 px-3 py-1 rounded-full"
+  className="absolute -left-20 top-1/2 -translate-y-1/2 text-white text-4xl z-50 bg-black/40 px-4 py-2 rounded-full"
 >
   ←
 </button>
 
 <button
   onClick={next}
-  className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-4xl z-50 bg-black/40 px-3 py-1 rounded-full"
+  className="absolute -right-20 top-1/2 -translate-y-1/2 text-white text-4xl z-50 bg-black/40 px-4 py-2 rounded-full"
 >
   →
 </button>
 
+  
+      </div>
     </div>
   );
+  
 }
