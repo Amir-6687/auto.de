@@ -6,6 +6,8 @@ import Slideshow from "@/components/ui/slideshow";
 import { useEffect } from "react";
 import { useNavbar } from "@/context/NavbarContext";
 import { PropertyCard } from "@/components/ui/card-4";
+import CarsCarousel from "@/components/ui/CarsCarousel";
+
 
 
 export default function Dashboard() {
@@ -32,6 +34,8 @@ export default function Dashboard() {
   <div className="mt-10">
     <HeroSection />
   </div>
+  <CarsCarousel />
+
 {/* Cards Section */}
 <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
   <PropertyCard
