@@ -35,11 +35,12 @@ export default function Dashboard() {
     <HeroSection />
   </div>
   <CarsCarousel />
-  <div className="mt-8 text-center">
+  <div className="mt-20 mb-16 text-center">
   <h2 className="text-2xl sm:text-3xl font-semibold text-white">
     Our Top Car Recommendations This Week
   </h2>
 </div>
+
 {/* Cards Section */}
 <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
   <PropertyCard
