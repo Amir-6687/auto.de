@@ -9,47 +9,105 @@ export default async function CarsPage() {
   const cars = await getCars();
 
   return (
-    <div>
-<h1 className="text-3xl font-semibold mb-6 text-[#101828]">Car Listings</h1>
+    <div className="w-full min-h-screen bg-gray-100 pt-32 px-6 pb-20">
 
-      <div className="space-y-4">
-        {cars.length === 0 && (
-          <p className="text-gray-600">No cars found. Add one!</p>
-        )}
+      {/* Container اصلی */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-10">
 
-        {cars.map((car: any) => (
-          <div key={car._id} className="bg-white p-4 rounded shadow">
+        {/* ستون چپ — فیلترها */}
+        <div className="bg-white p-6 rounded-xl shadow-md h-fit sticky top-32">
+          <h2 className="text-xl font-semibold mb-4">Search Filters</h2>
 
-            {/* -------------------------------
-                🟩 نمایش عکس اول گالری
-            -------------------------------- */}
-            {car.images?.length > 0 && (
-              <img
-                src={car.images[0]}
-                className="w-40 h-28 object-cover rounded mb-2"
-              />
-            )}
-
-<h2 className="text-xl font-semibold text-[#101828]">{car.title}</h2>
-            <p className="text-gray-700">Price: {car.price} €</p>
-            <p className="text-gray-700">Mileage: {car.mileage} km</p>
-
-            <div className="flex gap-4 mt-3">
-              <a
-href={`/admin/cars/${car._id}/edit`}
-className="text-blue-600 hover:underline"
-              >
-                Edit
-              </a>
-
-              <form action={`/admin/cars/${car._id}/delete`} method="POST">
-              <button className="text-red-600 hover:underline">
-                  Delete
-                </button>
-              </form>
-            </div>
+          {/* نوع خودرو */}
+          <div className="mb-6">
+            <label className="font-medium">Body Type</label>
+            <select className="w-full mt-2 p-2 border rounded-lg">
+              <option value="">All</option>
+              <option value="SUV">SUV</option>
+              <option value="Sedan">Sedan</option>
+              <option value="Hatchback">Hatchback</option>
+              <option value="Coupe">Coupe</option>
+              <option value="Van">Van</option>
+            </select>
           </div>
-        ))}
+
+          {/* برند */}
+          <div className="mb-6">
+            <label className="font-medium">Brand</label>
+            <select className="w-full mt-2 p-2 border rounded-lg">
+              <option value="">All</option>
+              <option value="Audi">Audi</option>
+              <option value="BMW">BMW</option>
+              <option value="Mercedes">Mercedes</option>
+              <option value="Volkswagen">Volkswagen</option>
+              <option value="Kia">Kia</option>
+            </select>
+          </div>
+
+          {/* قیمت */}
+          <div className="mb-6">
+            <label className="font-medium">Max Price (€)</label>
+            <input
+              type="number"
+              className="w-full mt-2 p-2 border rounded-lg"
+              placeholder="e.g. 20000"
+            />
+          </div>
+
+          <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+            Apply Filters
+          </button>
+        </div>
+
+        {/* ستون راست — لیست خودروها */}
+        <div className="lg:col-span-3 space-y-8">
+
+          {cars.length === 0 && (
+            <p className="text-gray-600 text-lg">No cars found!</p>
+          )}
+
+          {cars.map((car: any) => (
+            <div
+              key={car._id}
+              className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row"
+            >
+              {/* عکس اول گالری */}
+              {car.images?.length > 0 && (
+                <img
+                  src={car.images[0]}
+                  alt={car.title}
+                  className="w-full md:w-64 h-48 object-cover"
+                />
+              )}
+
+              {/* اطلاعات */}
+              <div className="p-6 flex-1">
+                <h3 className="text-2xl font-semibold">{car.title}</h3>
+
+                <p className="text-lg text-blue-600 font-bold mt-2">
+                  €{car.price}
+                </p>
+
+                <p className="text-gray-600 mt-3">{car.description}</p>
+
+                <div className="grid grid-cols-2 gap-4 mt-4 text-sm text-gray-700">
+                  <p><strong>Mileage:</strong> {car.mileage} km</p>
+                  <p><strong>Fuel:</strong> {car.fuelType}</p>
+                  <p><strong>Gearbox:</strong> {car.gearbox}</p>
+                  <p><strong>Year:</strong> {car.firstRegistration}</p>
+                </div>
+
+                <a
+                  href={`/cars/${car._id}`}
+                  className="inline-block mt-5 bg-black text-white px-4 py-2 rounded-lg"
+                >
+                  View Details
+                </a>
+              </div>
+            </div>
+          ))}
+
+        </div>
       </div>
     </div>
   );
