@@ -5,27 +5,38 @@ import { API_URL } from "@/lib/api";
 
 export default function CarsPage() {
   const [cars, setCars] = useState([]);
+
   const [sortOpen, setSortOpen] = useState(false);
+  const [brandOpen, setBrandOpen] = useState(false);
 
   const sortRef = useRef<HTMLDivElement | null>(null);
+  const brandRef = useRef<HTMLDivElement | null>(null);
 
-useEffect(() => {
-  function handleClickOutside(e: MouseEvent) {
-    const target = e.target as Node;
+  // دریافت خودروها از API
+  useEffect(() => {
+    fetch(`${API_URL}/cars`, { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => setCars(data))
+      .catch((err) => console.error(err));
+  }, []);
 
-    if (sortRef.current && !sortRef.current.contains(target)) {
-      setSortOpen(false);
+  // بستن هر دو Accordion با کلیک بیرون
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      const target = e.target as Node;
+
+      if (sortRef.current && !sortRef.current.contains(target)) {
+        setSortOpen(false);
+      }
+
+      if (brandRef.current && !brandRef.current.contains(target)) {
+        setBrandOpen(false);
+      }
     }
-  }
 
-  if (sortOpen) {
     document.addEventListener("mousedown", handleClickOutside);
-  }
-
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [sortOpen]);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="w-full min-h-screen bg-gray-100 pt-32 px-6 pb-20">
@@ -52,37 +63,45 @@ useEffect(() => {
               <div className="mt-3 border rounded-lg p-3 bg-gray-50 
                               max-h-60 overflow-y-auto space-y-3">
 
-                <button className="w-full text-left hover:text-blue-600">
-                  Preis aufsteigend
-                </button>
+                <button className="w-full text-left hover:text-blue-600">Preis aufsteigend</button>
+                <button className="w-full text-left hover:text-blue-600">Preis absteigend</button>
+                <button className="w-full text-left hover:text-blue-600">Kilometer aufsteigend</button>
+                <button className="w-full text-left hover:text-blue-600">Kilometer absteigend</button>
+                <button className="w-full text-left hover:text-blue-600">Erstzulassung aufsteigend</button>
+                <button className="w-full text-left hover:text-blue-600">Erstzulassung absteigend</button>
+                <button className="w-full text-left hover:text-blue-600">Alphabetisch A–Z</button>
+                <button className="w-full text-left hover:text-blue-600">Alphabetisch Z–A</button>
 
-                <button className="w-full text-left hover:text-blue-600">
-                  Preis absteigend
-                </button>
+              </div>
+            )}
+          </div>
 
-                <button className="w-full text-left hover:text-blue-600">
-                  Kilometer aufsteigend
-                </button>
+          {/* Marken / Modelle */}
+          <div className="mb-6" ref={brandRef}>
+            <button
+              className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
+              onClick={() => setBrandOpen(!brandOpen)}
+            >
+              Marken / Modelle
+              <span>{brandOpen ? "▲" : "▼"}</span>
+            </button>
 
-                <button className="w-full text-left hover:text-blue-600">
-                  Kilometer absteigend
-                </button>
+            {brandOpen && (
+              <div className="mt-3 border rounded-lg p-3 bg-gray-50 
+                              max-h-60 overflow-y-auto space-y-3">
 
-                <button className="w-full text-left hover:text-blue-600">
-                  Erstzulassung aufsteigend
-                </button>
-
-                <button className="w-full text-left hover:text-blue-600">
-                  Erstzulassung absteigend
-                </button>
-
-                <button className="w-full text-left hover:text-blue-600">
-                  Alphabetisch A–Z
-                </button>
-
-                <button className="w-full text-left hover:text-blue-600">
-                  Alphabetisch Z–A
-                </button>
+                <button className="w-full text-left hover:text-blue-600">Audi</button>
+                <button className="w-full text-left hover:text-blue-600">BMW</button>
+                <button className="w-full text-left hover:text-blue-600">Mercedes-Benz</button>
+                <button className="w-full text-left hover:text-blue-600">Volkswagen</button>
+                <button className="w-full text-left hover:text-blue-600">Porsche</button>
+                <button className="w-full text-left hover:text-blue-600">Toyota</button>
+                <button className="w-full text-left hover:text-blue-600">Honda</button>
+                <button className="w-full text-left hover:text-blue-600">Hyundai</button>
+                <button className="w-full text-left hover:text-blue-600">Kia</button>
+                <button className="w-full text-left hover:text-blue-600">Ford</button>
+                <button className="w-full text-left hover:text-blue-600">Opel</button>
+                <button className="w-full text-left hover:text-blue-600">Renault</button>
 
               </div>
             )}
