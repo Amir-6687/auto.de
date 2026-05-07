@@ -1,18 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { API_URL } from "@/lib/api";
 
 export default function CarsPage() {
   const [cars, setCars] = useState([]);
   const [sortOpen, setSortOpen] = useState(false);
 
-  useEffect(() => {
-    fetch(`${API_URL}/cars`, { cache: "no-store" })
-      .then((res) => res.json())
-      .then((data) => setCars(data))
-      .catch((err) => console.error(err));
-  }, []);
+  const sortRef = useRef<HTMLDivElement | null>(null);
+
+useEffect(() => {
+  function handleClickOutside(e: MouseEvent) {
+    const target = e.target as Node;
+
+    if (sortRef.current && !sortRef.current.contains(target)) {
+      setSortOpen(false);
+    }
+  }
+
+  if (sortOpen) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [sortOpen]);
 
   return (
     <div className="w-full min-h-screen bg-gray-100 pt-32 px-6 pb-20">
@@ -23,59 +36,57 @@ export default function CarsPage() {
         {/* ستون چپ — فیلترها */}
         <div className="bg-white p-6 rounded-xl shadow-md h-fit sticky top-32">
 
-          {/* عنوان */}
           <h2 className="text-xl font-semibold mb-4">Filters</h2>
 
           {/* Sortierung */}
-<div className="mb-6">
-  <button
-    className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
-    onClick={() => setSortOpen(!sortOpen)}
-  >
-    Sortierung
-    <span>{sortOpen ? "▲" : "▼"}</span>
-  </button>
+          <div className="mb-6" ref={sortRef}>
+            <button
+              className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
+              onClick={() => setSortOpen(!sortOpen)}
+            >
+              Sortierung
+              <span>{sortOpen ? "▲" : "▼"}</span>
+            </button>
 
-  {sortOpen && (
-    <div className="mt-3 border rounded-lg p-3 bg-gray-50 
-                    max-h-60 overflow-y-auto space-y-3">
+            {sortOpen && (
+              <div className="mt-3 border rounded-lg p-3 bg-gray-50 
+                              max-h-60 overflow-y-auto space-y-3">
 
-      <button className="w-full text-left hover:text-blue-600">
-        Preis aufsteigend
-      </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Preis aufsteigend
+                </button>
 
-      <button className="w-full text-left hover:text-blue-600">
-        Preis absteigend
-      </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Preis absteigend
+                </button>
 
-      <button className="w-full text-left hover:text-blue-600">
-        Kilometer aufsteigend
-      </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Kilometer aufsteigend
+                </button>
 
-      <button className="w-full text-left hover:text-blue-600">
-        Kilometer absteigend
-      </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Kilometer absteigend
+                </button>
 
-      <button className="w-full text-left hover:text-blue-600">
-        Erstzulassung aufsteigend
-      </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Erstzulassung aufsteigend
+                </button>
 
-      <button className="w-full text-left hover:text-blue-600">
-        Erstzulassung absteigend
-      </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Erstzulassung absteigend
+                </button>
 
-      <button className="w-full text-left hover:text-blue-600">
-        Alphabetisch A–Z
-      </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Alphabetisch A–Z
+                </button>
 
-      <button className="w-full text-left hover:text-blue-600">
-        Alphabetisch Z–A
-      </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Alphabetisch Z–A
+                </button>
 
-    </div>
-  )}
-</div>
-
+              </div>
+            )}
+          </div>
 
           {/* قیمت */}
           <div className="mb-6">
