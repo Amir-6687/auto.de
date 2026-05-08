@@ -202,6 +202,10 @@ const colorRef = useRef<HTMLDivElement | null>(null);
         setGearboxOpen(false);
       }
       
+      if (colorRef.current && !colorRef.current.contains(target)) {
+        setColorOpen(false);
+      }
+      
       
     }
 
