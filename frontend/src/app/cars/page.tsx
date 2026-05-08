@@ -128,13 +128,13 @@ export default function CarsPage() {
             )}
           </div>
 
-          {/* Marken / Modelle (انتخاب برند) */}
+          {/* Marken (انتخاب برند) */}
           <div className="mb-6" ref={brandRef}>
             <button
               className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
               onClick={() => setBrandOpen(!brandOpen)}
             >
-              Marken / Modelle
+              Marken
               <span>{brandOpen ? "▲" : "▼"}</span>
             </button>
 
