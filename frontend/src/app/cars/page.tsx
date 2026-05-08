@@ -657,6 +657,35 @@ if (selectedPs && selectedPs !== "Alle") {
   )}
 </div>
 
+{/* PS */}
+<div className="mb-6" ref={psRef}>
+  <button
+    className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
+    onClick={() => setPsOpen(!psOpen)}
+  >
+    {selectedPs ? `${selectedPs} PS` : "PS"}
+    <span>{psOpen ? "▲" : "▼"}</span>
+  </button>
+
+  {psOpen && (
+    <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+      {PS_OPTIONS.map((ps) => (
+        <button
+          key={ps}
+          className={`w-full text-left hover:text-blue-600 ${
+            selectedPs === String(ps) ? "text-blue-700 font-semibold" : ""
+          }`}
+          onClick={() => {
+            setSelectedPs(String(ps));
+            setPsOpen(false); // ← بسته شدن بعد از انتخاب
+          }}
+        >
+          {ps === "Alle" ? "Alle" : `${ps} PS`}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
 
 
           {/* Preis */}
