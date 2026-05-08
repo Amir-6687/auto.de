@@ -64,6 +64,15 @@ const YEAR_OPTIONS = [
   1930,
 ];
 
+const FUEL_OPTIONS = [
+  "Alle",
+  "Benzin",
+  "Diesel",
+  "Hybrid",
+  "Elektro",
+];
+
+
 const PRICE_OPTIONS = [
   "Alle",
   ...Array.from({ length: 30 }, (_, i) => (i + 1) * 500), // 500 → 15.000
@@ -106,6 +115,12 @@ const [selectedPrice, setSelectedPrice] = useState<string | null>(null);
 
 const priceRef = useRef<HTMLDivElement | null>(null);
 
+const [fuelOpen, setFuelOpen] = useState(false);
+const [selectedFuel, setSelectedFuel] = useState<string | null>(null);
+
+const fuelRef = useRef<HTMLDivElement | null>(null);
+
+
 
   // دریافت خودروها از API
   useEffect(() => {
@@ -143,6 +158,9 @@ const priceRef = useRef<HTMLDivElement | null>(null);
         setPriceOpen(false);
       }
       
+      if (fuelRef.current && !fuelRef.current.contains(target)) {
+        setFuelOpen(false);
+      }
       
     }
 
@@ -191,6 +209,13 @@ useEffect(() => {
     const maxPrice = Number(selectedPrice);
     result = result.filter((car) => car.price <= maxPrice);
   }
+  // فیلتر سوخت
+if (selectedFuel && selectedFuel !== "Alle") {
+  result = result.filter((car) =>
+    car.fuelType?.toLowerCase() === selectedFuel.toLowerCase()
+  );
+}
+
 
   setFilteredCars(result);
 }, [selectedBrand, selectedModel, selectedKm, selectedYear, selectedPrice, cars]);
