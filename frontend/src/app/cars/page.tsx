@@ -150,6 +150,11 @@ const [selectedGearbox, setSelectedGearbox] = useState<string | null>(null);
 
 const gearboxRef = useRef<HTMLDivElement | null>(null);
 
+const [colorOpen, setColorOpen] = useState(false);
+const [selectedColor, setSelectedColor] = useState<string | null>(null);
+
+const colorRef = useRef<HTMLDivElement | null>(null);
+
 
 
 
