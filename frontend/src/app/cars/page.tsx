@@ -278,7 +278,11 @@ export default function CarsPage() {
                       className={`w-full text-left hover:text-blue-600 ${
                         selectedModel === model ? "text-blue-700 font-semibold" : ""
                       }`}
-                      onClick={() => setSelectedModel(model)}
+                      onClick={() => {
+                        setSelectedModel(model);
+                        setModelOpen(false);   // ← اضافه کن
+                      }}
+                      
                     >
                       {model}
                     </button>
