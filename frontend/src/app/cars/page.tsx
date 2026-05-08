@@ -234,6 +234,10 @@ const psRef = useRef<HTMLDivElement | null>(null);
         setDoorsOpen(false);
       }
       
+      if (psRef.current && !psRef.current.contains(target)) {
+        setPsOpen(false);
+      }
+      
       
     }
 
