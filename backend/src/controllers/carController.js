@@ -3,7 +3,7 @@ const CarListing = require("../models/CarListing");
 // GET ALL (public: only active listings)
 exports.getAllCars = async (req, res) => {
   try {
-    const cars = await CarListing.find({ status: "active" }).sort({ updatedAt: -1 });
+    const cars = await CarListing.find().sort({ updatedAt: -1 });
     res.json(cars);
   } catch (err) {
     console.error("GetAllCars Error:", err);
