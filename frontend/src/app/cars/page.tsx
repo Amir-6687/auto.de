@@ -164,6 +164,11 @@ const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
 const colorRef = useRef<HTMLDivElement | null>(null);
 
+const [doorsOpen, setDoorsOpen] = useState(false);
+const [selectedDoors, setSelectedDoors] = useState<string | null>(null);
+
+const doorsRef = useRef<HTMLDivElement | null>(null);
+
 
 
 
