@@ -288,6 +288,11 @@ if (selectedColor && selectedColor !== "Alle") {
   );
 }
 
+// فیلتر تعداد درب‌ها
+if (selectedDoors && selectedDoors !== "Alle") {
+  result = result.filter((car) => Number(car.doors) === Number(selectedDoors));
+}
+
 
   // فیلتر قیمت
   if (selectedPrice && selectedPrice !== "Alle") {
