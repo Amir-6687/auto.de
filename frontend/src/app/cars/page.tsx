@@ -263,6 +263,13 @@ if (selectedGearbox && selectedGearbox !== "Alle") {
   );
 }
 
+// فیلتر رنگ
+if (selectedColor && selectedColor !== "Alle") {
+  result = result.filter((car) =>
+    car.color?.toLowerCase() === selectedColor.toLowerCase()
+  );
+}
+
 
   // فیلتر قیمت
   if (selectedPrice && selectedPrice !== "Alle") {
