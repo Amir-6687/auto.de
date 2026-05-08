@@ -433,6 +433,36 @@ if (selectedFuel && selectedFuel !== "Alle") {
   )}
 </div>
 
+{/* Kraftstoffart */}
+<div className="mb-6" ref={fuelRef}>
+  <button
+    className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
+    onClick={() => setFuelOpen(!fuelOpen)}
+  >
+    {selectedFuel ? selectedFuel : "Kraftstoffart"}
+    <span>{fuelOpen ? "▲" : "▼"}</span>
+  </button>
+
+  {fuelOpen && (
+    <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+      {FUEL_OPTIONS.map((fuel) => (
+        <button
+          key={fuel}
+          className={`w-full text-left hover:text-blue-600 ${
+            selectedFuel === fuel ? "text-blue-700 font-semibold" : ""
+          }`}
+          onClick={() => {
+            setSelectedFuel(fuel);
+            setFuelOpen(false); // ← بسته شدن بعد از انتخاب
+          }}
+        >
+          {fuel}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
+
 
           {/* Preis */}
 <div className="mb-6" ref={priceRef}>
