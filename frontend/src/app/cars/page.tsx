@@ -103,6 +103,11 @@ const DOOR_OPTIONS = [
   "5",
 ];
 
+const PS_OPTIONS = [
+  "Alle",
+  ...Array.from({ length: 19 }, (_, i) => (i + 1) * 50), // 50 → 950
+  1000,
+];
 
 
 const PRICE_OPTIONS = [
