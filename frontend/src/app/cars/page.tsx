@@ -220,6 +220,10 @@ const doorsRef = useRef<HTMLDivElement | null>(null);
         setColorOpen(false);
       }
       
+      if (doorsRef.current && !doorsRef.current.contains(target)) {
+        setDoorsOpen(false);
+      }
+      
       
     }
 
