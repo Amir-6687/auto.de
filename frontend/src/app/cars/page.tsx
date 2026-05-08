@@ -222,18 +222,27 @@ useEffect(() => {
       return year === Number(selectedYear);
     });
   }
+  // فیلتر سوخت
+  if (selectedFuel && selectedFuel !== "Alle") {
+    result = result.filter((car) =>
+      car.fuelType?.toLowerCase() === selectedFuel.toLowerCase()
+    );
+  }
+  
+
+  // فیلتر گیربکس
+if (selectedGearbox && selectedGearbox !== "Alle") {
+  result = result.filter((car) =>
+    car.gearbox?.toLowerCase() === selectedGearbox.toLowerCase()
+  );
+}
+
 
   // فیلتر قیمت
   if (selectedPrice && selectedPrice !== "Alle") {
     const maxPrice = Number(selectedPrice);
     result = result.filter((car) => car.price <= maxPrice);
   }
-  // فیلتر سوخت
-if (selectedFuel && selectedFuel !== "Alle") {
-  result = result.filter((car) =>
-    car.fuelType?.toLowerCase() === selectedFuel.toLowerCase()
-  );
-}
 
 
   setFilteredCars(result);
