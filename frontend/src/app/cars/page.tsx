@@ -307,6 +307,12 @@ if (selectedDoors && selectedDoors !== "Alle") {
   result = result.filter((car) => Number(car.doors) === Number(selectedDoors));
 }
 
+// فیلتر PS
+if (selectedPs && selectedPs !== "Alle") {
+  const maxPs = Number(selectedPs);
+  result = result.filter((car) => Number(car.ps) <= maxPs);
+}
+
 
   // فیلتر قیمت
   if (selectedPrice && selectedPrice !== "Alle") {
