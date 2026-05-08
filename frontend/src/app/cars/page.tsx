@@ -174,6 +174,11 @@ const [selectedDoors, setSelectedDoors] = useState<string | null>(null);
 
 const doorsRef = useRef<HTMLDivElement | null>(null);
 
+const [psOpen, setPsOpen] = useState(false);
+const [selectedPs, setSelectedPs] = useState<string | null>(null);
+
+const psRef = useRef<HTMLDivElement | null>(null);
+
 
 
 
