@@ -3,14 +3,48 @@
 import { useState, useEffect, useRef } from "react";
 import { API_URL } from "@/lib/api";
 
+const MODELS_BY_BRAND: Record<string, string[]> = {
+  Audi: [
+    "A1",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A8",
+    "Q2",
+    "Q3",
+    "Q5",
+    "Q7",
+    "Q8",
+    "TT",
+    "R8",
+    "S3",
+    "S5",
+    "SQ5",
+    "RS3",
+    "RS6 Avant",
+    "RS7",
+    "Q4 e-tron",
+    "e-tron GT",
+    "Q8 e-tron",
+  ],
+  // در آینده می‌تونی برای BMW، Mercedes و ... هم اضافه کنی
+};
+
 export default function CarsPage() {
-  const [cars, setCars] = useState([]);
+  const [cars, setCars] = useState<any[]>([]);
 
   const [sortOpen, setSortOpen] = useState(false);
   const [brandOpen, setBrandOpen] = useState(false);
+  const [modelOpen, setModelOpen] = useState(false);
+
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selectedModel, setSelectedModel] = useState<string | null>(null);
 
   const sortRef = useRef<HTMLDivElement | null>(null);
   const brandRef = useRef<HTMLDivElement | null>(null);
+  const modelRef = useRef<HTMLDivElement | null>(null);
 
   // دریافت خودروها از API
   useEffect(() => {
@@ -20,7 +54,7 @@ export default function CarsPage() {
       .catch((err) => console.error(err));
   }, []);
 
-  // بستن هر دو Accordion با کلیک بیرون
+  // بستن همه Accordion ها با کلیک بیرون
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       const target = e.target as Node;
@@ -32,21 +66,26 @@ export default function CarsPage() {
       if (brandRef.current && !brandRef.current.contains(target)) {
         setBrandOpen(false);
       }
+
+      if (modelRef.current && !modelRef.current.contains(target)) {
+        setModelOpen(false);
+      }
     }
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const currentModels =
+    selectedBrand && MODELS_BY_BRAND[selectedBrand]
+      ? MODELS_BY_BRAND[selectedBrand]
+      : [];
+
   return (
     <div className="w-full min-h-screen bg-gray-100 pt-32 px-6 pb-20">
-
-      {/* Container اصلی */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-10">
-
         {/* ستون چپ — فیلترها */}
         <div className="bg-white p-6 rounded-xl shadow-md h-fit sticky top-32">
-
           <h2 className="text-xl font-semibold mb-4">Filters</h2>
 
           {/* Sortierung */}
@@ -60,49 +99,126 @@ export default function CarsPage() {
             </button>
 
             {sortOpen && (
-              <div className="mt-3 border rounded-lg p-3 bg-gray-50 
-                              max-h-60 overflow-y-auto space-y-3">
-
-                <button className="w-full text-left hover:text-blue-600">Preis aufsteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Preis absteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Kilometer aufsteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Kilometer absteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Erstzulassung aufsteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Erstzulassung absteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Alphabetisch A–Z</button>
-                <button className="w-full text-left hover:text-blue-600">Alphabetisch Z–A</button>
-
+              <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+                <button className="w-full text-left hover:text-blue-600">
+                  Preis aufsteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Preis absteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Kilometer aufsteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Kilometer absteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Erstzulassung aufsteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Erstzulassung absteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Alphabetisch A–Z
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Alphabetisch Z–A
+                </button>
               </div>
             )}
           </div>
 
-          {/* Marken / Modelle */}
+          {/* Marken / Modelle (انتخاب برند) */}
           <div className="mb-6" ref={brandRef}>
             <button
               className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
               onClick={() => setBrandOpen(!brandOpen)}
             >
-              Marken
+              Marken / Modelle
               <span>{brandOpen ? "▲" : "▼"}</span>
             </button>
 
             {brandOpen && (
-              <div className="mt-3 border rounded-lg p-3 bg-gray-50 
-                              max-h-60 overflow-y-auto space-y-3">
+              <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+                <button
+                  className="w-full text-left hover:text-blue-600"
+                  onClick={() => {
+                    setSelectedBrand("Audi");
+                    setSelectedModel(null);
+                    setModelOpen(true);
+                  }}
+                >
+                  Audi
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  BMW
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Mercedes-Benz
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Volkswagen
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Porsche
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Toyota
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Honda
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Hyundai
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Kia
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Ford
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Opel
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Renault
+                </button>
+              </div>
+            )}
+          </div>
 
-                <button className="w-full text-left hover:text-blue-600">Audi</button>
-                <button className="w-full text-left hover:text-blue-600">BMW</button>
-                <button className="w-full text-left hover:text-blue-600">Mercedes-Benz</button>
-                <button className="w-full text-left hover:text-blue-600">Volkswagen</button>
-                <button className="w-full text-left hover:text-blue-600">Porsche</button>
-                <button className="w-full text-left hover:text-blue-600">Toyota</button>
-                <button className="w-full text-left hover:text-blue-600">Honda</button>
-                <button className="w-full text-left hover:text-blue-600">Hyundai</button>
-                <button className="w-full text-left hover:text-blue-600">Kia</button>
-                <button className="w-full text-left hover:text-blue-600">Ford</button>
-                <button className="w-full text-left hover:text-blue-600">Opel</button>
-                <button className="w-full text-left hover:text-blue-600">Renault</button>
+          {/* Modelle — وابسته به برند انتخاب‌شده */}
+          <div className="mb-6" ref={modelRef}>
+            <button
+              className="w-full flex justify-between items-center p-3 border rounded-lg font-medium disabled:opacity-50"
+              onClick={() => {
+                if (selectedBrand) setModelOpen(!modelOpen);
+              }}
+              disabled={!selectedBrand}
+            >
+              Modelle
+              <span>{modelOpen ? "▲" : "▼"}</span>
+            </button>
 
+            {modelOpen && (
+              <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+                {selectedBrand && currentModels.length > 0 ? (
+                  currentModels.map((model) => (
+                    <button
+                      key={model}
+                      className={`w-full text-left hover:text-blue-600 ${
+                        selectedModel === model ? "text-blue-700 font-semibold" : ""
+                      }`}
+                      onClick={() => setSelectedModel(model)}
+                    >
+                      {model}
+                    </button>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">
+                    Bitte zuerst eine Marke auswählen.
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -124,17 +240,15 @@ export default function CarsPage() {
 
         {/* ستون راست — لیست خودروها */}
         <div className="lg:col-span-3 space-y-8">
-
           {cars.length === 0 && (
             <p className="text-gray-600 text-lg">No cars found!</p>
           )}
 
-          {cars.map((car: any) => (
+          {cars.map((car) => (
             <div
               key={car._id}
               className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row"
             >
-              {/* عکس اول گالری */}
               {car.images?.length > 0 && (
                 <img
                   src={car.images[0]}
@@ -143,7 +257,6 @@ export default function CarsPage() {
                 />
               )}
 
-              {/* اطلاعات */}
               <div className="p-6 flex-1">
                 <h3 className="text-2xl font-semibold">{car.title}</h3>
 
@@ -154,10 +267,18 @@ export default function CarsPage() {
                 <p className="text-gray-600 mt-3">{car.description}</p>
 
                 <div className="grid grid-cols-2 gap-4 mt-4 text-sm text-gray-700">
-                  <p><strong>Mileage:</strong> {car.mileage} km</p>
-                  <p><strong>Fuel:</strong> {car.fuelType}</p>
-                  <p><strong>Gearbox:</strong> {car.gearbox}</p>
-                  <p><strong>Year:</strong> {car.firstRegistration}</p>
+                  <p>
+                    <strong>Mileage:</strong> {car.mileage} km
+                  </p>
+                  <p>
+                    <strong>Fuel:</strong> {car.fuelType}
+                  </p>
+                  <p>
+                    <strong>Gearbox:</strong> {car.gearbox}
+                  </p>
+                  <p>
+                    <strong>Year:</strong> {car.firstRegistration}
+                  </p>
                 </div>
 
                 <a
@@ -169,7 +290,6 @@ export default function CarsPage() {
               </div>
             </div>
           ))}
-
         </div>
       </div>
     </div>
