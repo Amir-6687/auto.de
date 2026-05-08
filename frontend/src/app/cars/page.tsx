@@ -3,6 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import { API_URL } from "@/lib/api";
 
+
+
+
 const MODELS_BY_BRAND: Record<string, string[]> = {
   Audi: [
     "A1",
@@ -127,6 +130,8 @@ function parseKm(value: string | null): number | null {
 }
 
 export default function CarsPage() {
+  const [currentPage, setCurrentPage] = useState(1);
+const carsPerPage = 10;
   const [cars, setCars] = useState<any[]>([]);
   const [filteredCars, setFilteredCars] = useState<any[]>([]);
 
@@ -187,6 +192,7 @@ const psRef = useRef<HTMLDivElement | null>(null);
     fetch(`${API_URL}/cars`, { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
+        console.log("🚗 Cars from API:", data);
         setCars(data);
         setFilteredCars(data);
       })
@@ -320,9 +326,16 @@ if (selectedPs && selectedPs !== "Alle") {
     result = result.filter((car) => car.price <= maxPrice);
   }
 
+  
+
 
   setFilteredCars(result);
-}, [selectedBrand, selectedModel, selectedKm, selectedYear, selectedPrice, cars]);
+  setCurrentPage(1); // ← مهم
+}, [selectedBrand, selectedModel, selectedKm, selectedYear, selectedPrice, selectedFuel, selectedGearbox, selectedColor, selectedDoors, selectedPs, cars]);
+
+const indexOfLastCar = currentPage * carsPerPage;
+const indexOfFirstCar = indexOfLastCar - carsPerPage;
+const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
 
 
   const currentModels =
@@ -436,6 +449,7 @@ if (selectedPs && selectedPs !== "Alle") {
               </div>
             )}
           </div>
+
 
           {/* Modelle */}
           <div className="mb-6" ref={modelRef}>
@@ -734,51 +748,76 @@ if (selectedPs && selectedPs !== "Alle") {
             <p className="text-gray-600 text-lg">No cars found!</p>
           )}
 
-          {filteredCars.map((car) => (
-            <div
-              key={car._id}
-              className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row"
-            >
-              {car.images?.length > 0 && (
-                <img
-                  src={car.images[0]}
-                  alt={car.title}
-                  className="w-full md:w-64 h-48 object-cover"
-                />
-              )}
+{currentCars.map((car) => (
+  <div key={car._id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row">
+    {car.images?.length > 0 && (
+      <img
+        src={car.images[0]}
+        alt={car.title}
+        className="w-full md:w-64 h-48 object-cover"
+      />
+    )}
 
-              <div className="p-6 flex-1">
-                <h3 className="text-2xl font-semibold">{car.title}</h3>
+    <div className="p-6 flex-1">
+      <h3 className="text-2xl font-semibold">{car.title}</h3>
 
-                <p className="text-lg text-blue-600 font-bold mt-2">
-                  €{car.price}
-                </p>
+      <p className="text-lg text-blue-600 font-bold mt-2">
+        €{car.price}
+      </p>
 
-                <p className="text-gray-600 mt-3">{car.description}</p>
+      <p className="text-gray-600 mt-3">{car.description}</p>
 
-                <div className="grid grid-cols-2 gap-4 mt-4 text-sm text-gray-700">
-                  <p>
-                    <strong>Mileage:</strong> {car.mileage} km
-                  </p>
-                  <p>
-                    <strong>Fuel:</strong> {car.fuelType}
-                  </p>
-                  <p>
-                    <strong>Gearbox:</strong> {car.gearbox}</p>
-                  <p>
-                    <strong>Year:</strong> {car.firstRegistration}
-                  </p>
-                </div>
+      <div className="grid grid-cols-2 gap-4 mt-4 text-sm text-gray-700">
+        <p><strong>Mileage:</strong> {car.mileage} km</p>
+        <p><strong>Fuel:</strong> {car.fuelType}</p>
+        <p><strong>Gearbox:</strong> {car.gearbox}</p>
+        <p><strong>Year:</strong> {car.firstRegistration}</p>
+      </div>
 
-                <a
-                  href={`/cars/${car._id}`}
-                  className="inline-block mt-5 bg-black text-white px-4 py-2 rounded-lg"
-                >
-                  View Details
-                </a>
-              </div>
-            </div>
-          ))}
+      <a
+        href={`/cars/${car._id}`}
+        className="inline-block mt-5 bg-black text-white px-4 py-2 rounded-lg"
+      >
+        View Details
+      </a>
+    </div>
+  </div>
+))}
+{/* Pagination */}
+<div className="flex justify-center items-center gap-3 mt-10">
+
+  {/* Previous */}
+  <button
+    className="px-4 py-2 border rounded-lg disabled:opacity-40"
+    disabled={currentPage === 1}
+    onClick={() => setCurrentPage((prev) => prev - 1)}
+  >
+    Previous
+  </button>
+
+  {/* Page Numbers */}
+  {Array.from({ length: Math.ceil(filteredCars.length / carsPerPage) }, (_, i) => i + 1).map((page) => (
+    <button
+      key={page}
+      className={`px-4 py-2 border rounded-lg ${
+        currentPage === page ? "bg-black text-white" : "bg-white"
+      }`}
+      onClick={() => setCurrentPage(page)}
+    >
+      {page}
+    </button>
+  ))}
+
+  {/* Next */}
+  <button
+    className="px-4 py-2 border rounded-lg disabled:opacity-40"
+    disabled={currentPage === Math.ceil(filteredCars.length / carsPerPage)}
+    onClick={() => setCurrentPage((prev) => prev + 1)}
+  >
+    Next
+  </button>
+
+</div>
         </div>
 
       </div>
