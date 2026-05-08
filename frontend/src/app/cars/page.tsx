@@ -607,6 +607,37 @@ if (selectedDoors && selectedDoors !== "Alle") {
   )}
 </div>
 
+{/* Türen */}
+<div className="mb-6" ref={doorsRef}>
+  <button
+    className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
+    onClick={() => setDoorsOpen(!doorsOpen)}
+  >
+    {selectedDoors ? `${selectedDoors} Türen` : "Türen"}
+    <span>{doorsOpen ? "▲" : "▼"}</span>
+  </button>
+
+  {doorsOpen && (
+    <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+      {DOOR_OPTIONS.map((door) => (
+        <button
+          key={door}
+          className={`w-full text-left hover:text-blue-600 ${
+            selectedDoors === door ? "text-blue-700 font-semibold" : ""
+          }`}
+          onClick={() => {
+            setSelectedDoors(door);
+            setDoorsOpen(false); // ← بسته شدن بعد از انتخاب
+          }}
+        >
+          {door === "Alle" ? "Alle" : `${door} Türen`}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
+
+
 
           {/* Preis */}
 <div className="mb-6" ref={priceRef}>
