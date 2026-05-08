@@ -175,6 +175,11 @@ const gearboxRef = useRef<HTMLDivElement | null>(null);
       if (fuelRef.current && !fuelRef.current.contains(target)) {
         setFuelOpen(false);
       }
+
+      if (gearboxRef.current && !gearboxRef.current.contains(target)) {
+        setGearboxOpen(false);
+      }
+      
       
     }
 
