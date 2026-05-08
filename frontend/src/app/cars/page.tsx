@@ -82,7 +82,7 @@ export default function CarsPage() {
               className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
               onClick={() => setBrandOpen(!brandOpen)}
             >
-              Marken / Modelle
+              Marken
               <span>{brandOpen ? "▲" : "▼"}</span>
             </button>
 
