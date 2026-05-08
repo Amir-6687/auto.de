@@ -52,6 +52,19 @@ const KM_OPTIONS = [
   "Mehr als 250.000",
 ];
 
+const YEAR_OPTIONS = [
+  "Alle",
+  ...Array.from({ length: 27 }, (_, i) => 2026 - i), // 2026 → 2000
+  1990,
+  1980,
+  1970,
+  1960,
+  1950,
+  1940,
+  1930,
+];
+
+
 function parseKm(value: string | null): number | null {
   if (!value || value === "Alle") return null;
   if (value === "Mehr als 250.000") return 250000;
@@ -75,6 +88,12 @@ export default function CarsPage() {
   const brandRef = useRef<HTMLDivElement | null>(null);
   const modelRef = useRef<HTMLDivElement | null>(null);
   const kmRef = useRef<HTMLDivElement | null>(null);
+
+  const [yearOpen, setYearOpen] = useState(false);
+const [selectedYear, setSelectedYear] = useState<string | null>(null);
+
+const yearRef = useRef<HTMLDivElement | null>(null);
+
 
   // دریافت خودروها از API
   useEffect(() => {
@@ -140,6 +159,14 @@ export default function CarsPage() {
         result = result.filter((car) => car.mileage <= kmValue);
       }
     }
+    // فیلتر سال
+if (selectedYear) {
+  result = result.filter((car) => {
+    const year = Number(car.firstRegistration);
+    return year === Number(selectedYear);
+  });
+}
+
 
     setFilteredCars(result);
   }, [selectedBrand, selectedModel, selectedKm, cars]);
@@ -325,6 +352,37 @@ export default function CarsPage() {
               </div>
             )}
           </div>
+
+{/* Erstzulassung */}
+<div className="mb-6" ref={yearRef}>
+  <button
+    className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
+    onClick={() => setYearOpen(!yearOpen)}
+  >
+    {selectedYear ? selectedYear : "Erstzulassung"}
+    <span>{yearOpen ? "▲" : "▼"}</span>
+  </button>
+
+  {yearOpen && (
+    <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+      {YEAR_OPTIONS.map((year) => (
+        <button
+          key={year}
+          className={`w-full text-left hover:text-blue-600 ${
+            selectedYear === String(year) ? "text-blue-700 font-semibold" : ""
+          }`}
+          onClick={() => {
+            setSelectedYear(String(year));
+            setYearOpen(false); // ← بسته شدن بعد از انتخاب
+          }}
+        >
+          {year}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
+
 
           {/* قیمت (فعلاً فقط UI) */}
           <div className="mb-6">
