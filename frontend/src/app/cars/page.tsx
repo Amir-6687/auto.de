@@ -491,6 +491,37 @@ if (selectedGearbox && selectedGearbox !== "Alle") {
   )}
 </div>
 
+{/* Getriebe */}
+<div className="mb-6" ref={gearboxRef}>
+  <button
+    className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
+    onClick={() => setGearboxOpen(!gearboxOpen)}
+  >
+    {selectedGearbox ? selectedGearbox : "Getriebe"}
+    <span>{gearboxOpen ? "▲" : "▼"}</span>
+  </button>
+
+  {gearboxOpen && (
+    <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+      {GEARBOX_OPTIONS.map((gear) => (
+        <button
+          key={gear}
+          className={`w-full text-left hover:text-blue-600 ${
+            selectedGearbox === gear ? "text-blue-700 font-semibold" : ""
+          }`}
+          onClick={() => {
+            setSelectedGearbox(gear);
+            setGearboxOpen(false); // ← بسته شدن بعد از انتخاب
+          }}
+        >
+          {gear}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
+
+
 
           {/* Preis */}
 <div className="mb-6" ref={priceRef}>
