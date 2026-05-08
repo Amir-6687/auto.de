@@ -78,6 +78,23 @@ const GEARBOX_OPTIONS = [
   "Manuell",
 ];
 
+const COLOR_OPTIONS = [
+  "Alle",
+  "Schwarz",
+  "Weiß",
+  "Grau",
+  "Silber",
+  "Blau",
+  "Rot",
+  "Grün",
+  "Gelb",
+  "Orange",
+  "Braun",
+  "Beige",
+  "Violett",
+  "Gold",
+];
+
 
 const PRICE_OPTIONS = [
   "Alle",
