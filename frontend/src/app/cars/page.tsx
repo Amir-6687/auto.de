@@ -201,7 +201,7 @@ const colorRef = useRef<HTMLDivElement | null>(null);
       if (gearboxRef.current && !gearboxRef.current.contains(target)) {
         setGearboxOpen(false);
       }
-      
+
       if (colorRef.current && !colorRef.current.contains(target)) {
         setColorOpen(false);
       }
@@ -547,6 +547,35 @@ if (selectedGearbox && selectedGearbox !== "Alle") {
   )}
 </div>
 
+{/* Farbe */}
+<div className="mb-6" ref={colorRef}>
+  <button
+    className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
+    onClick={() => setColorOpen(!colorOpen)}
+  >
+    {selectedColor ? selectedColor : "Farbe"}
+    <span>{colorOpen ? "▲" : "▼"}</span>
+  </button>
+
+  {colorOpen && (
+    <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+      {COLOR_OPTIONS.map((color) => (
+        <button
+          key={color}
+          className={`w-full text-left hover:text-blue-600 ${
+            selectedColor === color ? "text-blue-700 font-semibold" : ""
+          }`}
+          onClick={() => {
+            setSelectedColor(color);
+            setColorOpen(false); // ← بسته شدن بعد از انتخاب
+          }}
+        >
+          {color}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
 
 
           {/* Preis */}
