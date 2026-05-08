@@ -128,6 +128,12 @@ const [selectedFuel, setSelectedFuel] = useState<string | null>(null);
 
 const fuelRef = useRef<HTMLDivElement | null>(null);
 
+const [gearboxOpen, setGearboxOpen] = useState(false);
+const [selectedGearbox, setSelectedGearbox] = useState<string | null>(null);
+
+const gearboxRef = useRef<HTMLDivElement | null>(null);
+
+
 
 
   // دریافت خودروها از API
