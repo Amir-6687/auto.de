@@ -31,6 +31,28 @@ const MODELS_BY_BRAND: Record<string, string[]> = {
   ],
 };
 
+const KM_OPTIONS = [
+  "Alle",
+  "5.000",
+  "10.000",
+  "20.000",
+  "30.000",
+  "40.000",
+  "50.000",
+  "60.000",
+  "70.000",
+  "80.000",
+  "90.000",
+  "100.000",
+  "125.000",
+  "150.000",
+  "175.000",
+  "200.000",
+  "250.000",
+  "Mehr als 250.000",
+];
+
+
 export default function CarsPage() {
   const [cars, setCars] = useState<any[]>([]);
 
@@ -44,6 +66,13 @@ export default function CarsPage() {
   const sortRef = useRef<HTMLDivElement | null>(null);
   const brandRef = useRef<HTMLDivElement | null>(null);
   const modelRef = useRef<HTMLDivElement | null>(null);
+
+  const [kmOpen, setKmOpen] = useState(false);
+const [selectedKm, setSelectedKm] = useState<string | null>(null);
+
+const kmRef = useRef<HTMLDivElement | null>(null);
+
+
 
   // دریافت خودروها از API
   useEffect(() => {
@@ -69,6 +98,11 @@ export default function CarsPage() {
       if (modelRef.current && !modelRef.current.contains(target)) {
         setModelOpen(false);
       }
+
+      if (kmRef.current && !kmRef.current.contains(target)) {
+        setKmOpen(false);
+      }
+      
     }
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -185,6 +219,36 @@ export default function CarsPage() {
               </div>
             )}
           </div>
+
+          {/* Kilometerstand */}
+<div className="mb-6" ref={kmRef}>
+  <button
+    className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
+    onClick={() => setKmOpen(!kmOpen)}
+  >
+    {selectedKm ? selectedKm : "Kilometerstand"}
+    <span>{kmOpen ? "▲" : "▼"}</span>
+  </button>
+
+  {kmOpen && (
+    <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+
+      {KM_OPTIONS.map((km) => (
+        <button
+          key={km}
+          className={`w-full text-left hover:text-blue-600 ${
+            selectedKm === km ? "text-blue-700 font-semibold" : ""
+          }`}
+          onClick={() => setSelectedKm(km)}
+        >
+          {km}
+        </button>
+      ))}
+
+    </div>
+  )}
+</div>
+
 
           {/* قیمت */}
           <div className="mb-6">
