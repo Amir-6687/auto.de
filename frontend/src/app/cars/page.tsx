@@ -52,33 +52,38 @@ const KM_OPTIONS = [
   "Mehr als 250.000",
 ];
 
+function parseKm(value: string | null): number | null {
+  if (!value || value === "Alle") return null;
+  if (value === "Mehr als 250.000") return 250000;
+  return parseInt(value.replace(".", ""));
+}
 
 export default function CarsPage() {
   const [cars, setCars] = useState<any[]>([]);
+  const [filteredCars, setFilteredCars] = useState<any[]>([]);
 
   const [sortOpen, setSortOpen] = useState(false);
   const [brandOpen, setBrandOpen] = useState(false);
   const [modelOpen, setModelOpen] = useState(false);
+  const [kmOpen, setKmOpen] = useState(false);
 
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
+  const [selectedKm, setSelectedKm] = useState<string | null>(null);
 
   const sortRef = useRef<HTMLDivElement | null>(null);
   const brandRef = useRef<HTMLDivElement | null>(null);
   const modelRef = useRef<HTMLDivElement | null>(null);
-
-  const [kmOpen, setKmOpen] = useState(false);
-const [selectedKm, setSelectedKm] = useState<string | null>(null);
-
-const kmRef = useRef<HTMLDivElement | null>(null);
-
-
+  const kmRef = useRef<HTMLDivElement | null>(null);
 
   // دریافت خودروها از API
   useEffect(() => {
     fetch(`${API_URL}/cars`, { cache: "no-store" })
       .then((res) => res.json())
-      .then((data) => setCars(data))
+      .then((data) => {
+        setCars(data);
+        setFilteredCars(data);
+      })
       .catch((err) => console.error(err));
   }, []);
 
@@ -102,12 +107,42 @@ const kmRef = useRef<HTMLDivElement | null>(null);
       if (kmRef.current && !kmRef.current.contains(target)) {
         setKmOpen(false);
       }
-      
     }
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // اعمال فیلترها
+  useEffect(() => {
+    let result = [...cars];
+
+    // فیلتر برند
+    if (selectedBrand) {
+      result = result.filter((car) =>
+        car.title?.toLowerCase().includes(selectedBrand.toLowerCase())
+      );
+    }
+
+    // فیلتر مدل
+    if (selectedModel) {
+      result = result.filter((car) =>
+        car.title?.toLowerCase().includes(selectedModel.toLowerCase())
+      );
+    }
+
+    // فیلتر کیلومتر
+    const kmValue = parseKm(selectedKm);
+    if (kmValue !== null) {
+      if (selectedKm === "Mehr als 250.000") {
+        result = result.filter((car) => car.mileage > 250000);
+      } else {
+        result = result.filter((car) => car.mileage <= kmValue);
+      }
+    }
+
+    setFilteredCars(result);
+  }, [selectedBrand, selectedModel, selectedKm, cars]);
 
   const currentModels =
     selectedBrand && MODELS_BY_BRAND[selectedBrand]
@@ -117,7 +152,6 @@ const kmRef = useRef<HTMLDivElement | null>(null);
   return (
     <div className="w-full min-h-screen bg-gray-100 pt-32 px-6 pb-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-10">
-        
         {/* ستون چپ — فیلترها */}
         <div className="bg-white p-6 rounded-xl shadow-md h-fit sticky top-32">
           <h2 className="text-xl font-semibold mb-4">Filters</h2>
@@ -134,14 +168,30 @@ const kmRef = useRef<HTMLDivElement | null>(null);
 
             {sortOpen && (
               <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
-                <button className="w-full text-left hover:text-blue-600">Preis aufsteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Preis absteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Kilometer aufsteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Kilometer absteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Erstzulassung aufsteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Erstzulassung absteigend</button>
-                <button className="w-full text-left hover:text-blue-600">Alphabetisch A–Z</button>
-                <button className="w-full text-left hover:text-blue-600">Alphabetisch Z–A</button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Preis aufsteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Preis absteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Kilometer aufsteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Kilometer absteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Erstzulassung aufsteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Erstzulassung absteigend
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Alphabetisch A–Z
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Alphabetisch Z–A
+                </button>
               </div>
             )}
           </div>
@@ -158,30 +208,50 @@ const kmRef = useRef<HTMLDivElement | null>(null);
 
             {brandOpen && (
               <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
-
                 <button
                   className="w-full text-left hover:text-blue-600"
                   onClick={() => {
                     setSelectedBrand("Audi");
                     setSelectedModel(null);
                     setModelOpen(true);
+                    setBrandOpen(false); 
                   }}
                 >
                   Audi
                 </button>
-
-                <button className="w-full text-left hover:text-blue-600">BMW</button>
-                <button className="w-full text-left hover:text-blue-600">Mercedes-Benz</button>
-                <button className="w-full text-left hover:text-blue-600">Volkswagen</button>
-                <button className="w-full text-left hover:text-blue-600">Porsche</button>
-                <button className="w-full text-left hover:text-blue-600">Toyota</button>
-                <button className="w-full text-left hover:text-blue-600">Honda</button>
-                <button className="w-full text-left hover:text-blue-600">Hyundai</button>
-                <button className="w-full text-left hover:text-blue-600">Kia</button>
-                <button className="w-full text-left hover:text-blue-600">Ford</button>
-                <button className="w-full text-left hover:text-blue-600">Opel</button>
-                <button className="w-full text-left hover:text-blue-600">Renault</button>
-
+                <button className="w-full text-left hover:text-blue-600">
+                  BMW
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Mercedes-Benz
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Volkswagen
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Porsche
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Toyota
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Honda
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Hyundai
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Kia
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Ford
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Opel
+                </button>
+                <button className="w-full text-left hover:text-blue-600">
+                  Renault
+                </button>
               </div>
             )}
           </div>
@@ -214,43 +284,45 @@ const kmRef = useRef<HTMLDivElement | null>(null);
                     </button>
                   ))
                 ) : (
-                  <p className="text-sm text-gray-500">Bitte zuerst eine Marke auswählen.</p>
+                  <p className="text-sm text-gray-500">
+                    Bitte zuerst eine Marke auswählen.
+                  </p>
                 )}
               </div>
             )}
           </div>
 
           {/* Kilometerstand */}
-<div className="mb-6" ref={kmRef}>
-  <button
-    className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
-    onClick={() => setKmOpen(!kmOpen)}
-  >
-    {selectedKm ? selectedKm : "Kilometerstand"}
-    <span>{kmOpen ? "▲" : "▼"}</span>
-  </button>
+          <div className="mb-6" ref={kmRef}>
+            <button
+              className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
+              onClick={() => setKmOpen(!kmOpen)}
+            >
+              {selectedKm ? selectedKm : "Kilometerstand"}
+              <span>{kmOpen ? "▲" : "▼"}</span>
+            </button>
 
-  {kmOpen && (
-    <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+            {kmOpen && (
+              <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+                {KM_OPTIONS.map((km) => (
+                  <button
+                    key={km}
+                    className={`w-full text-left hover:text-blue-600 ${
+                      selectedKm === km ? "text-blue-700 font-semibold" : ""
+                    }`}
+                    onClick={() => {
+                      setSelectedKm(km);
+                      setKmOpen(false);   // ← این خط مهم است
+                    }}
+                  >
+                    {km}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
-      {KM_OPTIONS.map((km) => (
-        <button
-          key={km}
-          className={`w-full text-left hover:text-blue-600 ${
-            selectedKm === km ? "text-blue-700 font-semibold" : ""
-          }`}
-          onClick={() => setSelectedKm(km)}
-        >
-          {km}
-        </button>
-      ))}
-
-    </div>
-  )}
-</div>
-
-
-          {/* قیمت */}
+          {/* قیمت (فعلاً فقط UI) */}
           <div className="mb-6">
             <label className="font-medium">Max Price (€)</label>
             <input
@@ -267,11 +339,11 @@ const kmRef = useRef<HTMLDivElement | null>(null);
 
         {/* ستون راست — لیست خودروها */}
         <div className="lg:col-span-3 space-y-8">
-          {cars.length === 0 && (
+          {filteredCars.length === 0 && (
             <p className="text-gray-600 text-lg">No cars found!</p>
           )}
 
-          {cars.map((car) => (
+          {filteredCars.map((car) => (
             <div
               key={car._id}
               className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row"
@@ -287,15 +359,24 @@ const kmRef = useRef<HTMLDivElement | null>(null);
               <div className="p-6 flex-1">
                 <h3 className="text-2xl font-semibold">{car.title}</h3>
 
-                <p className="text-lg text-blue-600 font-bold mt-2">€{car.price}</p>
+                <p className="text-lg text-blue-600 font-bold mt-2">
+                  €{car.price}
+                </p>
 
                 <p className="text-gray-600 mt-3">{car.description}</p>
 
                 <div className="grid grid-cols-2 gap-4 mt-4 text-sm text-gray-700">
-                  <p><strong>Mileage:</strong> {car.mileage} km</p>
-                  <p><strong>Fuel:</strong> {car.fuelType}</p>
-                  <p><strong>Gearbox:</strong> {car.gearbox}</p>
-                  <p><strong>Year:</strong> {car.firstRegistration}</p>
+                  <p>
+                    <strong>Mileage:</strong> {car.mileage} km
+                  </p>
+                  <p>
+                    <strong>Fuel:</strong> {car.fuelType}
+                  </p>
+                  <p>
+                    <strong>Gearbox:</strong> {car.gearbox}</p>
+                  <p>
+                    <strong>Year:</strong> {car.firstRegistration}
+                  </p>
                 </div>
 
                 <a
