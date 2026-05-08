@@ -64,6 +64,13 @@ const YEAR_OPTIONS = [
   1930,
 ];
 
+const PRICE_OPTIONS = [
+  "Alle",
+  ...Array.from({ length: 30 }, (_, i) => (i + 1) * 500), // 500 → 15.000
+  ...Array.from({ length: 6 }, (_, i) => 15000 + (i + 1) * 2500), // 17.500 → 30.000
+  ...Array.from({ length: 14 }, (_, i) => 30000 + (i + 1) * 5000), // 35.000 → 100.000
+];
+
 
 function parseKm(value: string | null): number | null {
   if (!value || value === "Alle") return null;
@@ -93,6 +100,11 @@ export default function CarsPage() {
 const [selectedYear, setSelectedYear] = useState<string | null>(null);
 
 const yearRef = useRef<HTMLDivElement | null>(null);
+
+const [priceOpen, setPriceOpen] = useState(false);
+const [selectedPrice, setSelectedPrice] = useState<string | null>(null);
+
+const priceRef = useRef<HTMLDivElement | null>(null);
 
 
   // دریافت خودروها از API
@@ -126,6 +138,12 @@ const yearRef = useRef<HTMLDivElement | null>(null);
       if (kmRef.current && !kmRef.current.contains(target)) {
         setKmOpen(false);
       }
+
+      if (priceRef.current && !priceRef.current.contains(target)) {
+        setPriceOpen(false);
+      }
+      
+      
     }
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -133,43 +151,50 @@ const yearRef = useRef<HTMLDivElement | null>(null);
   }, []);
 
   // اعمال فیلترها
-  useEffect(() => {
-    let result = [...cars];
+useEffect(() => {
+  let result = [...cars];
 
-    // فیلتر برند
-    if (selectedBrand) {
-      result = result.filter((car) =>
-        car.title?.toLowerCase().includes(selectedBrand.toLowerCase())
-      );
+  // فیلتر برند
+  if (selectedBrand) {
+    result = result.filter((car) =>
+      car.title?.toLowerCase().includes(selectedBrand.toLowerCase())
+    );
+  }
+
+  // فیلتر مدل
+  if (selectedModel) {
+    result = result.filter((car) =>
+      car.title?.toLowerCase().includes(selectedModel.toLowerCase())
+    );
+  }
+
+  // فیلتر کیلومتر
+  const kmValue = parseKm(selectedKm);
+  if (kmValue !== null) {
+    if (selectedKm === "Mehr als 250.000") {
+      result = result.filter((car) => car.mileage > 250000);
+    } else {
+      result = result.filter((car) => car.mileage <= kmValue);
     }
+  }
 
-    // فیلتر مدل
-    if (selectedModel) {
-      result = result.filter((car) =>
-        car.title?.toLowerCase().includes(selectedModel.toLowerCase())
-      );
-    }
+  // فیلتر سال
+  if (selectedYear && selectedYear !== "Alle") {
+    result = result.filter((car) => {
+      const year = Number(car.firstRegistration);
+      return year === Number(selectedYear);
+    });
+  }
 
-    // فیلتر کیلومتر
-    const kmValue = parseKm(selectedKm);
-    if (kmValue !== null) {
-      if (selectedKm === "Mehr als 250.000") {
-        result = result.filter((car) => car.mileage > 250000);
-      } else {
-        result = result.filter((car) => car.mileage <= kmValue);
-      }
-    }
-    // فیلتر سال
-if (selectedYear) {
-  result = result.filter((car) => {
-    const year = Number(car.firstRegistration);
-    return year === Number(selectedYear);
-  });
-}
+  // فیلتر قیمت
+  if (selectedPrice && selectedPrice !== "Alle") {
+    const maxPrice = Number(selectedPrice);
+    result = result.filter((car) => car.price <= maxPrice);
+  }
 
+  setFilteredCars(result);
+}, [selectedBrand, selectedModel, selectedKm, selectedYear, selectedPrice, cars]);
 
-    setFilteredCars(result);
-  }, [selectedBrand, selectedModel, selectedKm, cars]);
 
   const currentModels =
     selectedBrand && MODELS_BY_BRAND[selectedBrand]
@@ -384,15 +409,40 @@ if (selectedYear) {
 </div>
 
 
-          {/* قیمت (فعلاً فقط UI) */}
-          <div className="mb-6">
-            <label className="font-medium">Max Price (€)</label>
-            <input
-              type="number"
-              className="w-full mt-2 p-2 border rounded-lg"
-              placeholder="e.g. 20000"
-            />
-          </div>
+          {/* Preis */}
+<div className="mb-6" ref={priceRef}>
+  <button
+    className="w-full flex justify-between items-center p-3 border rounded-lg font-medium"
+    onClick={() => setPriceOpen(!priceOpen)}
+  >
+    {selectedPrice ? selectedPrice : "Preis"}
+    <span>{priceOpen ? "▲" : "▼"}</span>
+  </button>
+
+  {priceOpen && (
+    <div className="mt-3 border rounded-lg p-3 bg-gray-50 max-h-60 overflow-y-auto space-y-3">
+
+      {PRICE_OPTIONS.map((price) => (
+        <button
+          key={price}
+          className={`w-full text-left hover:text-blue-600 ${
+            selectedPrice === String(price) ? "text-blue-700 font-semibold" : ""
+          }`}
+          onClick={() => {
+            setSelectedPrice(String(price));
+            setPriceOpen(false); // ← بسته شدن بعد از انتخاب
+          }}
+        >
+          {price === "Alle"
+            ? "Alle"
+            : price.toLocaleString("de-DE") + " €"}
+        </button>
+      ))}
+
+    </div>
+  )}
+</div>
+
 
           <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
             Apply Filters
