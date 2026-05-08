@@ -95,6 +95,15 @@ const COLOR_OPTIONS = [
   "Gold",
 ];
 
+const DOOR_OPTIONS = [
+  "Alle",
+  "2",
+  "3",
+  "4",
+  "5",
+];
+
+
 
 const PRICE_OPTIONS = [
   "Alle",
