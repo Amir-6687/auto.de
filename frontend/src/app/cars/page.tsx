@@ -72,6 +72,12 @@ const FUEL_OPTIONS = [
   "Elektro",
 ];
 
+const GEARBOX_OPTIONS = [
+  "Alle",
+  "Automatik",
+  "Manuell",
+];
+
 
 const PRICE_OPTIONS = [
   "Alle",
@@ -79,6 +85,8 @@ const PRICE_OPTIONS = [
   ...Array.from({ length: 6 }, (_, i) => 15000 + (i + 1) * 2500), // 17.500 → 30.000
   ...Array.from({ length: 14 }, (_, i) => 30000 + (i + 1) * 5000), // 35.000 → 100.000
 ];
+
+
 
 
 function parseKm(value: string | null): number | null {
