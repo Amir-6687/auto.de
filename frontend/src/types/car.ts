@@ -1,26 +1,32 @@
 export interface Car {
-    _id?: string;
-    title: string;
-    description: string;
-    price: number | string;
+  _id?: string;
+  title: string;
+  description: string;
+  price: number | string;
+
+  brand: string;
+  model: string;
+  mileage: number | string;
+  condition: string;
+  firstRegistration: string;
+  fuelType: string;
+  power: number | string;
+  gearbox: string;
+  vehicleType: string;
+  doors: string;
+  huUntil: string;
+  emissionSticker: string;
+  emissionClass: string;
+  color: string;
+
+  features: string[];
+  images: string[];
+  coverImage?: string | null;
+  status: string;              // ✅ این خط رو اضافه کنید
   
-    brand: string;
-    model: string;
-    mileage: number | string;
-    condition: string;
-    firstRegistration: string;
-    fuelType: string;
-    power: number | string;
-    gearbox: string;
-    vehicleType: string;
-    doors: string;
-    huUntil: string;
-    emissionSticker: string;
-    emissionClass: string;
-    color: string;
-  
-    features: string[];
-    images: string[];
-    coverImage?: string | null;
-  }
-  
+  // اختیاری - اگه بخواید:
+  owner?: string | null;
+  viewCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
