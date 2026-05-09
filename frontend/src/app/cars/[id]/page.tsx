@@ -6,70 +6,103 @@ const API_URL = "http://localhost:5000/api";
 // دریافت اطلاعات آگهی
 async function getCar(id: string): Promise<Car> {
   const res = await fetch(`${API_URL}/cars/${id}`, { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to load car");
+  
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}));
+    throw new Error(error.error || "Failed to load car");
+  }
+  
   return res.json();
 }
 
-export default async function CarPage({ params }: { params: { id: string } }) {
-  const car = await getCar(params.id);
+// ✅ تغییر ۱: type برای params
+// ✅ تغییر ۲: await params قبل از استفاده
+export default async function CarPage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }>  // ✅ Promise اضافه شد
+}) {
+  const { id } = await params;  // ✅ await اضافه شد
+  
+  try {
+    const car = await getCar(id);  // ✅ حالا id از params استخراج شده
+    const images = car.images || [];
 
-  const images = car.images || [];
+    return (
+      <div className="max-w-4xl mx-auto py-8 space-y-10">
+        {/* 🖼 اسلایدر حرفه‌ای */}
+        <CarImageSlider images={images} />
 
-  return (
-    <div className="max-w-4xl mx-auto py-8 space-y-10">
-
-      {/* 🖼 اسلایدر حرفه‌ای */}
-      <CarImageSlider images={images} />
-
-      {/* 🟦 عنوان + قیمت */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">{car.title}</h1>
-        <div className="text-2xl font-semibold text-green-700">
-          {car.price} €
+        {/* 🟦 عنوان + قیمت */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold">{car.title}</h1>
+          <div className="text-2xl font-semibold text-green-700">
+            {car.price} €
+          </div>
         </div>
-      </div>
 
-      {/* 🟩 جدول مشخصات */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-3 text-sm">
-        <Spec label="Marke" value={car.brand} />
-        <Spec label="Modell" value={car.model} />
-        <Spec label="Kilometerstand" value={`${car.mileage} km`} />
-        <Spec label="Fahrzeugzustand" value={car.condition} />
-        <Spec label="Erstzulassung" value={car.firstRegistration} />
-        <Spec label="Kraftstoffart" value={car.fuelType} />
-        <Spec label="Leistung" value={`${car.power} PS`} />
-        <Spec label="Getriebe" value={car.gearbox} />
-        <Spec label="Fahrzeugtyp" value={car.vehicleType} />
-        <Spec label="Anzahl Türen" value={car.doors} />
-        <Spec label="HU bis" value={car.huUntil} />
-        <Spec label="Umweltplakette" value={car.emissionSticker} />
-        <Spec label="Schadstoffklasse" value={car.emissionClass} />
-        <Spec label="Außenfarbe" value={car.color} />
-      </div>
-
-      {/* 🟨 امکانات */}
-      {car.features && car.features.length > 0 && (
-        <div>
-<h2 className="text-xl font-semibold mb-3 text-[#101828]">Ausstattung</h2>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-1 text-sm">
-            {car.features.map((f) => (
-              <li key={f}>✔ {f}</li>
-            ))}
-          </ul>
+        {/* 🟩 جدول مشخصات */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-3 text-sm">
+          <Spec label="Marke" value={car.brand} />
+          <Spec label="Modell" value={car.model} />
+          <Spec label="Kilometerstand" value={`${car.mileage} km`} />
+          <Spec label="Fahrzeugzustand" value={car.condition} />
+          <Spec label="Erstzulassung" value={car.firstRegistration} />
+          <Spec label="Kraftstoffart" value={car.fuelType} />
+          <Spec label="Leistung" value={`${car.power} PS`} />
+          <Spec label="Getriebe" value={car.gearbox} />
+          <Spec label="Fahrzeugtyp" value={car.vehicleType} />
+          <Spec label="Anzahl Türen" value={car.doors} />
+          <Spec label="HU bis" value={car.huUntil} />
+          <Spec label="Umweltplakette" value={car.emissionSticker} />
+          <Spec label="Schadstoffklasse" value={car.emissionClass} />
+          <Spec label="Außenfarbe" value={car.color} />
         </div>
-      )}
 
-      {/* 🟧 توضیحات */}
-      {car.description && (
-        <div>
-          <h2 className="text-xl font-semibold mb-3">Beschreibung</h2>
-          <p className="whitespace-pre-line text-sm leading-6">
-            {car.description}
+        {/* 🟨 امکانات */}
+        {car.features && car.features.length > 0 && (
+          <div>
+            <h2 className="text-xl font-semibold mb-3 text-[#101828]">Ausstattung</h2>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-1 text-sm">
+              {car.features.map((f) => (
+                <li key={f}>✔ {f}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* 🟧 توضیحات */}
+        {car.description && (
+          <div>
+            <h2 className="text-xl font-semibold mb-3">Beschreibung</h2>
+            <p className="whitespace-pre-line text-sm leading-6">
+              {car.description}
+            </p>
+          </div>
+        )}
+      </div>
+    );
+  } catch (error) {
+    // ✅ Error Handling اضافه شد
+    return (
+      <div className="max-w-4xl mx-auto py-8">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <h1 className="text-2xl font-bold text-red-600 mb-2">
+            Fehler beim Laden
+          </h1>
+          <p className="text-red-700 mb-4">
+            {error instanceof Error ? error.message : "Unbekannter Fehler"}
           </p>
+          <a 
+            href="/cars" 
+            className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Zurück zur Übersicht
+          </a>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 function Spec({ label, value }: { label: string; value?: string | number | null }) {

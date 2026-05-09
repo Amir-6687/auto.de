@@ -46,8 +46,10 @@ export default function AddCarClient() {
     color: "",
     features: [],
     images: [],
-    coverImage: null,
+    coverImage: null,           // مقدار اولیه
+    status: "active",    // ← اضافه شد
   });
+  
 
   const [images, setImages] = useState<File[]>([]);
   const [coverIndex, setCoverIndex] = useState<number | null>(null);
@@ -76,30 +78,39 @@ export default function AddCarClient() {
     const res = await fetch(`${API_URL}/cars`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(car),
+      body: JSON.stringify({
+        ...car,
+        status: "active",
+      }),
     });
-
+  
     if (!res.ok) throw new Error("Car creation failed");
-
+  
     return res.json();
   }
+  
 
   // -------------------------------
   // 2) آپلود عکس‌ها
   // -------------------------------
   async function uploadImages() {
     if (images.length === 0) return [];
-
+  
     const formData = new FormData();
     images.forEach((img) => formData.append("images", img));
-
+  
     const res = await fetch(`${API_URL}/upload`, {
       method: "POST",
       body: formData,
     });
-
+  
+    if (!res.ok) {
+      console.error("Upload failed:", res.status);
+      return [];
+    }
+  
     const data = await res.json();
-    return data.urls;
+    return data?.urls || [];
   }
 
   // -------------------------------
@@ -123,24 +134,25 @@ export default function AddCarClient() {
   // -------------------------------
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
+  
     try {
       // مرحله ۱: ساخت آگهی بدون عکس
       const created = await createCarWithoutImages();
-
+  
       // مرحله ۲: آپلود عکس‌ها
       const urls = await uploadImages();
-
+  
       // مرحله ۳: آپدیت آگهی با عکس‌ها + کاور
-      if (urls.length > 0) {
+      if (urls && urls.length > 0) {
         await updateCarWithImages(created._id, urls);
       }
-
+  
       router.push("/cars");
     } catch (err) {
       console.error("ERROR:", err);
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">

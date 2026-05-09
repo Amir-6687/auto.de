@@ -15,17 +15,26 @@ exports.getAllCars = async (req, res) => {
 exports.getCar = async (req, res) => {
   try {
     const car = await CarListing.findById(req.params.id);
-    if (!car || car.status !== "active") {
+
+    if (!car) {
       return res.status(404).json({ error: "Not found" });
     }
+
+    // تبدیل به lowercase برای هماهنگی
+    if (car.status.toLowerCase() !== "active") {
+      return res.status(404).json({ error: "Not found" });
+    }
+
     car.viewCount = (car.viewCount || 0) + 1;
     await car.save();
+
     res.json(car);
   } catch (err) {
     console.error("GetCar Error:", err);
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // // CREATE
 // exports.createCar = async (req, res) => {
