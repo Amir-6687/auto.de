@@ -29,7 +29,8 @@ export default async function CarPage({
     const images = car.images || [];
 
     return (
-      <div className="max-w-4xl mx-auto py-8 space-y-10">
+      <div className="max-w-4xl mx-auto pt-46 pb-8 px-4 space-y-10">
+
         {/* 🖼 اسلایدر حرفه‌ای */}
         <CarImageSlider images={images} />
 
@@ -49,7 +50,7 @@ export default async function CarPage({
           <Spec label="Fahrzeugzustand" value={car.condition} />
           <Spec label="Erstzulassung" value={car.firstRegistration} />
           <Spec label="Kraftstoffart" value={car.fuelType} />
-          <Spec label="Leistung" value={`${car.power} PS`} />
+          <Spec label="Leistung" value={car.power ? `${car.power} PS` : null} />
           <Spec label="Getriebe" value={car.gearbox} />
           <Spec label="Fahrzeugtyp" value={car.vehicleType} />
           <Spec label="Anzahl Türen" value={car.doors} />

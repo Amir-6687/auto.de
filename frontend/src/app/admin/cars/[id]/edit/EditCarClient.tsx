@@ -39,8 +39,33 @@ export default function EditCarClient({ id }: { id: string }) {
     async function loadCar() {
       const res = await fetch(`${API_URL}/cars/${id}`);
       const data = await res.json();
-      setCar(data);
-      setCoverImage(data.coverImage);
+      
+      // ✅ normalize - همه فیلدها مقدار پیش‌فرض دارن
+      setCar({
+        ...data,
+        title: data.title ?? "",
+        description: data.description ?? "",
+        price: data.price ?? "",
+        brand: data.brand ?? "",
+        model: data.model ?? "",
+        mileage: data.mileage ?? "",
+        condition: data.condition ?? "",
+        firstRegistration: data.firstRegistration ?? "",
+        fuelType: data.fuelType ?? "",
+        power: data.power ?? "",
+        gearbox: data.gearbox ?? "",
+        vehicleType: data.vehicleType ?? "",
+        doors: data.doors ?? "",
+        huUntil: data.huUntil ?? "",
+        emissionSticker: data.emissionSticker ?? "",
+        emissionClass: data.emissionClass ?? "",
+        color: data.color ?? "",
+        features: data.features ?? [],
+        images: data.images ?? [],
+        coverImage: data.coverImage ?? null,
+      });
+      
+      setCoverImage(data.coverImage ?? null);
       setLoading(false);
     }
     loadCar();
