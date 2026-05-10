@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const API_URL = "http://localhost:5000/api/cars";
+const API_URL = "http://localhost:5000/api/admin/cars"; // ← درست شد
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -16,8 +16,13 @@ export async function GET(req: Request) {
   if (brand) q.set("brand", brand);
   if (search) q.set("search", search);
 
-  const res = await fetch(`${API_URL}?${q}`, { cache: "no-store" });
-  const data = await res.json();
+  const res = await fetch(`${API_URL}?${q}`, {
+    cache: "no-store",
+    headers: {
+      "x-internal-secret": process.env.INTERNAL_API_SECRET || "", // ← اضافه شد
+    },
+  });
 
+  const data = await res.json();
   return NextResponse.json(data);
 }

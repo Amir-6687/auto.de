@@ -7,7 +7,10 @@ exports.listAdminCars = async (req, res) => {
     const filter = {};
 
     // ✅ فیلتر وضعیت بدون حساسیت به حروف
-    if (req.query.status) filter.status = new RegExp(`^${req.query.status}$`, "i");
+    if (req.query.status) {
+      filter.status = new RegExp(`^${req.query.status}$`, "i");
+    }
+    
 
     if (req.query.brand) filter.brand = new RegExp(req.query.brand, "i");
     if (req.query.search) {
