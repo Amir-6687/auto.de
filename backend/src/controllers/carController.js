@@ -35,43 +35,6 @@ exports.getCar = async (req, res) => {
   }
 };
 
-
-// // CREATE
-// exports.createCar = async (req, res) => {
-//   try {
-//     const car = await CarListing.create(req.body);
-//     res.json(car);
-//   } catch (err) {
-//     console.error("CreateCar Error:", err);
-//     res.status(500).json({ error: err.message });
-//   }
-// };
-
-// // UPDATE  ✅ نسخهٔ درست‌شده
-// exports.updateCar = async (req, res) => {
-//   try {
-//     const allowed = {
-//       title: req.body.title,
-//       description: req.body.description,
-//       price: req.body.price,
-//       mileage: req.body.mileage,
-//       firstRegistration: req.body.firstRegistration,
-//       fuelType: req.body.fuelType,
-//       gearbox: req.body.gearbox,
-//       images: req.body.images,
-//       coverImage: req.body.coverImage,
-//     };
-
-//     const car = await CarListing.findByIdAndUpdate(req.params.id, allowed, {
-//       new: true,
-//     });
-
-//     res.json(car);
-//   } catch (err) {
-//     console.error("UpdateCar Error:", err);
-//     res.status(500).json({ error: err.message });
-//   }
-// };
 // CREATE
 exports.createCar = async (req, res) => {
   try {

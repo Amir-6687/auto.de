@@ -5,7 +5,10 @@ exports.listAdminCars = async (req, res) => {
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
     const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 20));
     const filter = {};
-    if (req.query.status) filter.status = req.query.status;
+
+    // ✅ فیلتر وضعیت بدون حساسیت به حروف
+    if (req.query.status) filter.status = new RegExp(`^${req.query.status}$`, "i");
+
     if (req.query.brand) filter.brand = new RegExp(req.query.brand, "i");
     if (req.query.search) {
       filter.$or = [
@@ -14,6 +17,7 @@ exports.listAdminCars = async (req, res) => {
         { model: new RegExp(req.query.search, "i") },
       ];
     }
+
     const price = {};
     if (req.query.minPrice) price.$gte = Number(req.query.minPrice);
     if (req.query.maxPrice) price.$lte = Number(req.query.maxPrice);
@@ -27,18 +31,13 @@ exports.listAdminCars = async (req, res) => {
       .populate("owner", "email name")
       .lean();
 
-    res.json({
-      cars,
-      total,
-      page,
-      limit,
-      pages: Math.ceil(total / limit) || 1,
-    });
+    res.json({ cars, total, page, limit, pages: Math.ceil(total / limit) || 1 });
   } catch (err) {
-    console.error(err);
+    console.error("Admin listAdminCars Error:", err);
     res.status(500).json({ error: err.message });
   }
 };
+
 
 exports.deleteCar = async (req, res) => {
   try {
