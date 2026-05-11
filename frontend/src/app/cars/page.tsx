@@ -16,13 +16,34 @@ const DOOR_OPTIONS = ["Alle","2","3","4","5"];
 const PS_OPTIONS = ["Alle",...Array.from({ length: 19 }, (_, i) => (i + 1) * 50),1000];
 const PRICE_OPTIONS = ["Alle",...Array.from({ length: 30 }, (_, i) => (i + 1) * 500),...Array.from({ length: 6 }, (_, i) => 15000 + (i + 1) * 2500),...Array.from({ length: 14 }, (_, i) => 30000 + (i + 1) * 5000)];
 
+const SORT_OPTIONS = [
+  { key: "preis_asc",  label: "Preis aufsteigend ↑" },
+  { key: "preis_desc", label: "Preis absteigend ↓" },
+  { key: "km_asc",     label: "Kilometer aufsteigend ↑" },
+  { key: "km_desc",    label: "Kilometer absteigend ↓" },
+  { key: "year_asc",   label: "Erstzulassung älteste zuerst" },
+  { key: "year_desc",  label: "Erstzulassung neueste zuerst" },
+  { key: "alpha_asc",  label: "Alphabetisch A–Z" },
+  { key: "alpha_desc", label: "Alphabetisch Z–A" },
+];
+
+const SORT_LABELS: Record<string, string> = {
+  preis_asc:  "Preis ↑",
+  preis_desc: "Preis ↓",
+  km_asc:     "km ↑",
+  km_desc:    "km ↓",
+  year_asc:   "Jahr ↑",
+  year_desc:  "Jahr ↓",
+  alpha_asc:  "A–Z",
+  alpha_desc: "Z–A",
+};
+
 function parseKm(value: string | null): number | null {
   if (!value || value === "Alle") return null;
   if (value === "Mehr als 250.000") return 250000;
   return parseInt(value.replace(".", ""));
 }
 
-// ── آیکون‌های SVG سبک ──
 function IconSpeed() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -59,7 +80,6 @@ function IconArrow() {
   );
 }
 
-// ── کامپوننت کارت خودرو ──
 function CarCard({ car }: { car: any }) {
   const image = car.coverImage || car.images?.[0];
   const brand = car.brand || "";
@@ -75,16 +95,9 @@ function CarCard({ car }: { car: any }) {
       style={{ textDecoration: "none" }}
     >
       <div className="flex flex-col md:flex-row h-full">
-
-        {/* تصویر */}
         <div className="relative md:w-72 h-full flex-shrink-0 overflow-hidden bg-gray-100">
-
           {image ? (
-            <img
-              src={image}
-              alt={car.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
+            <img src={image} alt={car.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1.5">
@@ -94,7 +107,6 @@ function CarCard({ car }: { car: any }) {
               </svg>
             </div>
           )}
-          {/* badge تعداد عکس */}
           {car.images?.length > 1 && (
             <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm">
               📷 {car.images.length}
@@ -102,14 +114,10 @@ function CarCard({ car }: { car: any }) {
           )}
         </div>
 
-        {/* محتوا */}
         <div className="flex-1 p-5 flex flex-col justify-between overflow-hidden">
-          {/* هدر: عنوان + قیمت */}
           <div className="flex items-start justify-between gap-4 mb-3">
             <div>
-              <h3 className="text-xl leading-tight text-gray-900">
-                {titleDisplay}
-              </h3>
+              <h3 className="text-xl leading-tight text-gray-900">{titleDisplay}</h3>
               {car.description && (
                 <p className="text-sm text-gray-400 mt-1 line-clamp-1">{car.description}</p>
               )}
@@ -122,59 +130,31 @@ function CarCard({ car }: { car: any }) {
             </div>
           </div>
 
-          {/* مشخصات — ۴ ستون با آیکون */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 py-4 border-t border-b border-gray-100">
             <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-1.5 text-gray-400 text-xs">
-                <IconSpeed /> Kilometerstand
-              </div>
-              <span className="text-sm font-semibold text-gray-800">
-                {car.mileage ? Number(car.mileage).toLocaleString("de-DE") + " km" : "—"}
-              </span>
+              <div className="flex items-center gap-1.5 text-gray-400 text-xs"><IconSpeed /> Kilometerstand</div>
+              <span className="text-sm font-semibold text-gray-800">{car.mileage ? Number(car.mileage).toLocaleString("de-DE") + " km" : "—"}</span>
             </div>
-
             <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-1.5 text-gray-400 text-xs">
-                <IconGear /> Getriebe
-              </div>
+              <div className="flex items-center gap-1.5 text-gray-400 text-xs"><IconGear /> Getriebe</div>
               <span className="text-sm font-semibold text-gray-800">{car.gearbox || "—"}</span>
             </div>
-
             <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-1.5 text-gray-400 text-xs">
-                <IconFuel /> Kraftstoff
-              </div>
+              <div className="flex items-center gap-1.5 text-gray-400 text-xs"><IconFuel /> Kraftstoff</div>
               <span className="text-sm font-semibold text-gray-800">{car.fuelType || "—"}</span>
             </div>
-
             <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-1.5 text-gray-400 text-xs">
-                <IconCalendar /> Erstzulassung
-              </div>
+              <div className="flex items-center gap-1.5 text-gray-400 text-xs"><IconCalendar /> Erstzulassung</div>
               <span className="text-sm font-semibold text-gray-800">{car.firstRegistration || "—"}</span>
             </div>
           </div>
 
-          {/* footer: PS + دکمه */}
           <div className="flex items-center justify-between mt-3">
             <div className="flex flex-wrap gap-2">
-              {car.power && (
-                <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">
-                  ⚡ {car.power} PS
-                </span>
-              )}
-              {car.vehicleType && (
-                <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">
-                  🚗 {car.vehicleType}
-                </span>
-              )}
-              {car.color && (
-                <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">
-                  🎨 {car.color}
-                </span>
-              )}
+              {car.power && <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">⚡ {car.power} PS</span>}
+              {car.vehicleType && <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">🚗 {car.vehicleType}</span>}
+              {car.color && <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">🎨 {car.color}</span>}
             </div>
-
             <span className="inline-flex items-center gap-2 bg-[#003399] group-hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors duration-200">
               Jetzt ansehen <IconArrow />
             </span>
@@ -192,16 +172,19 @@ export default function CarsPage() {
   const [filteredCars, setFilteredCars] = useState<any[]>([]);
 
   const [sortOpen, setSortOpen] = useState(false);
-  const [brandOpen, setBrandOpen] = useState(false);
-  const [modelOpen, setModelOpen] = useState(false);
-  const [kmOpen, setKmOpen] = useState(false);
-  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState<string | null>(null);
-  const [selectedKm, setSelectedKm] = useState<string | null>(null);
-
+  const [selectedSort, setSelectedSort] = useState<string | null>(null);
   const sortRef = useRef<HTMLDivElement | null>(null);
+
+  const [brandOpen, setBrandOpen] = useState(false);
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const brandRef = useRef<HTMLDivElement | null>(null);
+
+  const [modelOpen, setModelOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const modelRef = useRef<HTMLDivElement | null>(null);
+
+  const [kmOpen, setKmOpen] = useState(false);
+  const [selectedKm, setSelectedKm] = useState<string | null>(null);
   const kmRef = useRef<HTMLDivElement | null>(null);
 
   const [yearOpen, setYearOpen] = useState(false);
@@ -259,23 +242,46 @@ export default function CarsPage() {
 
   useEffect(() => {
     let result = [...cars];
-    if (selectedBrand) result = result.filter((car) => car.title?.toLowerCase().includes(selectedBrand.toLowerCase()));
-    if (selectedModel) result = result.filter((car) => car.title?.toLowerCase().includes(selectedModel.toLowerCase()));
+
+    if (selectedBrand) result = result.filter((car) => car.brand?.toLowerCase() === selectedBrand.toLowerCase());
+    if (selectedModel) result = result.filter((car) => car.model?.toLowerCase().includes(selectedModel.toLowerCase()));
+
     const kmValue = parseKm(selectedKm);
     if (kmValue !== null) {
       if (selectedKm === "Mehr als 250.000") result = result.filter((car) => car.mileage > 250000);
       else result = result.filter((car) => car.mileage <= kmValue);
     }
+
     if (selectedYear && selectedYear !== "Alle") result = result.filter((car) => Number(car.firstRegistration) === Number(selectedYear));
     if (selectedFuel && selectedFuel !== "Alle") result = result.filter((car) => car.fuelType?.toLowerCase() === selectedFuel.toLowerCase());
     if (selectedGearbox && selectedGearbox !== "Alle") result = result.filter((car) => car.gearbox?.toLowerCase() === selectedGearbox.toLowerCase());
     if (selectedColor && selectedColor !== "Alle") result = result.filter((car) => car.color?.toLowerCase() === selectedColor.toLowerCase());
     if (selectedDoors && selectedDoors !== "Alle") result = result.filter((car) => Number(car.doors) === Number(selectedDoors));
-    if (selectedPs && selectedPs !== "Alle") result = result.filter((car) => Number(car.ps) <= Number(selectedPs));
+    if (selectedPs && selectedPs !== "Alle") result = result.filter((car) => Number(car.power) <= Number(selectedPs));
     if (selectedPrice && selectedPrice !== "Alle") result = result.filter((car) => car.price <= Number(selectedPrice));
+
+    // ✅ Sort
+    if (selectedSort) {
+      result.sort((a, b) => {
+        switch (selectedSort) {
+          case "preis_asc":   return (a.price || 0) - (b.price || 0);
+          case "preis_desc":  return (b.price || 0) - (a.price || 0);
+          case "km_asc":      return (a.mileage || 0) - (b.mileage || 0);
+          case "km_desc":     return (b.mileage || 0) - (a.mileage || 0);
+          case "year_asc":    return (Number(a.firstRegistration) || 0) - (Number(b.firstRegistration) || 0);
+          case "year_desc":   return (Number(b.firstRegistration) || 0) - (Number(a.firstRegistration) || 0);
+          case "alpha_asc":   return (a.title || "").localeCompare(b.title || "");
+          case "alpha_desc":  return (b.title || "").localeCompare(a.title || "");
+          default: return 0;
+        }
+      });
+    }
+
     setFilteredCars(result);
     setCurrentPage(1);
-  }, [selectedBrand, selectedModel, selectedKm, selectedYear, selectedPrice, selectedFuel, selectedGearbox, selectedColor, selectedDoors, selectedPs, cars]);
+  }, [selectedBrand, selectedModel, selectedKm, selectedYear, selectedPrice,
+      selectedFuel, selectedGearbox, selectedColor, selectedDoors, selectedPs,
+      selectedSort, cars]);
 
   const indexOfLastCar = currentPage * carsPerPage;
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
@@ -289,8 +295,8 @@ export default function CarsPage() {
         className="w-full flex justify-between items-center p-3 border border-gray-200 rounded-xl font-medium text-sm text-gray-700 hover:border-blue-400 transition-colors"
         onClick={toggle}
       >
-        {label}
-        <span className="text-gray-400 text-xs">{isOpen ? "▲" : "▼"}</span>
+        <span className="truncate text-left">{label}</span>
+        <span className="text-gray-400 text-xs ml-2 flex-shrink-0">{isOpen ? "▲" : "▼"}</span>
       </button>
       {isOpen && (
         <div className="mt-2 border border-gray-100 rounded-xl p-3 bg-gray-50 max-h-56 overflow-y-auto space-y-1 shadow-inner">
@@ -313,13 +319,24 @@ export default function CarsPage() {
     <div className="w-full min-h-screen bg-[#f4f6fb] pt-32 px-4 pb-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
 
-        {/* ── فیلترها ── */}
+        {/* فیلترها */}
         <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 h-fit sticky top-32">
           <h2 className="text-lg font-bold mb-5 text-gray-900 tracking-tight">Filters</h2>
 
-          <FilterAccordion label="Sortierung" isOpen={sortOpen} toggle={() => setSortOpen(!sortOpen)} refEl={sortRef}>
-            {["Preis aufsteigend","Preis absteigend","Kilometer aufsteigend","Kilometer absteigend","Erstzulassung aufsteigend","Erstzulassung absteigend","Alphabetisch A–Z","Alphabetisch Z–A"].map(s => (
-              <FilterBtn key={s} label={s} onClick={() => setSortOpen(false)} />
+          {/* ✅ Sortierung - کار میکنه */}
+          <FilterAccordion
+            label={selectedSort ? SORT_LABELS[selectedSort] : "Sortierung"}
+            isOpen={sortOpen}
+            toggle={() => setSortOpen(!sortOpen)}
+            refEl={sortRef}
+          >
+            {SORT_OPTIONS.map(({ key, label }) => (
+              <FilterBtn
+                key={key}
+                label={label}
+                selected={selectedSort === key}
+                onClick={() => { setSelectedSort(key); setSortOpen(false); }}
+              />
             ))}
           </FilterAccordion>
 
@@ -359,29 +376,41 @@ export default function CarsPage() {
             {DOOR_OPTIONS.map(d => <FilterBtn key={d} label={d === "Alle" ? "Alle" : `${d} Türen`} selected={selectedDoors === d} onClick={() => { setSelectedDoors(d); setDoorsOpen(false); }} />)}
           </FilterAccordion>
 
-          <FilterAccordion label={selectedPs ? `${selectedPs} PS` : "PS"} isOpen={psOpen} toggle={() => setPsOpen(!psOpen)} refEl={psRef}>
-            {PS_OPTIONS.map(p => <FilterBtn key={p} label={p === "Alle" ? "Alle" : `${p} PS`} selected={selectedPs === String(p)} onClick={() => { setSelectedPs(String(p)); setPsOpen(false); }} />)}
+          <FilterAccordion label={selectedPs ? `bis ${selectedPs} PS` : "PS"} isOpen={psOpen} toggle={() => setPsOpen(!psOpen)} refEl={psRef}>
+            {PS_OPTIONS.map(p => <FilterBtn key={p} label={p === "Alle" ? "Alle" : `bis ${p} PS`} selected={selectedPs === String(p)} onClick={() => { setSelectedPs(String(p)); setPsOpen(false); }} />)}
           </FilterAccordion>
 
-          <FilterAccordion label={selectedPrice || "Preis"} isOpen={priceOpen} toggle={() => setPriceOpen(!priceOpen)} refEl={priceRef}>
+          <FilterAccordion label={selectedPrice ? `bis ${Number(selectedPrice).toLocaleString("de-DE")} €` : "Preis"} isOpen={priceOpen} toggle={() => setPriceOpen(!priceOpen)} refEl={priceRef}>
             {PRICE_OPTIONS.map(p => (
-              <FilterBtn key={p} label={p === "Alle" ? "Alle" : Number(p).toLocaleString("de-DE") + " €"} selected={selectedPrice === String(p)} onClick={() => { setSelectedPrice(String(p)); setPriceOpen(false); }} />
+              <FilterBtn key={p} label={p === "Alle" ? "Alle" : `bis ${Number(p).toLocaleString("de-DE")} €`} selected={selectedPrice === String(p)} onClick={() => { setSelectedPrice(String(p)); setPriceOpen(false); }} />
             ))}
           </FilterAccordion>
 
-          <button className="w-full bg-[#003399] hover:bg-blue-800 text-white py-2.5 rounded-xl font-medium transition-colors text-sm mt-2">
-            Filter anwenden
+          {/* Reset */}
+          <button
+            className="w-full bg-[#003399] hover:bg-blue-800 text-white py-2.5 rounded-xl font-medium transition-colors text-sm mt-2"
+            onClick={() => {
+              setSelectedSort(null); setSelectedBrand(null); setSelectedModel(null);
+              setSelectedKm(null); setSelectedYear(null); setSelectedFuel(null);
+              setSelectedGearbox(null); setSelectedColor(null); setSelectedDoors(null);
+              setSelectedPs(null); setSelectedPrice(null);
+            }}
+          >
+            Filter zurücksetzen
           </button>
         </div>
 
-        {/* ── لیست خودروها ── */}
+        {/* لیست خودروها */}
         <div className="lg:col-span-3 space-y-5">
-
-          {/* نوار نتایج */}
           <div className="flex items-center justify-between bg-white px-4 py-3 rounded-xl border border-gray-100 shadow-sm">
             <span className="text-sm text-gray-500">
               <span className="font-semibold text-gray-900">{filteredCars.length}</span> Fahrzeuge gefunden
             </span>
+            {selectedSort && (
+              <span className="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">
+                Sortiert: {SORT_LABELS[selectedSort]}
+              </span>
+            )}
           </div>
 
           {filteredCars.length === 0 && (
@@ -392,11 +421,8 @@ export default function CarsPage() {
             </div>
           )}
 
-          {currentCars.map((car) => (
-            <CarCard key={car._id} car={car} />
-          ))}
+          {currentCars.map((car) => <CarCard key={car._id} car={car} />)}
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex justify-center items-center gap-2 mt-8">
               <button
@@ -406,21 +432,15 @@ export default function CarsPage() {
               >
                 ← Zurück
               </button>
-
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <button
                   key={page}
-                  className={`w-9 h-9 rounded-xl text-sm font-medium transition-colors ${
-                    currentPage === page
-                      ? "bg-[#003399] text-white shadow-md"
-                      : "bg-white border border-gray-200 text-gray-600 hover:border-blue-400"
-                  }`}
+                  className={`w-9 h-9 rounded-xl text-sm font-medium transition-colors ${currentPage === page ? "bg-[#003399] text-white shadow-md" : "bg-white border border-gray-200 text-gray-600 hover:border-blue-400"}`}
                   onClick={() => setCurrentPage(page)}
                 >
                   {page}
                 </button>
               ))}
-
               <button
                 className="px-4 py-2 border border-gray-200 rounded-xl text-sm disabled:opacity-40 hover:border-blue-400 transition-colors bg-white"
                 disabled={currentPage === totalPages}
