@@ -71,12 +71,14 @@ function CarCard({ car }: { car: any }) {
   return (
     <a
       href={`/cars/${car._id}`}
-      className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200"
+      className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200 h-[220px]"
       style={{ textDecoration: "none" }}
     >
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row h-full">
+
         {/* تصویر */}
-        <div className="relative md:w-72 h-52 md:h-auto flex-shrink-0 overflow-hidden bg-gray-100">
+        <div className="relative md:w-72 h-full flex-shrink-0 overflow-hidden bg-gray-100">
+
           {image ? (
             <img
               src={image}
@@ -101,7 +103,7 @@ function CarCard({ car }: { car: any }) {
         </div>
 
         {/* محتوا */}
-        <div className="flex-1 p-5 flex flex-col justify-between">
+        <div className="flex-1 p-5 flex flex-col justify-between overflow-hidden">
           {/* هدر: عنوان + قیمت */}
           <div className="flex items-start justify-between gap-4 mb-3">
             <div>
