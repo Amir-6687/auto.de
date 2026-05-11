@@ -341,10 +341,14 @@ export default function CarsPage() {
           </FilterAccordion>
 
           <FilterAccordion label={selectedBrand || "Marken"} isOpen={brandOpen} toggle={() => setBrandOpen(!brandOpen)} refEl={brandRef}>
-            {["Audi","BMW","Mercedes-Benz","Volkswagen","Porsche","Toyota","Honda","Hyundai","Kia","Ford","Opel","Renault"].map(b => (
-              <FilterBtn key={b} label={b} selected={selectedBrand === b} onClick={() => { setSelectedBrand(b); setSelectedModel(null); setBrandOpen(false); setModelOpen(true); }} />
-            ))}
-          </FilterAccordion>
+  
+  {/* ✅ این خط رو اضافه کن */}
+  <FilterBtn label="Alle" selected={selectedBrand === null} onClick={() => { setSelectedBrand(null); setSelectedModel(null); setBrandOpen(false); }} />
+
+  {["Audi","BMW","Mercedes-Benz","Volkswagen","Porsche","Toyota","Honda","Hyundai","Kia","Ford","Opel","Renault"].map(b => (
+    <FilterBtn key={b} label={b} selected={selectedBrand === b} onClick={() => { setSelectedBrand(b); setSelectedModel(null); setBrandOpen(false); setModelOpen(true); }} />
+  ))}
+</FilterAccordion>
 
           <FilterAccordion label={selectedModel || "Modelle"} isOpen={modelOpen} toggle={() => { if (selectedBrand) setModelOpen(!modelOpen); }} refEl={modelRef}>
             {currentModels.map(m => (
