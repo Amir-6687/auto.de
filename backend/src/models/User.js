@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema(
     name: String,
     image: String,
     googleId: { type: String, sparse: true },
-    password: { type: String, default: null }, // ← اضافه شد
+    password: { type: String, default: null },
     role: {
       type: String,
       enum: ["user", "admin", "moderator", "super_admin"],
@@ -19,14 +19,12 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// hash پسورد قبل از save
-UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password") || !this.password) return next();
+// ✅ بدون next
+UserSchema.pre("save", async function () {
+  if (!this.isModified("password") || !this.password) return;
   this.password = await bcrypt.hash(this.password, 10);
-  next();
 });
 
-// متد مقایسه پسورد
 UserSchema.methods.comparePassword = async function (plain) {
   if (!this.password) return false;
   return bcrypt.compare(plain, this.password);
