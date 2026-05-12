@@ -260,7 +260,6 @@ export default function CarsPage() {
     if (selectedPs && selectedPs !== "Alle") result = result.filter((car) => Number(car.power) <= Number(selectedPs));
     if (selectedPrice && selectedPrice !== "Alle") result = result.filter((car) => car.price <= Number(selectedPrice));
 
-    // ✅ Sort
     if (selectedSort) {
       result.sort((a, b) => {
         switch (selectedSort) {
@@ -316,146 +315,165 @@ export default function CarsPage() {
   );
 
   return (
-    <div className="w-full min-h-screen bg-[#f4f6fb] pt-32 px-4 pb-20">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
-
-        {/* فیلترها */}
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 h-fit sticky top-32">
-          <h2 className="text-lg font-bold mb-5 text-gray-900 tracking-tight">Filters</h2>
-
-          {/* ✅ Sortierung - کار میکنه */}
-          <FilterAccordion
-            label={selectedSort ? SORT_LABELS[selectedSort] : "Sortierung"}
-            isOpen={sortOpen}
-            toggle={() => setSortOpen(!sortOpen)}
-            refEl={sortRef}
-          >
-            {SORT_OPTIONS.map(({ key, label }) => (
-              <FilterBtn
-                key={key}
-                label={label}
-                selected={selectedSort === key}
-                onClick={() => { setSelectedSort(key); setSortOpen(false); }}
-              />
-            ))}
-          </FilterAccordion>
-
-          <FilterAccordion label={selectedBrand || "Marken"} isOpen={brandOpen} toggle={() => setBrandOpen(!brandOpen)} refEl={brandRef}>
-  
-  {/* ✅ این خط رو اضافه کن */}
-  <FilterBtn label="Alle" selected={selectedBrand === null} onClick={() => { setSelectedBrand(null); setSelectedModel(null); setBrandOpen(false); }} />
-
-  {["Audi","BMW","Mercedes-Benz","Volkswagen","Porsche","Toyota","Honda","Hyundai","Kia","Ford","Opel","Renault"].map(b => (
-    <FilterBtn key={b} label={b} selected={selectedBrand === b} onClick={() => { setSelectedBrand(b); setSelectedModel(null); setBrandOpen(false); setModelOpen(true); }} />
-  ))}
-</FilterAccordion>
-
-          <FilterAccordion label={selectedModel || "Modelle"} isOpen={modelOpen} toggle={() => { if (selectedBrand) setModelOpen(!modelOpen); }} refEl={modelRef}>
-            {currentModels.map(m => (
-              <FilterBtn key={m} label={m} selected={selectedModel === m} onClick={() => { setSelectedModel(m); setModelOpen(false); }} />
-            ))}
-          </FilterAccordion>
-
-          <FilterAccordion label={selectedKm || "Kilometerstand"} isOpen={kmOpen} toggle={() => setKmOpen(!kmOpen)} refEl={kmRef}>
-            {KM_OPTIONS.map(km => <FilterBtn key={km} label={km} selected={selectedKm === km} onClick={() => { setSelectedKm(km); setKmOpen(false); }} />)}
-          </FilterAccordion>
-
-          <FilterAccordion label={selectedYear || "Erstzulassung"} isOpen={yearOpen} toggle={() => setYearOpen(!yearOpen)} refEl={yearRef}>
-            {YEAR_OPTIONS.map(y => <FilterBtn key={y} label={String(y)} selected={selectedYear === String(y)} onClick={() => { setSelectedYear(String(y)); setYearOpen(false); }} />)}
-          </FilterAccordion>
-
-          <FilterAccordion label={selectedFuel || "Kraftstoffart"} isOpen={fuelOpen} toggle={() => setFuelOpen(!fuelOpen)} refEl={fuelRef}>
-            {FUEL_OPTIONS.map(f => <FilterBtn key={f} label={f} selected={selectedFuel === f} onClick={() => { setSelectedFuel(f); setFuelOpen(false); }} />)}
-          </FilterAccordion>
-
-          <FilterAccordion label={selectedGearbox || "Getriebe"} isOpen={gearboxOpen} toggle={() => setGearboxOpen(!gearboxOpen)} refEl={gearboxRef}>
-            {GEARBOX_OPTIONS.map(g => <FilterBtn key={g} label={g} selected={selectedGearbox === g} onClick={() => { setSelectedGearbox(g); setGearboxOpen(false); }} />)}
-          </FilterAccordion>
-
-          <FilterAccordion label={selectedColor || "Farbe"} isOpen={colorOpen} toggle={() => setColorOpen(!colorOpen)} refEl={colorRef}>
-            {COLOR_OPTIONS.map(c => <FilterBtn key={c} label={c} selected={selectedColor === c} onClick={() => { setSelectedColor(c); setColorOpen(false); }} />)}
-          </FilterAccordion>
-
-          <FilterAccordion label={selectedDoors ? `${selectedDoors} Türen` : "Türen"} isOpen={doorsOpen} toggle={() => setDoorsOpen(!doorsOpen)} refEl={doorsRef}>
-            {DOOR_OPTIONS.map(d => <FilterBtn key={d} label={d === "Alle" ? "Alle" : `${d} Türen`} selected={selectedDoors === d} onClick={() => { setSelectedDoors(d); setDoorsOpen(false); }} />)}
-          </FilterAccordion>
-
-          <FilterAccordion label={selectedPs ? `bis ${selectedPs} PS` : "PS"} isOpen={psOpen} toggle={() => setPsOpen(!psOpen)} refEl={psRef}>
-            {PS_OPTIONS.map(p => <FilterBtn key={p} label={p === "Alle" ? "Alle" : `bis ${p} PS`} selected={selectedPs === String(p)} onClick={() => { setSelectedPs(String(p)); setPsOpen(false); }} />)}
-          </FilterAccordion>
-
-          <FilterAccordion label={selectedPrice ? `bis ${Number(selectedPrice).toLocaleString("de-DE")} €` : "Preis"} isOpen={priceOpen} toggle={() => setPriceOpen(!priceOpen)} refEl={priceRef}>
-            {PRICE_OPTIONS.map(p => (
-              <FilterBtn key={p} label={p === "Alle" ? "Alle" : `bis ${Number(p).toLocaleString("de-DE")} €`} selected={selectedPrice === String(p)} onClick={() => { setSelectedPrice(String(p)); setPriceOpen(false); }} />
-            ))}
-          </FilterAccordion>
-
-          {/* Reset */}
-          <button
-            className="w-full bg-[#003399] hover:bg-blue-800 text-white py-2.5 rounded-xl font-medium transition-colors text-sm mt-2"
-            onClick={() => {
-              setSelectedSort(null); setSelectedBrand(null); setSelectedModel(null);
-              setSelectedKm(null); setSelectedYear(null); setSelectedFuel(null);
-              setSelectedGearbox(null); setSelectedColor(null); setSelectedDoors(null);
-              setSelectedPs(null); setSelectedPrice(null);
-            }}
-          >
-            Filter zurücksetzen
-          </button>
-        </div>
-
-        {/* لیست خودروها */}
-        <div className="lg:col-span-3 space-y-5">
-          <div className="flex items-center justify-between bg-white px-4 py-3 rounded-xl border border-gray-100 shadow-sm">
-            <span className="text-sm text-gray-500">
-              <span className="font-semibold text-gray-900">{filteredCars.length}</span> Fahrzeuge gefunden
-            </span>
-            {selectedSort && (
-              <span className="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">
-                Sortiert: {SORT_LABELS[selectedSort]}
-              </span>
-            )}
-          </div>
-
-          {filteredCars.length === 0 && (
-            <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-100">
-              <div className="text-4xl mb-3">🚗</div>
-              <p className="text-gray-500 text-lg">Keine Fahrzeuge gefunden</p>
-              <p className="text-gray-400 text-sm mt-1">Bitte passen Sie Ihre Filterkriterien an.</p>
-            </div>
-          )}
-
-          {currentCars.map((car) => <CarCard key={car._id} car={car} />)}
-
-          {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2 mt-8">
-              <button
-                className="px-4 py-2 border border-gray-200 rounded-xl text-sm disabled:opacity-40 hover:border-blue-400 transition-colors bg-white"
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((p) => p - 1)}
-              >
-                ← Zurück
-              </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  className={`w-9 h-9 rounded-xl text-sm font-medium transition-colors ${currentPage === page ? "bg-[#003399] text-white shadow-md" : "bg-white border border-gray-200 text-gray-600 hover:border-blue-400"}`}
-                  onClick={() => setCurrentPage(page)}
-                >
-                  {page}
-                </button>
-              ))}
-              <button
-                className="px-4 py-2 border border-gray-200 rounded-xl text-sm disabled:opacity-40 hover:border-blue-400 transition-colors bg-white"
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((p) => p + 1)}
-              >
-                Weiter →
-              </button>
-            </div>
-          )}
+    <>
+      {/* ── Hero Banner ── */}
+      <div className="relative w-full h-72 flex items-center justify-center overflow-hidden mt-16">
+        {/* تصویر پس‌زمینه */}
+        <img
+          src="/bn1.jpg"
+          alt="Fahrzeugbestand"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* لایه تاریک */}
+        <div className="absolute inset-0 bg-black/55" />
+        {/* متن */}
+        <div className="relative z-10 text-center text-white px-4">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight drop-shadow-lg">
+            Aktueller Fahrzeugbestand
+          </h1>
+          <p className="mt-3 text-gray-300 text-sm md:text-base">
+            Finden Sie Ihr Traumauto aus unserem aktuellen Bestand
+          </p>
         </div>
       </div>
-    </div>
+
+      {/* ── محتوای اصلی ── */}
+      <div className="w-full min-h-screen bg-[#f4f6fb] px-4 pb-20 pt-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+          {/* فیلترها */}
+          <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 h-fit sticky top-24">
+            <h2 className="text-lg font-bold mb-5 text-gray-900 tracking-tight">Filters</h2>
+
+            <FilterAccordion
+              label={selectedSort ? SORT_LABELS[selectedSort] : "Sortierung"}
+              isOpen={sortOpen}
+              toggle={() => setSortOpen(!sortOpen)}
+              refEl={sortRef}
+            >
+              {SORT_OPTIONS.map(({ key, label }) => (
+                <FilterBtn
+                  key={key}
+                  label={label}
+                  selected={selectedSort === key}
+                  onClick={() => { setSelectedSort(key); setSortOpen(false); }}
+                />
+              ))}
+            </FilterAccordion>
+
+            <FilterAccordion label={selectedBrand || "Marken"} isOpen={brandOpen} toggle={() => setBrandOpen(!brandOpen)} refEl={brandRef}>
+              <FilterBtn label="Alle" selected={selectedBrand === null} onClick={() => { setSelectedBrand(null); setSelectedModel(null); setBrandOpen(false); }} />
+              {["Audi","BMW","Mercedes-Benz","Volkswagen","Porsche","Toyota","Honda","Hyundai","Kia","Ford","Opel","Renault"].map(b => (
+                <FilterBtn key={b} label={b} selected={selectedBrand === b} onClick={() => { setSelectedBrand(b); setSelectedModel(null); setBrandOpen(false); setModelOpen(true); }} />
+              ))}
+            </FilterAccordion>
+
+            <FilterAccordion label={selectedModel || "Modelle"} isOpen={modelOpen} toggle={() => { if (selectedBrand) setModelOpen(!modelOpen); }} refEl={modelRef}>
+              {currentModels.map(m => (
+                <FilterBtn key={m} label={m} selected={selectedModel === m} onClick={() => { setSelectedModel(m); setModelOpen(false); }} />
+              ))}
+            </FilterAccordion>
+
+            <FilterAccordion label={selectedKm || "Kilometerstand"} isOpen={kmOpen} toggle={() => setKmOpen(!kmOpen)} refEl={kmRef}>
+              {KM_OPTIONS.map(km => <FilterBtn key={km} label={km} selected={selectedKm === km} onClick={() => { setSelectedKm(km); setKmOpen(false); }} />)}
+            </FilterAccordion>
+
+            <FilterAccordion label={selectedYear || "Erstzulassung"} isOpen={yearOpen} toggle={() => setYearOpen(!yearOpen)} refEl={yearRef}>
+              {YEAR_OPTIONS.map(y => <FilterBtn key={y} label={String(y)} selected={selectedYear === String(y)} onClick={() => { setSelectedYear(String(y)); setYearOpen(false); }} />)}
+            </FilterAccordion>
+
+            <FilterAccordion label={selectedFuel || "Kraftstoffart"} isOpen={fuelOpen} toggle={() => setFuelOpen(!fuelOpen)} refEl={fuelRef}>
+              {FUEL_OPTIONS.map(f => <FilterBtn key={f} label={f} selected={selectedFuel === f} onClick={() => { setSelectedFuel(f); setFuelOpen(false); }} />)}
+            </FilterAccordion>
+
+            <FilterAccordion label={selectedGearbox || "Getriebe"} isOpen={gearboxOpen} toggle={() => setGearboxOpen(!gearboxOpen)} refEl={gearboxRef}>
+              {GEARBOX_OPTIONS.map(g => <FilterBtn key={g} label={g} selected={selectedGearbox === g} onClick={() => { setSelectedGearbox(g); setGearboxOpen(false); }} />)}
+            </FilterAccordion>
+
+            <FilterAccordion label={selectedColor || "Farbe"} isOpen={colorOpen} toggle={() => setColorOpen(!colorOpen)} refEl={colorRef}>
+              {COLOR_OPTIONS.map(c => <FilterBtn key={c} label={c} selected={selectedColor === c} onClick={() => { setSelectedColor(c); setColorOpen(false); }} />)}
+            </FilterAccordion>
+
+            <FilterAccordion label={selectedDoors ? `${selectedDoors} Türen` : "Türen"} isOpen={doorsOpen} toggle={() => setDoorsOpen(!doorsOpen)} refEl={doorsRef}>
+              {DOOR_OPTIONS.map(d => <FilterBtn key={d} label={d === "Alle" ? "Alle" : `${d} Türen`} selected={selectedDoors === d} onClick={() => { setSelectedDoors(d); setDoorsOpen(false); }} />)}
+            </FilterAccordion>
+
+            <FilterAccordion label={selectedPs ? `bis ${selectedPs} PS` : "PS"} isOpen={psOpen} toggle={() => setPsOpen(!psOpen)} refEl={psRef}>
+              {PS_OPTIONS.map(p => <FilterBtn key={p} label={p === "Alle" ? "Alle" : `bis ${p} PS`} selected={selectedPs === String(p)} onClick={() => { setSelectedPs(String(p)); setPsOpen(false); }} />)}
+            </FilterAccordion>
+
+            <FilterAccordion label={selectedPrice ? `bis ${Number(selectedPrice).toLocaleString("de-DE")} €` : "Preis"} isOpen={priceOpen} toggle={() => setPriceOpen(!priceOpen)} refEl={priceRef}>
+              {PRICE_OPTIONS.map(p => (
+                <FilterBtn key={p} label={p === "Alle" ? "Alle" : `bis ${Number(p).toLocaleString("de-DE")} €`} selected={selectedPrice === String(p)} onClick={() => { setSelectedPrice(String(p)); setPriceOpen(false); }} />
+              ))}
+            </FilterAccordion>
+
+            <button
+              className="w-full bg-[#003399] hover:bg-blue-800 text-white py-2.5 rounded-xl font-medium transition-colors text-sm mt-2"
+              onClick={() => {
+                setSelectedSort(null); setSelectedBrand(null); setSelectedModel(null);
+                setSelectedKm(null); setSelectedYear(null); setSelectedFuel(null);
+                setSelectedGearbox(null); setSelectedColor(null); setSelectedDoors(null);
+                setSelectedPs(null); setSelectedPrice(null);
+              }}
+            >
+              Filter zurücksetzen
+            </button>
+          </div>
+
+          {/* لیست خودروها */}
+          <div className="lg:col-span-3 space-y-5">
+            <div className="flex items-center justify-between bg-white px-4 py-3 rounded-xl border border-gray-100 shadow-sm">
+              <span className="text-sm text-gray-500">
+                <span className="font-semibold text-gray-900">{filteredCars.length}</span> Fahrzeuge gefunden
+              </span>
+              {selectedSort && (
+                <span className="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">
+                  Sortiert: {SORT_LABELS[selectedSort]}
+                </span>
+              )}
+            </div>
+
+            {filteredCars.length === 0 && (
+              <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-100">
+                <div className="text-4xl mb-3">🚗</div>
+                <p className="text-gray-500 text-lg">Keine Fahrzeuge gefunden</p>
+                <p className="text-gray-400 text-sm mt-1">Bitte passen Sie Ihre Filterkriterien an.</p>
+              </div>
+            )}
+
+            {currentCars.map((car) => <CarCard key={car._id} car={car} />)}
+
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-8">
+                <button
+                  className="px-4 py-2 border border-gray-200 rounded-xl text-sm disabled:opacity-40 hover:border-blue-400 transition-colors bg-white"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                >
+                  ← Zurück
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    className={`w-9 h-9 rounded-xl text-sm font-medium transition-colors ${currentPage === page ? "bg-[#003399] text-white shadow-md" : "bg-white border border-gray-200 text-gray-600 hover:border-blue-400"}`}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  className="px-4 py-2 border border-gray-200 rounded-xl text-sm disabled:opacity-40 hover:border-blue-400 transition-colors bg-white"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                >
+                  Weiter →
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
