@@ -82,8 +82,8 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, account, profile, user }) {
       if (account?.provider === "credentials" && user) {
-        token.role = "admin";
-        token.uid = "legacy-admin";
+        token.role = (user as any).role; // "user" یا "admin" از بک‌اند میاد
+token.uid = user.id;
         return token;
       }
       if (account?.provider === "google" && profile && "email" in profile) {
