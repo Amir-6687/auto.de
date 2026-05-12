@@ -46,17 +46,34 @@ export const authOptions: NextAuthOptions = {
       id: "credentials",
       name: "Credentials",
       credentials: {
+        email:    { label: "Email",    type: "email"    },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials): Promise<User | null> {
-        if (credentials?.password === "admin123") {
-          return {
-            id: "legacy-admin",
-            email: "amirhossein.akbari.de@gmail.com",
-            name: "Admin",
-          };
-        }
-        return null;
+        if (!credentials?.email || !credentials?.password) return null;
+    
+        const secret = process.env.INTERNAL_API_SECRET;
+        const res = await fetch(`${BACKEND}/api/internal/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-internal-secret": secret || "",
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        });
+    
+        if (!res.ok) return null;
+    
+        const data = await res.json() as { id: string; email: string; name: string; role: string };
+        return {
+          id: data.id,
+          email: data.email,
+          name: data.name,
+          role: data.role,
+        } as User;
       },
     }),
   ],

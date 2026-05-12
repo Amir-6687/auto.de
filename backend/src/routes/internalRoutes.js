@@ -5,5 +5,7 @@ const contactMessageController = require("../controllers/contactMessageControlle
 
 router.post("/sync-user", userController.syncGoogleUser);
 router.post("/contact-messages", contactMessageController.create);
+router.post("/login", userController.loginUser);       // ← اضافه شد
+router.post("/register", userController.registerUser); // ← اضافه شد
 
 module.exports = router;
