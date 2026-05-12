@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import VideoBackground from "@/components/ui/video-background";
 import { User, Lock, ArrowRight } from "lucide-react";
 import { signIn } from "next-auth/react";
+import { PiEyeLight, PiEyeSlashLight } from "react-icons/pi";
 
 // const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
@@ -16,6 +17,9 @@ export default function SignupPage() {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+// برای signup یکی دیگه هم:
+const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
@@ -119,30 +123,45 @@ export default function SignupPage() {
 
           {/* Password */}
           <div className="relative z-0">
-            <input
-              type="password"
-              className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 peer"
-              placeholder=" "
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <label className="absolute text-sm text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-              <Lock className="inline-block mr-2 -mt-1" size={16} />
-              Password
-            </label>
-          </div>
+  <input
+    type={showPassword ? "text" : "password"}
+    className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 peer"
+    placeholder=" "
+    required
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+  />
+  <label className="absolute text-sm text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+    <Lock className="inline-block mr-2 -mt-1" size={16} />
+    Password
+  </label>
+  {/* ← دکمه چشم */}
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-0 top-2.5 text-gray-400 hover:text-white transition"
+  >
+    {showPassword ? <PiEyeSlashLight size={20} /> : <PiEyeLight size={20} />}
+  </button>
+</div>
 
           {/* Repeat Password */}
           <div className="relative z-0">
             <input
-              type="password"
+              type={showRepeatPassword ? "text" : "password"}
               className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 peer"
               placeholder=" "
               required
               value={repeatPassword}
               onChange={(e) => setRepeatPassword(e.target.value)}
             />
+            <button
+    type="button"
+    onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+    className="absolute right-0 top-2.5 text-gray-400 hover:text-white transition"
+  >
+    {showRepeatPassword ? <PiEyeSlashLight size={20} /> : <PiEyeLight size={20} />}
+  </button>
             <label className="absolute text-sm text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
               <Lock className="inline-block mr-2 -mt-1" size={16} />
               Repeat Password
