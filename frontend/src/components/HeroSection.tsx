@@ -12,11 +12,11 @@ function HeroSection() {
       </h2>
 
       <p
-        style={{ fontFamily: "'Sora', sans-serif", fontWeight: 300 }}
-        className="text-lg sm:text-xl max-w-2xl mb-8"
-      >
-        Explore thousands of listings with advanced filters and real-time updates.
-      </p>
+  style={{ fontFamily: "'Sora', sans-serif", fontWeight: 300 }}
+  className="text-lg sm:text-xl max-w-3xl mb-8 whitespace-nowrap"
+>
+  Explore thousands of listings with advanced filters and real-time updates.
+</p>
     </div>
   );
 }
