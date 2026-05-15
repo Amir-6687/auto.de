@@ -36,9 +36,12 @@ export default function Dashboard() {
   </div>
   <CarsCarousel />
   <div className="mt-20 mb-16 text-center">
-  <h2 className="text-2xl sm:text-3xl font-semibold text-white">
-    Our Top Car Recommendations This Week
-  </h2>
+  <h2
+  style={{ fontFamily: "'Rubik Dirt', system-ui", fontWeight: 400 }}
+  className="text-2xl sm:text-3xl text-white"
+>
+  Our Top Car Recommendations This Week
+</h2>
 </div>
 
 {/* Cards Section */}
