@@ -11,7 +11,10 @@ function HeroSection() {
         Find Your Perfect Car
       </h2>
 
-      <p className="text-lg sm:text-xl max-w-2xl mb-8">
+      <p
+        style={{ fontFamily: "'Sora', sans-serif", fontWeight: 300 }}
+        className="text-lg sm:text-xl max-w-2xl mb-8"
+      >
         Explore thousands of listings with advanced filters and real-time updates.
       </p>
     </div>
