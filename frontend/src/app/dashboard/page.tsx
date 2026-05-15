@@ -38,7 +38,7 @@ export default function Dashboard() {
   <div className="mt-20 mb-16 text-center">
   <h2
   style={{ fontFamily: "'Rubik Dirt', system-ui", fontWeight: 400 }}
-  className="text-2xl sm:text-3xl text-white"
+  className="text-4xl sm:text-5xl text-white"
 >
   Our Top Car Recommendations This Week
 </h2>
