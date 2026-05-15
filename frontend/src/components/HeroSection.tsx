@@ -4,7 +4,10 @@ function HeroSection() {
   return (
     <div className="h-[20vh] flex flex-col justify-center items-center text-center text-white px-6">
 
-      <h2 className="text-4xl sm:text-6xl font-bold mb-4">
+      <h2
+        style={{ fontFamily: "'Bungee', sans-serif", fontWeight: 400 }}
+        className="text-4xl sm:text-6xl mb-4"
+      >
         Find Your Perfect Car
       </h2>
 
