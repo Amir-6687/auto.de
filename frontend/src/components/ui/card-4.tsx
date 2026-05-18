@@ -66,12 +66,9 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
 >
   {title}
 </h3>
-            <p className="mt-1 text-lg font-semibold text-foreground">
-              ${price}{" "}
-              <span className="text-sm font-normal text-muted-foreground">
-                {pricePeriod}
-              </span>
-            </p>
+<p className="mt-1 text-lg font-semibold text-foreground">
+  {Number(price).toLocaleString("de-DE")} {pricePeriod}
+</p>
             <p className="mt-3 text-sm text-muted-foreground">{description}</p>
           </div>
 
