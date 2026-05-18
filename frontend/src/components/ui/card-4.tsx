@@ -60,7 +60,12 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
         {/* Content */}
         <div className="flex flex-1 flex-col p-6">
           <div className="flex-1">
-            <h3 className="text-2xl font-bold tracking-tight">{title}</h3>
+          <h3
+  style={{ fontFamily: "'Alatsi', sans-serif", fontWeight: 400 }}
+  className="text-2xl tracking-tight"
+>
+  {title}
+</h3>
             <p className="mt-1 text-lg font-semibold text-foreground">
               ${price}{" "}
               <span className="text-sm font-normal text-muted-foreground">
