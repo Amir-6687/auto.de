@@ -87,9 +87,12 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
                 <p className="text-sm font-medium text-muted-foreground">
                   {stat.label}
                 </p>
-                <p className="text-2xl font-bold text-foreground">
-                  {stat.value}
-                </p>
+                <p
+  style={{ fontFamily: "'Fjalla One', sans-serif", fontWeight: 400 }}
+  className="text-2xl text-foreground"
+>
+  {stat.value}
+</p>
               </div>
             ))}
           </div>
