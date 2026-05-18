@@ -31,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Sora:wght@100..800&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Sora:wght@100..800&family=Rubik+Dirt&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Sora:wght@100..800&family=Rubik+Dirt&family=Alatsi&display=swap" rel="stylesheet" />
       </head>
       <body
         suppressHydrationWarning
