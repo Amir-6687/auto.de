@@ -30,7 +30,7 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
       imageAlt,
       title,
       price,
-      pricePeriod = "per night",
+      pricePeriod = "€",
       description,
       stats,
       actionLabel,
@@ -60,16 +60,21 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
         {/* Content */}
         <div className="flex flex-1 flex-col p-6">
           <div className="flex-1">
-          <h3
-  style={{ fontFamily: "'Alatsi', sans-serif", fontWeight: 400 }}
-  className="text-2xl tracking-tight"
->
-  {title}
-</h3>
-<p className="mt-1 text-lg font-semibold text-foreground">
-  {Number(price).toLocaleString("de-DE")} {pricePeriod}
-</p>
-            <p className="mt-3 text-sm text-muted-foreground">{description}</p>
+            <h3
+              style={{ fontFamily: "'Alatsi', sans-serif", fontWeight: 400 }}
+              className="text-2xl tracking-tight"
+            >
+              {title}
+            </h3>
+            <p className="mt-1 text-lg font-semibold text-foreground">
+              {Number(price).toLocaleString("de-DE")} {pricePeriod}
+            </p>
+            <p
+              style={{ fontFamily: "'Quicksand', sans-serif", fontWeight: 400 }}
+              className="mt-3 text-sm text-muted-foreground"
+            >
+              {description}
+            </p>
           </div>
 
           {/* Stats */}
