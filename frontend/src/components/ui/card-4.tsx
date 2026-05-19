@@ -98,9 +98,13 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
           </div>
 
           {/* Button */}
-          <Button onClick={onActionClick} className="w-full">
-            {actionLabel}
-          </Button>
+          <Button
+  onClick={onActionClick}
+  className="w-full"
+  style={{ fontFamily: "'Alatsi', sans-serif", fontWeight: 400 }}
+>
+  {actionLabel}
+</Button>
         </div>
       </div>
     );
