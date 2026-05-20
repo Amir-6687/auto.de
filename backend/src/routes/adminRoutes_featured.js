@@ -5,6 +5,7 @@ const adminCarController = require("../controllers/adminCarController");
 const contactMessageController = require("../controllers/contactMessageController");
 const settingsController = require("../controllers/settingsController");
 const statsController = require("../controllers/statsController");
+const featuredCarController = require("../controllers/featuredCarController");
 
 router.get("/stats", statsController.getDashboard);
 
@@ -22,5 +23,10 @@ router.delete("/messages/:id", contactMessageController.remove);
 
 router.get("/settings", settingsController.get);
 router.put("/settings", settingsController.update);
+
+// ── Featured Cars ──
+router.get("/featured", featuredCarController.getFeatured);
+router.post("/featured", featuredCarController.addFeatured);
+router.delete("/featured/:id", featuredCarController.removeFeatured);
 
 module.exports = router;
