@@ -59,11 +59,6 @@ export default function AdminFeaturedPage() {
     load();
   }
 
-  const featuredCarIds = new Set([
-    ...carousel.map(f => f.carId._id),
-    ...top4.map(f => f.carId._id),
-  ]);
-
   const filteredCars = allCars.filter(car => {
     const q = search.toLowerCase();
     return (
@@ -77,7 +72,7 @@ export default function AdminFeaturedPage() {
     <div className="space-y-2">
       {items.length === 0 && (
         <p className="text-sm text-zinc-500 py-4 text-center border border-dashed rounded-lg">
-          هنوز خودرویی اضافه نشده
+          Noch keine Fahrzeuge hinzugefügt
         </p>
       )}
       {items.map((f) => (
@@ -97,7 +92,7 @@ export default function AdminFeaturedPage() {
             onClick={() => removeFromSection(f._id)}
             className="text-xs text-red-500 hover:text-red-700 px-2 py-1 rounded border border-red-200 hover:border-red-400 transition"
           >
-            حذف
+            Entfernen
           </button>
         </div>
       ))}
@@ -110,7 +105,7 @@ export default function AdminFeaturedPage() {
       <div>
         <h1 className="text-2xl font-semibold">Featured Cars</h1>
         <p className="text-sm text-zinc-500 mt-1">
-          انتخاب خودروهایی که در صفحه اصلی نمایش داده می‌شوند.
+          Wählen Sie Fahrzeuge aus, die auf der Startseite angezeigt werden.
         </p>
       </div>
 
@@ -128,18 +123,18 @@ export default function AdminFeaturedPage() {
         </div>
       </div>
 
-      {/* لیست همه خودروها */}
+      {/* Alle Fahrzeuge */}
       <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
-        <h2 className="font-semibold mb-3">همه خودروها</h2>
+        <h2 className="font-semibold mb-3">Alle Fahrzeuge</h2>
         <input
-          placeholder="جستجو بر اساس نام، برند یا مدل..."
+          placeholder="Suche nach Name, Marke oder Modell..."
           value={search}
           onChange={e => setSearch(e.target.value)}
           className="w-full mb-4 px-3 py-2 text-sm border border-zinc-200 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800"
         />
 
         {loading ? (
-          <p className="text-sm text-zinc-500">در حال بارگذاری...</p>
+          <p className="text-sm text-zinc-500">Wird geladen...</p>
         ) : (
           <div className="space-y-2 max-h-[500px] overflow-y-auto">
             {filteredCars.map(car => {

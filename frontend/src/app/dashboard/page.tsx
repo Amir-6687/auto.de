@@ -3,17 +3,69 @@
 import HeroSection from "@/components/HeroSection";
 import VehicleFilterBox from "@/components/VehicleFilterBox";
 import Slideshow from "@/components/ui/slideshow";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavbar } from "@/context/NavbarContext";
 import { PropertyCard } from "@/components/ui/card-4";
 import CarsCarousel from "@/components/ui/CarsCarousel";
 
+type Car = {
+  _id: string;
+  title: string;
+  brand?: string;
+  model?: string;
+  price?: number;
+  coverImage?: string;
+  images?: string[];
+  mileage?: number;
+  fuelType?: string;
+  power?: number;
+  vehicleType?: string;
+  color?: string;
+};
+
+type Featured = {
+  _id: string;
+  carId: Car;
+  section: string;
+};
+
+// fallback اگه ادمین top4 انتخاب نکرده
+const FALLBACK_TOP4 = [
+  { imageUrl: "/slider/audi-e-tron-GT.jpg", title: "Audi e‑tron GT", price: 89900, description: "Electric performance with luxury comfort.", stats: [{ label: "Range", value: "480 km" }, { label: "Rating", value: "4.9" }] },
+  { imageUrl: "/slider/Kia.webp", title: "Kia Stinger", price: 42500, description: "Sporty design and powerful driving.", stats: [{ label: "HP", value: "365" }, { label: "Rating", value: "4.8" }] },
+  { imageUrl: "/slider/skoda.jpg", title: "Skoda Kodiaq", price: 38900, description: "Spacious SUV with modern features.", stats: [{ label: "Seats", value: 7 }, { label: "Rating", value: "4.7" }] },
+  { imageUrl: "/slider/peugeot.jpg", title: "Peugeot 3008", price: 35600, description: "Elegant crossover with premium interior.", stats: [{ label: "Hybrid", value: "Yes" }, { label: "Rating", value: "4.6" }] },
+];
+
 export default function Dashboard() {
   const { setHidden } = useNavbar();
+  const [top4, setTop4] = useState<any[]>([]);
 
   useEffect(() => {
     setHidden(false);
     return () => setHidden(false);
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/admin/featured?section=top4")
+      .then(res => res.json())
+      .then((data: Featured[]) => {
+        if (data.length > 0) {
+          setTop4(data.map(f => ({
+            imageUrl: f.carId.coverImage || f.carId.images?.[0] || "",
+            title: f.carId.title,
+            price: f.carId.price || 0,
+            description: "",
+            stats: [
+              { label: "Brand", value: f.carId.brand || "—" },
+              { label: "Model", value: f.carId.model || "—" },
+            ],
+          })));
+        } else {
+          setTop4(FALLBACK_TOP4);
+        }
+      })
+      .catch(() => setTop4(FALLBACK_TOP4));
   }, []);
 
   return (
@@ -44,59 +96,20 @@ export default function Dashboard() {
           </h2>
         </div>
 
-        {/* Cards Section */}
+        {/* Top 4 Cards */}
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
-          <PropertyCard
-            imageUrl="/slider/audi-e-tron-GT.jpg"
-            title="Audi e‑tron GT"
-            price={89900}
-            pricePeriod="€"
-            description="Electric performance with luxury comfort."
-            stats={[
-              { label: "Range", value: "480 km" },
-              { label: "Rating", value: "4.9" },
-            ]}
-            actionLabel="View"
-          />
-
-          <PropertyCard
-            imageUrl="/slider/Kia.webp"
-            title="Kia Stinger"
-            price={42500}
-            pricePeriod="€"
-            description="Sporty design and powerful driving."
-            stats={[
-              { label: "HP", value: "365" },
-              { label: "Rating", value: "4.8" },
-            ]}
-            actionLabel="View"
-          />
-
-          <PropertyCard
-            imageUrl="/slider/skoda.jpg"
-            title="Skoda Kodiaq"
-            price={38900}
-            pricePeriod="€"
-            description="Spacious SUV with modern features."
-            stats={[
-              { label: "Seats", value: 7 },
-              { label: "Rating", value: "4.7" },
-            ]}
-            actionLabel="View"
-          />
-
-          <PropertyCard
-            imageUrl="/slider/peugeot.jpg"
-            title="Peugeot 3008"
-            price={35600}
-            pricePeriod="€"
-            description="Elegant crossover with premium interior."
-            stats={[
-              { label: "Hybrid", value: "Yes" },
-              { label: "Rating", value: "4.6" },
-            ]}
-            actionLabel="View"
-          />
+          {top4.map((car, i) => (
+            <PropertyCard
+              key={i}
+              imageUrl={car.imageUrl}
+              title={car.title}
+              price={car.price}
+              pricePeriod="€"
+              description={car.description}
+              stats={car.stats}
+              actionLabel="View"
+            />
+          ))}
         </div>
 
         <div className="mt-10">
