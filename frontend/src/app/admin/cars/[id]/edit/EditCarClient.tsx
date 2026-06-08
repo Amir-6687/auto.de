@@ -163,42 +163,44 @@ export default function EditCarClient({ id }: { id: string }) {
 
 
       {/* Title + Price */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input
-          name="title"
-          value={car.title}
-          onChange={handleChange}
-          className="p-2 border rounded bg-gray-200 text-black"
-        />
-        <input
-          name="price"
-          value={car.price}
-          onChange={handleChange}
-          className="p-2 border rounded bg-gray-200 text-black"
-        />
-      </div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <input
+    name="title"
+    placeholder="Titel"
+    value={car.title}
+    onChange={handleChange}
+    className="p-2 border rounded bg-gray-200 text-black"
+  />
+  <input
+    name="price"
+    placeholder="Preis (€)"
+    value={car.price}
+    onChange={handleChange}
+    className="p-2 border rounded bg-gray-200 text-black"
+  />
+</div>
 
-      {/* Brand / Model / Mileage */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <input name="brand" value={car.brand} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="model" value={car.model} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="mileage" value={car.mileage} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-      </div>
+{/* Brand / Model / Mileage */}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <input name="brand" placeholder="Marke" value={car.brand} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="model" placeholder="Modell" value={car.model} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="mileage" placeholder="Kilometerstand" value={car.mileage} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+</div>
 
-      {/* Details */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <input name="condition" value={car.condition} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="firstRegistration" value={car.firstRegistration} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="fuelType" value={car.fuelType} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="power" value={car.power} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="gearbox" value={car.gearbox} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="vehicleType" value={car.vehicleType} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="doors" value={car.doors} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="huUntil" value={car.huUntil} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="emissionSticker" value={car.emissionSticker} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="emissionClass" value={car.emissionClass} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-        <input name="color" value={car.color} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
-      </div>
+{/* Details */}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <input name="condition" placeholder="Fahrzeugzustand" value={car.condition} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="firstRegistration" placeholder="Erstzulassung" value={car.firstRegistration} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="fuelType" placeholder="Kraftstoffart" value={car.fuelType} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="power" placeholder="Leistung (PS)" value={car.power} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="gearbox" placeholder="Getriebe" value={car.gearbox} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="vehicleType" placeholder="Fahrzeugtyp" value={car.vehicleType} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="doors" placeholder="Anzahl Türen" value={car.doors} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="huUntil" placeholder="HU bis" value={car.huUntil} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="emissionSticker" placeholder="Umweltplakette" value={car.emissionSticker} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="emissionClass" placeholder="Schadstoffklasse" value={car.emissionClass} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+  <input name="color" placeholder="Außenfarbe" value={car.color} onChange={handleChange} className="p-2 border rounded bg-gray-200 text-black" />
+</div>
 
       {/* Features */}
       <div>
