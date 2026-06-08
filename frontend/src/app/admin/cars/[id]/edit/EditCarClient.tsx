@@ -37,7 +37,7 @@ export default function EditCarClient({ id }: { id: string }) {
   // -------------------------------
   useEffect(() => {
     async function loadCar() {
-      const res = await fetch(`${API_URL}/cars/${id}`);
+      const res = await fetch(`${API_URL}/cars/admin/${id}`);
       const data = await res.json();
       
       // ✅ normalize - همه فیلدها مقدار پیش‌فرض دارن
@@ -96,21 +96,25 @@ export default function EditCarClient({ id }: { id: string }) {
   // -------------------------------
   // آپلود عکس‌های جدید
   // -------------------------------
-  async function uploadNewImages() {
-    if (newImages.length === 0) return [];
-
+  async function uploadNewImages(): Promise<string[]> { // ✅ return type مشخص
+    if (newImages.length === 0) return []; // ✅ همیشه array برمیگردونه
+  
     const formData = new FormData();
     newImages.forEach((img) => formData.append("images", img));
-
+  
     const res = await fetch(`${API_URL}/upload`, {
       method: "POST",
       body: formData,
     });
-
+  
+    if (!res.ok) {
+      console.error("Upload failed:", res.status);
+      return []; // ✅ در صورت خطا array خالی برگردون
+    }
+  
     const data = await res.json();
-    return data.urls;
+    return data.urls ?? []; // ✅ اگه urls نبود، [] بده
   }
-
   // -------------------------------
   // حذف عکس قدیمی
   // -------------------------------
@@ -130,18 +134,18 @@ export default function EditCarClient({ id }: { id: string }) {
   // -------------------------------
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
+  
     // 1) آپلود عکس‌های جدید
-    const newUrls = await uploadNewImages();
-
+    const newUrls = await uploadNewImages() ?? []; // ✅ اگه null/undefined بود، [] بده
+  
     // 2) ترکیب عکس‌های قدیمی + جدید
-    const finalImages = [...car.images, ...newUrls];
-
+    const finalImages = [...(car.images ?? []), ...(newUrls ?? [])]; // ✅ هر دو چک میشن
+  
     // 3) انتخاب کاور
     const finalCover =
       coverImage ||
       (finalImages.length > 0 ? finalImages[0] : null);
-
+  
     // 4) ارسال PUT
     await fetch(`${API_URL}/cars/${id}`, {
       method: "PUT",
@@ -152,9 +156,8 @@ export default function EditCarClient({ id }: { id: string }) {
         coverImage: finalCover,
       }),
     });
-
-    router.push("/cars");
-
+  
+    router.push("/admin/cars"); // ✅ به admin برگرده نه /cars
   };
 
   return (

@@ -69,7 +69,7 @@ export default function CarsCarousel() {
       .then((data: Featured[]) => {
         if (data.length > 0) {
           setCars(data.map(f => ({
-            imageUrl: f.carId.coverImage || f.carId.images?.[0] || "/placeholder-car.jpg", // ✅ fallback
+            imageUrl: f.carId.coverImage || f.carId.images?.[0] || "" ,
             title: f.carId.title,
             price: f.carId.price || 0,
             description: "",
