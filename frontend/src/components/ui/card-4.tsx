@@ -49,13 +49,19 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
         {...props}
       >
         {/* Image */}
-        <div className="aspect-[4/3] overflow-hidden">
-          <img
-            src={imageUrl}
-            alt={imageAlt || title}
-            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-          />
-        </div>
+<div className="aspect-[4/3] overflow-hidden">
+  {imageUrl ? (  // ✅ چک کردن خالی نبودن
+    <img
+      src={imageUrl}
+      alt={imageAlt || title}
+      className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+    />
+  ) : (
+    <div className="h-full w-full bg-gray-200 flex items-center justify-center">
+      <span className="text-gray-400 text-sm">No Image</span>
+    </div>
+  )}
+</div>
 
         {/* Content */}
         <div className="flex flex-1 flex-col p-6">
