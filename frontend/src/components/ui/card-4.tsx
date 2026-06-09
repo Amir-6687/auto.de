@@ -113,17 +113,16 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
           </div>
 
           {/* Button */}
-          <button
-  type="button"
+          <Button
   onClick={() => {
-    console.log("onActionClick:", onActionClick);
-    console.log("href:", href);
     if (onActionClick) onActionClick();
+    else if (href) router.push(href);
   }}
-  className="w-full py-2 bg-red-500 text-white rounded"
+  className="w-full"
+  style={{ fontFamily: "'Alatsi', sans-serif", fontWeight: 400 }}
 >
   {actionLabel}
-</button>
+</Button>
         </div>
       </div>
     );
