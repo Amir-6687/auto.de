@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { motion, useInView } from "framer-motion";
 import { PropertyCard } from "@/components/ui/card-4";
 
@@ -51,17 +52,15 @@ const cardVariants = {
   }),
 };
 
+
 export default function CarsCarousel() {
   const [index, setIndex] = useState(0);
   const [cars, setCars] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  // ✅ ref برای تشخیص scroll
   const ref = useRef(null);
-  const isInView = useInView(ref, { 
-    once: true,       // فقط یک بار اجرا بشه
-    amount: 0.2,      // وقتی 20% المان visible شد
-  });
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   useEffect(() => {
     fetch("/api/admin/featured?section=carousel")
@@ -69,7 +68,8 @@ export default function CarsCarousel() {
       .then((data: Featured[]) => {
         if (data.length > 0) {
           setCars(data.map(f => ({
-            imageUrl: f.carId.coverImage || f.carId.images?.[0] || "" ,
+            id: f.carId._id,  // ✅
+            imageUrl: f.carId.coverImage || f.carId.images?.[0] || "",
             title: f.carId.title,
             price: f.carId.price || 0,
             description: "",
@@ -91,29 +91,21 @@ export default function CarsCarousel() {
   const visibleCars = cars.slice(index, index + 4);
 
   if (loading) return (
-    <div className="h-64 flex items-center justify-center text-white">
-      Loading...
-    </div>
+    <div className="h-64 flex items-center justify-center text-white">Loading...</div>
   );
 
   return (
     <div className="relative mt-10" ref={ref}>
       <div className="max-w-6xl mx-auto relative">
-
-        {/* ✅ گرید کارت‌ها با انیمیشن */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {visibleCars.map((car, i) => (
-  <motion.div
-    key={i}
-    initial={{ opacity: 0, y: 60 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: 0.1 }}
-    transition={{
-      delay: i * 0.15,
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    }}
-  >
+          {visibleCars.map((car, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ delay: i * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
               <PropertyCard
                 imageUrl={car.imageUrl}
                 title={car.title}
@@ -122,23 +114,14 @@ export default function CarsCarousel() {
                 description={car.description}
                 stats={car.stats}
                 actionLabel="View"
+                onActionClick={() => car.id && router.push(`/cars/${car.id}`)}  // ✅
               />
             </motion.div>
           ))}
         </div>
 
-        <button 
-          onClick={prev} 
-          className="absolute -left-20 top-1/2 -translate-y-1/2 text-white text-4xl z-50 bg-black/40 px-4 py-2 rounded-full hover:bg-black/60 transition"
-        >
-          ←
-        </button>
-        <button 
-          onClick={next} 
-          className="absolute -right-20 top-1/2 -translate-y-1/2 text-white text-4xl z-50 bg-black/40 px-4 py-2 rounded-full hover:bg-black/60 transition"
-        >
-          →
-        </button>
+        <button onClick={prev} className="absolute -left-20 top-1/2 -translate-y-1/2 text-white text-4xl z-50 bg-black/40 px-4 py-2 rounded-full hover:bg-black/60 transition">←</button>
+        <button onClick={next} className="absolute -right-20 top-1/2 -translate-y-1/2 text-white text-4xl z-50 bg-black/40 px-4 py-2 rounded-full hover:bg-black/60 transition">→</button>
       </div>
     </div>
   );
