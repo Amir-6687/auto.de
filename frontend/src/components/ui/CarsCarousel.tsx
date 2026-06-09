@@ -66,18 +66,25 @@ export default function CarsCarousel() {
     fetch("/api/admin/featured?section=carousel")
       .then(res => res.json())
       .then((data: Featured[]) => {
+        console.log("API response:", JSON.stringify(data, null, 2));
         if (data.length > 0) {
-          setCars(data.map(f => ({
-            id: f.carId._id,  // ✅
-            imageUrl: f.carId.coverImage || f.carId.images?.[0] || "",
-            title: f.carId.title,
-            price: f.carId.price || 0,
-            description: "",
-            stats: [
-              { label: "Brand", value: f.carId.brand || "—" },
-              { label: "Model", value: f.carId.model || "—" },
-            ],
-          })));
+          setCars(data.map(f => {
+            console.log("f.carId:", f.carId);
+            console.log("f.carId._id:", f.carId?._id);
+            const car = {
+              id: f.carId?._id || (typeof f.carId === 'string' ? f.carId : undefined),
+              imageUrl: f.carId?.coverImage || f.carId?.images?.[0] || "",
+              title: f.carId?.title || "",
+              price: f.carId?.price || 0,
+              description: "",
+              stats: [
+                { label: "Brand", value: f.carId?.brand || "—" },
+                { label: "Model", value: f.carId?.model || "—" },
+              ],
+            };
+            console.log("mapped car:", car);
+            return car;
+          }));
         } else {
           setCars(FALLBACK_CARS);
         }
@@ -107,15 +114,18 @@ export default function CarsCarousel() {
               transition={{ delay: i * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               <PropertyCard
-                imageUrl={car.imageUrl}
-                title={car.title}
-                price={car.price}
-                pricePeriod="€"
-                description={car.description}
-                stats={car.stats}
-                actionLabel="View"
-                onActionClick={() => car.id && router.push(`/cars/${car.id}`)}  // ✅
-              />
+  imageUrl={car.imageUrl}
+  title={car.title}
+  price={car.price}
+  pricePeriod="€"
+  description={car.description}
+  stats={car.stats}
+  actionLabel="View"
+  onActionClick={() => {
+    console.log("clicked car id:", car.id);
+    if (car.id) router.push(`/cars/${car.id}`);
+  }}
+/>
             </motion.div>
           ))}
         </div>

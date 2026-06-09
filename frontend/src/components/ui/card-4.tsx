@@ -3,14 +3,14 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 interface Stat {
   label: string;
   value: string | number;
 }
 
-export interface PropertyCardProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface PropertyCardProps extends React.HTMLAttributes<HTMLDivElement> {
   imageUrl: string;
   imageAlt?: string;
   title: string;
@@ -19,6 +19,7 @@ export interface PropertyCardProps
   description: string;
   stats: Stat[];
   actionLabel: string;
+  href?: string;
   onActionClick?: () => void;
 }
 
@@ -34,20 +35,28 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
       description,
       stats,
       actionLabel,
+      href,
       onActionClick,
-      ...props
+      onClick,      // ✅ جدا کن
+      ...props      // دیگه href و onActionClick توش نیست
     },
     ref
   ) => {
+    const router = useRouter();
     return (
       <div
-        ref={ref}
-        className={cn(
-          "flex max-w-sm flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm",
-          className
-        )}
-        {...props}
-      >
+  ref={ref}
+  className={cn(
+    "flex max-w-sm flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm",
+    className
+  )}
+  {...props}
+  onClick={(e) => {
+    e.stopPropagation();
+    if (href) router.push(href);
+  }}
+  style={{ cursor: href ? "pointer" : "default" }}
+>
         {/* Image */}
 <div className="aspect-[4/3] overflow-hidden">
   {imageUrl ? (  // ✅ چک کردن خالی نبودن
@@ -104,13 +113,17 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
           </div>
 
           {/* Button */}
-          <Button
-  onClick={onActionClick}
-  className="w-full"
-  style={{ fontFamily: "'Alatsi', sans-serif", fontWeight: 400 }}
+          <button
+  type="button"
+  onClick={() => {
+    console.log("onActionClick:", onActionClick);
+    console.log("href:", href);
+    if (onActionClick) onActionClick();
+  }}
+  className="w-full py-2 bg-red-500 text-white rounded"
 >
   {actionLabel}
-</Button>
+</button>
         </div>
       </div>
     );

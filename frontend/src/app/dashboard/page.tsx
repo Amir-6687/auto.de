@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useNavbar } from "@/context/NavbarContext";
 import { PropertyCard } from "@/components/ui/card-4";
 import CarsCarousel from "@/components/ui/CarsCarousel";
+import { useRouter } from "next/navigation";
 
 type Car = {
   _id: string;
@@ -40,6 +41,7 @@ const FALLBACK_TOP4 = [
 export default function Dashboard() {
   const { setHidden } = useNavbar();
   const [top4, setTop4] = useState<any[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     setHidden(false);
@@ -52,6 +54,7 @@ export default function Dashboard() {
       .then((data: Featured[]) => {
         if (data.length > 0) {
           setTop4(data.map(f => ({
+            id: f.carId._id,  // ✅
             imageUrl: f.carId.coverImage || f.carId.images?.[0] || "",
             title: f.carId.title,
             price: f.carId.price || 0,
@@ -98,18 +101,19 @@ export default function Dashboard() {
 
         {/* Top 4 Cards */}
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
-          {top4.map((car, i) => (
-            <PropertyCard
-              key={i}
-              imageUrl={car.imageUrl}
-              title={car.title}
-              price={car.price}
-              pricePeriod="€"
-              description={car.description}
-              stats={car.stats}
-              actionLabel="View"
-            />
-          ))}
+        {top4.map((car, i) => (
+  <PropertyCard
+    key={i}
+    imageUrl={car.imageUrl}
+    title={car.title}
+    price={car.price}
+    pricePeriod="€"
+    description={car.description}
+    stats={car.stats}
+    actionLabel="View"
+    onActionClick={() => car.id && router.push(`/cars/${car.id}`)}  // ✅
+  />
+))}
         </div>
 
         <div className="mt-10">
