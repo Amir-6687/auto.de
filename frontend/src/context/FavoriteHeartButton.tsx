@@ -29,19 +29,33 @@ export default function FavoriteHeartButton({
     await toggleFavorite(carId);
 
     // فقط وقتی به علاقه‌مندی‌ها اضافه میشه (نه حذف) انیمیشن پرواز اجرا شه
-    if (wasFavorite || isFlying) return;
+    if (wasFavorite || isFlying) {
+      console.log("[Favorite] Skip fly: wasFavorite =", wasFavorite, "isFlying =", isFlying);
+      return;
+    }
 
     const heart = heartRef.current;
     const dot = flyingDotRef.current;
     const target = flyTarget.current;
-    if (!heart || !dot || !target) return;
+
+    console.log("[Favorite] heart:", heart, "dot:", dot, "target:", target);
+
+    if (!heart || !dot || !target) {
+      console.warn("[Favorite] Missing ref, aborting fly animation");
+      return;
+    }
 
     setIsFlying(true);
 
-    const from = heart.getBoundingClientRect();
-    const to = target.getBoundingClientRect();
-    const dx = to.left + to.width / 2 - (from.left + from.width / 2);
-    const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+    const heartRect = heart.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+
+    // مبدا واقعی: مرکز خود آیکون قلب کلیک‌شده (نسبت به viewport، چون dot fixed است)
+    const startX = heartRect.left + heartRect.width / 2 - 10; // 10 = نصف عرض آیکون 20px
+    const startY = heartRect.top + heartRect.height / 2 - 10;
+
+    const dx = targetRect.left + targetRect.width / 2 - (startX + 10);
+    const dy = targetRect.top + targetRect.height / 2 - (startY + 10);
 
     // پاپ کوچک روی خود آیکون قلب
     animate(
@@ -50,12 +64,19 @@ export default function FavoriteHeartButton({
       { duration: 0.35, ease: "easeOut" }
     );
 
-    // نقطه شناور (کپی کوچک قلب) که به سمت navbar پرواز می‌کند
+    // اول دات رو دقیقاً روی مبدا (قلب کلیک‌شده) بدون انیمیشن قرار بده
+    await animate(
+      dot,
+      { x: startX, y: startY, opacity: 1, scale: 1 },
+      { duration: 0 }
+    );
+
+    // سپس از همون نقطه به سمت navbar پرواز کن
     await animate(
       dot,
       {
-        x: dx,
-        y: dy,
+        x: startX + dx,
+        y: startY + dy,
         scale: [1, 1, 0.3],
         opacity: [1, 1, 0],
       },
@@ -86,7 +107,8 @@ export default function FavoriteHeartButton({
       {/* نقطه‌ی غیرقابل‌مشاهده‌ای که هنگام افزودن، به سمت navbar پرواز می‌کند */}
       <motion.div
         ref={flyingDotRef}
-        className="fixed top-3 left-3 z-[60] pointer-events-none opacity-0"
+        className="fixed top-3 left-3 z-[60] pointer-events-none"
+        initial={{ opacity: 0 }}
         style={{ willChange: "transform, opacity" }}
       >
         <HeartIcon filled />
