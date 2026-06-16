@@ -30,12 +30,12 @@ type Featured = {
   section: string;
 };
 
-// fallback اگه ادمین top4 انتخاب نکرده
+// fallback اگه ادمین top4 انتخاب نکرده — ✅ هر آیتم id ثابت و یکتا دارد
 const FALLBACK_TOP4 = [
-  { imageUrl: "/slider/audi-e-tron-GT.jpg", title: "Audi e‑tron GT", price: 89900, description: "Electric performance with luxury comfort.", stats: [{ label: "Range", value: "480 km" }, { label: "Rating", value: "4.9" }] },
-  { imageUrl: "/slider/Kia.webp", title: "Kia Stinger", price: 42500, description: "Sporty design and powerful driving.", stats: [{ label: "HP", value: "365" }, { label: "Rating", value: "4.8" }] },
-  { imageUrl: "/slider/skoda.jpg", title: "Skoda Kodiaq", price: 38900, description: "Spacious SUV with modern features.", stats: [{ label: "Seats", value: 7 }, { label: "Rating", value: "4.7" }] },
-  { imageUrl: "/slider/peugeot.jpg", title: "Peugeot 3008", price: 35600, description: "Elegant crossover with premium interior.", stats: [{ label: "Hybrid", value: "Yes" }, { label: "Rating", value: "4.6" }] },
+  { id: "fallback-top-1", imageUrl: "/slider/audi-e-tron-GT.jpg", title: "Audi e‑tron GT", price: 89900, description: "Electric performance with luxury comfort.", stats: [{ label: "Range", value: "480 km" }, { label: "Rating", value: "4.9" }] },
+  { id: "fallback-top-2", imageUrl: "/slider/Kia.webp", title: "Kia Stinger", price: 42500, description: "Sporty design and powerful driving.", stats: [{ label: "HP", value: "365" }, { label: "Rating", value: "4.8" }] },
+  { id: "fallback-top-3", imageUrl: "/slider/skoda.jpg", title: "Skoda Kodiaq", price: 38900, description: "Spacious SUV with modern features.", stats: [{ label: "Seats", value: 7 }, { label: "Rating", value: "4.7" }] },
+  { id: "fallback-top-4", imageUrl: "/slider/peugeot.jpg", title: "Peugeot 3008", price: 35600, description: "Elegant crossover with premium interior.", stats: [{ label: "Hybrid", value: "Yes" }, { label: "Rating", value: "4.6" }] },
 ];
 
 export default function Dashboard() {
@@ -101,9 +101,10 @@ export default function Dashboard() {
 
         {/* Top 4 Cards */}
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
-        {top4.map((car, i) => (
+        {top4.map((car) => (
   <PropertyCard
-    key={i}
+    key={car.id}
+    carId={car.id}
     imageUrl={car.imageUrl}
     title={car.title}
     price={car.price}
