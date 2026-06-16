@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import FavoriteHeartButton from "@/context/FavoriteHeartButton";
 
 interface Stat {
   label: string;
@@ -21,6 +22,7 @@ export interface PropertyCardProps extends React.HTMLAttributes<HTMLDivElement> 
   actionLabel: string;
   href?: string;
   onActionClick?: () => void;
+  carId: string; // ✅ جدید: شناسه آگهی برای ذخیره در علاقه‌مندی‌ها
 }
 
 const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
@@ -37,6 +39,7 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
       actionLabel,
       href,
       onActionClick,
+      carId,
       onClick,      // ✅ جدا کن
       ...props      // دیگه href و onActionClick توش نیست
     },
@@ -58,7 +61,10 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
   style={{ cursor: href ? "pointer" : "default" }}
 >
         {/* Image */}
-<div className="aspect-[4/3] overflow-hidden">
+<div className="relative aspect-[4/3] overflow-hidden">
+  {/* ✅ آیکون قلب علاقه‌مندی */}
+  <FavoriteHeartButton carId={carId} />
+
   {imageUrl ? (  // ✅ چک کردن خالی نبودن
     <img
       src={imageUrl}

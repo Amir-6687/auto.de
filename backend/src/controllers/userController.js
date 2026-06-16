@@ -166,3 +166,57 @@ exports.registerUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+// GET /api/users/:userId/favorites  -> لیست آگهی‌های ذخیره‌شده کاربر
+exports.getFavorites = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId)
+      .populate("favorites")
+      .lean();
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json({ favorites: user.favorites || [] });
+  } catch (err) {
+    console.error("getFavorites", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// POST /api/users/:userId/favorites  body: { carId }  -> اضافه کردن به علاقه‌مندی‌ها
+exports.addFavorite = async (req, res) => {
+  try {
+    const { carId } = req.body;
+    if (!carId) return res.status(400).json({ error: "carId required" });
+
+    const user = await User.findById(req.params.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const exists = user.favorites.some((id) => id.toString() === carId);
+    if (!exists) {
+      user.favorites.push(carId);
+      await user.save();
+    }
+
+    res.json({ favorites: user.favorites });
+  } catch (err) {
+    console.error("addFavorite", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// DELETE /api/users/:userId/favorites/:carId  -> حذف از علاقه‌مندی‌ها
+exports.removeFavorite = async (req, res) => {
+  try {
+    const { userId, carId } = req.params;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    user.favorites = user.favorites.filter((id) => id.toString() !== carId);
+    await user.save();
+
+    res.json({ favorites: user.favorites });
+  } catch (err) {
+    console.error("removeFavorite", err);
+    res.status(500).json({ error: err.message });
+  }
+};

@@ -28,30 +28,13 @@ type Featured = {
   order: number;
 };
 
+// ✅ هر آیتم fallback هم یک id ثابت و یکتا دارد
 const FALLBACK_CARS = [
-  { imageUrl: "/slider/audi-e-tron-GT.jpg", title: "Audi e‑tron GT", price: 89900, description: "Electric performance with luxury comfort.", stats: [{ label: "Range", value: "480 km" }, { label: "Rating", value: "4.9" }] },
-  { imageUrl: "/slider/Dacia.webp", title: "Dacia Duster", price: 18500, description: "Reliable and affordable SUV.", stats: [{ label: "Seats", value: 5 }, { label: "Rating", value: "4.2" }] },
-  { imageUrl: "/slider/Fiat.jpg", title: "Fiat 500", price: 16900, description: "Compact and stylish city car.", stats: [{ label: "HP", value: 85 }, { label: "Rating", value: "4.3" }] },
-  { imageUrl: "/slider/Ford.webp", title: "Ford Electric", price: 42000, description: "Modern electric SUV with great range.", stats: [{ label: "Range", value: "420 km" }, { label: "Rating", value: "4.6" }] },
+  { id: "fallback-1", imageUrl: "/slider/audi-e-tron-GT.jpg", title: "Audi e‑tron GT", price: 89900, description: "Electric performance with luxury comfort.", stats: [{ label: "Range", value: "480 km" }, { label: "Rating", value: "4.9" }] },
+  { id: "fallback-2", imageUrl: "/slider/Dacia.webp", title: "Dacia Duster", price: 18500, description: "Reliable and affordable SUV.", stats: [{ label: "Seats", value: 5 }, { label: "Rating", value: "4.2" }] },
+  { id: "fallback-3", imageUrl: "/slider/Fiat.jpg", title: "Fiat 500", price: 16900, description: "Compact and stylish city car.", stats: [{ label: "HP", value: 85 }, { label: "Rating", value: "4.3" }] },
+  { id: "fallback-4", imageUrl: "/slider/Ford.webp", title: "Ford Electric", price: 42000, description: "Modern electric SUV with great range.", stats: [{ label: "Range", value: "420 km" }, { label: "Rating", value: "4.6" }] },
 ];
-
-// ✅ انیمیشن هر کارت با تأخیر پشت سر هم
-const cardVariants = {
-  hidden: { 
-    opacity: 0, 
-    y: 60,
-  },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.15,      // هر کارت 0.15s بعد از قبلی
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1], // ease curve شیک
-    },
-  }),
-};
-
 
 export default function CarsCarousel() {
   const [index, setIndex] = useState(0);
@@ -66,11 +49,8 @@ export default function CarsCarousel() {
     fetch("/api/admin/featured?section=carousel")
       .then(res => res.json())
       .then((data: Featured[]) => {
-        console.log("API response:", JSON.stringify(data, null, 2));
         if (data.length > 0) {
           setCars(data.map(f => {
-            console.log("f.carId:", f.carId);
-            console.log("f.carId._id:", f.carId?._id);
             const car = {
               id: f.carId?._id || (typeof f.carId === 'string' ? f.carId : undefined),
               imageUrl: f.carId?.coverImage || f.carId?.images?.[0] || "",
@@ -82,7 +62,6 @@ export default function CarsCarousel() {
                 { label: "Model", value: f.carId?.model || "—" },
               ],
             };
-            console.log("mapped car:", car);
             return car;
           }));
         } else {
@@ -107,13 +86,14 @@ export default function CarsCarousel() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {visibleCars.map((car, i) => (
             <motion.div
-              key={i}
+              key={car.id || i}
               initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ delay: i * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               <PropertyCard
+  carId={car.id}
   imageUrl={car.imageUrl}
   title={car.title}
   price={car.price}
@@ -122,7 +102,6 @@ export default function CarsCarousel() {
   stats={car.stats}
   actionLabel="View"
   onActionClick={() => {
-    console.log("clicked car id:", car.id);
     if (car.id) router.push(`/cars/${car.id}`);
   }}
 />

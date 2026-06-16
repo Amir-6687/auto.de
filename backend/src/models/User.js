@@ -15,6 +15,10 @@ const UserSchema = new mongoose.Schema(
     },
     isActive: { type: Boolean, default: true },
     googleLoginEnabled: { type: Boolean, default: true },
+    // ✅ NEW: favorite car listings
+    favorites: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "CarListing", default: [] },
+    ],
   },
   { timestamps: true }
 );

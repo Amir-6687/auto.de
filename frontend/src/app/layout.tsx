@@ -6,6 +6,7 @@ import CookieConsent from "@/components/CookieConsent";
 import AuthProvider from "@/components/AuthProvider";
 import { NavbarProvider } from "@/context/NavbarContext";
 import Footer4Col from "@/components/ui/footer-column";
+import { FavoritesProvider } from "@/context/FavoritesContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,13 +41,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          <NavbarProvider>
-            <NavbarWrapper />
-            <CookieConsent />
-            {children}
-            <Footer4Col />
-          </NavbarProvider>
-        </AuthProvider>
+  <FavoritesProvider>
+    <NavbarProvider>
+      <NavbarWrapper />
+      <CookieConsent />
+      {children}
+      <Footer4Col />
+    </NavbarProvider>
+  </FavoritesProvider>
+</AuthProvider>
       </body>
     </html>
   );

@@ -3,8 +3,11 @@
 import { useRef, useEffect, useState } from "react";
 import { AiOutlineLogin } from "react-icons/ai";
 import { IoMdLogOut } from "react-icons/io";
+import { FaHeart } from "react-icons/fa";
 import Image from "next/image";
+import { motion } from "motion/react";
 import { useNavbar } from "@/context/NavbarContext";
+import { useFavorites } from "@/context/FavoritesContext";
 import { signOut, useSession } from "next-auth/react";
 import { LuSearch } from "react-icons/lu";
 import { Combobox } from "./ui/combobox";
@@ -17,6 +20,8 @@ function Navbar() {
   const isLoggedIn = status === "authenticated";
   const role = session?.user?.role;
   const showAdmin = !!role && STAFF_ROLES.has(role);
+
+  const { flyTarget, bump, count } = useFavorites();
 
   const [showSearch, setShowSearch] = useState(false);
 
@@ -105,6 +110,31 @@ function Navbar() {
         >
           <LuSearch size={22} />
         </button>
+
+        {/* ✅ آیکون قلب علاقه‌مندی‌ها — مقصد انیمیشن پرواز */}
+        <a
+          href="/favorites"
+          className="relative text-white hover:text-red-400 transition"
+        >
+          <div ref={flyTarget}>
+            <motion.div
+              animate={bump ? { scale: [1, 1.35, 1] } : { scale: 1 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            >
+              <FaHeart size={20} />
+            </motion.div>
+          </div>
+          {count > 0 && (
+            <motion.span
+              key={count}
+              initial={{ scale: 0.5 }}
+              animate={{ scale: 1 }}
+              className="absolute -top-2 -right-2 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[11px] font-bold"
+            >
+              {count}
+            </motion.span>
+          )}
+        </a>
 
         {!isLoggedIn && (
           <a
