@@ -62,7 +62,7 @@ export default function VehicleFilterBox() {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto bg-white/80 backdrop-blur-xl rounded-xl shadow-lg p-6 mt-6">
+    <div className="w-full max-w-7xl mx-auto bg-white/80 backdrop-blur-xl rounded-xl shadow-lg p-6 mt-6">
 
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex-1 min-w-0">
@@ -80,21 +80,21 @@ export default function VehicleFilterBox() {
       </div>
 
       {/* ✅ ۸ آیکون نوع خودرو، کلیک‌پذیر -> فیلتر مستقیم در /cars */}
-      <div className="flex items-center justify-start gap-6 mb-6 flex-wrap">
+      <div className="flex items-center justify-between gap-4 mb-6 flex-wrap">
         {VEHICLE_TYPES.map((type) => (
           <button
             key={type.key}
             onClick={() => handleTypeIconClick(type.key)}
             className="flex flex-col items-center cursor-pointer hover:opacity-80 transition group"
           >
-            <div className="w-14 h-10 flex items-center justify-center">
+            <div className="w-24 h-20 flex items-center justify-center">
               <img
                 src={type.img}
                 alt={type.label}
                 className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform"
               />
             </div>
-            <span className="text-xs mt-1 text-gray-700">{type.label}</span>
+            <span className="text-sm mt-1 text-gray-700">{type.label}</span>
           </button>
         ))}
       </div>
