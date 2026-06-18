@@ -85,6 +85,10 @@ export default function Dashboard() {
         </div>
 
         <div className="mt-10">
+          <VehicleFilterBox />
+        </div>
+
+        <div className="mt-10">
           <HeroSection />
         </div>
 
@@ -115,10 +119,6 @@ export default function Dashboard() {
     onActionClick={() => car.id && router.push(`/cars/${car.id}`)}  // ✅
   />
 ))}
-        </div>
-
-        <div className="mt-10">
-          <VehicleFilterBox />
         </div>
 
       </div>
