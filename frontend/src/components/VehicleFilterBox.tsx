@@ -1,9 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import BrandBox from "@/components/BrandBox";
 
+// ✅ ۸ نوع خودرو با عکس واقعی (فولدر public/search-car)
+const VEHICLE_TYPES = [
+  { key: "SUV", label: "SUV & Pick-up", img: "/search-car/SUV___Pick-up-removebg-preview.png" },
+  { key: "Limousine", label: "Limousine", img: "/search-car/Limousine-removebg-preview.png" },
+  { key: "Kombi", label: "Kombi", img: "/search-car/Kombi-removebg-preview.png" },
+  { key: "Kleinwagen", label: "Kleinwagen", img: "/search-car/Kleinwagen-removebg-preview.png" },
+  { key: "Van", label: "Van & Kleinbus", img: "/search-car/Van___Kleinbus-removebg-preview.png" },
+  { key: "Coupe", label: "Coupé", img: "/search-car/Coupé-removebg-preview.png" },
+  { key: "Cabrio", label: "Cabrio", img: "/search-car/Cabrio-removebg-preview.png" },
+  { key: "Transporter", label: "Transporter", img: "/search-car/Transporter-removebg-preview.png" },
+];
+
 export default function VehicleFilterBox() {
+  const router = useRouter();
+
   const [filters, setFilters] = useState({
     types: [],
     brands: [],
@@ -26,6 +41,26 @@ export default function VehicleFilterBox() {
       .then(data => setFilters(data));
   }, []);
 
+  // ✅ کلیک روی هر آیکون نوع خودرو -> مستقیم به /cars با فیلتر اعمال‌شده
+  const handleTypeIconClick = (typeKey: string) => {
+    router.push(`/cars?type=${encodeURIComponent(typeKey)}`);
+  };
+
+  // ✅ دکمه Suche با همه فیلترهای انتخاب‌شده در دراپ‌داون‌ها
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (selected.type) params.set("type", selected.type);
+    if (selected.brand) params.set("brand", selected.brand);
+    if (selected.fuel) params.set("fuel", selected.fuel);
+    if (selected.gearbox) params.set("gearbox", selected.gearbox);
+    if (selected.model) params.set("model", selected.model);
+    router.push(`/cars?${params.toString()}`);
+  };
+
+  const handleReset = () => {
+    setSelected({ type: "", brand: "", fuel: "", gearbox: "", model: "" });
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto bg-white/80 backdrop-blur-xl rounded-xl shadow-lg p-6 mt-6">
 
@@ -44,30 +79,25 @@ export default function VehicleFilterBox() {
 
       </div>
 
-      {/* آیکون‌ها زیر تب Fahrzeuge */}
-<div className="flex items-center justify-start gap-6 mb-4">
-
-<div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-  <img src="/Icons/Car-01.png" className="w-14 h-7 object-contain brightness-65" />
-  <span className="text-xs mt-1">SUV</span>
-</div>
-
-<div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-  <img src="/Icons/Car-02.png" className="w-14 h-5 object-contain brightness-65" />
-  <span className="text-xs mt-1">Limousine</span>
-</div>
-
-<div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-  <img src="/Icons/Car-03.png" className="w-14 h-5 object-contain brightness-65" />
-  <span className="text-xs mt-1">Cabrio</span>
-</div>
-
-<div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition">
-  <img src="/Icons/Car-04.png" className="w-14 h-9 object-contain brightness-65" />
-  <span className="text-xs mt-1">Van</span>
-</div>
-
-</div>
+      {/* ✅ ۸ آیکون نوع خودرو، کلیک‌پذیر -> فیلتر مستقیم در /cars */}
+      <div className="flex items-center justify-start gap-6 mb-6 flex-wrap">
+        {VEHICLE_TYPES.map((type) => (
+          <button
+            key={type.key}
+            onClick={() => handleTypeIconClick(type.key)}
+            className="flex flex-col items-center cursor-pointer hover:opacity-80 transition group"
+          >
+            <div className="w-14 h-10 flex items-center justify-center">
+              <img
+                src={type.img}
+                alt={type.label}
+                className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform"
+              />
+            </div>
+            <span className="text-xs mt-1 text-gray-700">{type.label}</span>
+          </button>
+        ))}
+      </div>
 
 
       {/* Filters */}
@@ -133,13 +163,10 @@ export default function VehicleFilterBox() {
 
       {/* Buttons */}
       <div className="flex gap-4 mt-6">
-        <button className="bg-blue-600 text-white px-6 py-3 rounded-lg">
+        <button onClick={handleSearch} className="bg-blue-600 text-white px-6 py-3 rounded-lg">
           Suche
         </button>
-        <button className="bg-gray-200 px-6 py-3 rounded-lg">
-          Detailsuche
-        </button>
-        <button className="bg-gray-200 px-6 py-3 rounded-lg">
+        <button onClick={handleReset} className="bg-gray-200 px-6 py-3 rounded-lg">
           Neue Suche
         </button>
       </div>
