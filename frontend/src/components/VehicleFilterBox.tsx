@@ -79,27 +79,6 @@ export default function VehicleFilterBox() {
 
       </div>
 
-      {/* ✅ ۸ آیکون نوع خودرو، کلیک‌پذیر -> فیلتر مستقیم در /cars */}
-      <div className="flex items-center justify-between gap-2 mb-8 flex-wrap">
-        {VEHICLE_TYPES.map((type) => (
-          <button
-            key={type.key}
-            onClick={() => handleTypeIconClick(type.key)}
-            className="flex flex-col items-center cursor-pointer hover:opacity-80 transition group"
-          >
-            <div className="w-32 h-28 flex items-center justify-center">
-              <img
-                src={type.img}
-                alt={type.label}
-                className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform"
-              />
-            </div>
-            <span className="text-sm mt-2 text-gray-700">{type.label}</span>
-          </button>
-        ))}
-      </div>
-
-
       {/* Filters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
@@ -162,13 +141,33 @@ export default function VehicleFilterBox() {
       </div>
 
       {/* Buttons */}
-      <div className="flex gap-4 mt-6">
+      <div className="flex gap-4 mt-6 mb-8">
         <button onClick={handleSearch} className="bg-blue-600 text-white px-6 py-3 rounded-lg">
           Suche
         </button>
         <button onClick={handleReset} className="bg-gray-200 px-6 py-3 rounded-lg">
           Neue Suche
         </button>
+      </div>
+
+      {/* ✅ ۸ آیکون نوع خودرو — زیر فیلدها، مطابق AutoScout24 */}
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        {VEHICLE_TYPES.map((type) => (
+          <button
+            key={type.key}
+            onClick={() => handleTypeIconClick(type.key)}
+            className="flex flex-col items-center cursor-pointer hover:opacity-80 transition group"
+          >
+            <div className="w-32 h-28 flex items-center justify-center">
+              <img
+                src={type.img}
+                alt={type.label}
+                className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform"
+              />
+            </div>
+            <span className="text-sm mt-2 text-gray-700">{type.label}</span>
+          </button>
+        ))}
       </div>
         </div>
 
