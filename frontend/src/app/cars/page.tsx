@@ -85,7 +85,7 @@ function CarCard({ car }: { car: any }) {
   const brand = car.brand || "";
   const model = car.model || "";
   const titleDisplay = brand && model
-    ? <><span className="font-bold">{brand}</span> <span className="font-normal text-gray-500">{model}</span></>
+    ? <><span className="font-bold">{brand}</span> <span className="font-normal text-gray-700">{model}</span></>
     : <span className="font-bold">{car.title}</span>;
 
   return (
@@ -119,32 +119,32 @@ function CarCard({ car }: { car: any }) {
             <div>
               <h3 className="text-xl leading-tight text-gray-900">{titleDisplay}</h3>
               {car.description && (
-                <p className="text-sm text-gray-400 mt-1 line-clamp-1">{car.description}</p>
+                <p className="text-sm text-gray-700 mt-1 line-clamp-1">{car.description}</p>
               )}
             </div>
             <div className="text-right flex-shrink-0">
               <div className="text-2xl font-bold text-[#003399]">
                 {Number(car.price).toLocaleString("de-DE")} €
               </div>
-              <div className="text-xs text-gray-400 mt-0.5">inkl. 19% MwSt.</div>
+              <div className="text-xs text-gray-700 mt-0.5">inkl. 19% MwSt.</div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 py-4 border-t border-b border-gray-100">
             <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-1.5 text-gray-400 text-xs"><IconSpeed /> Kilometerstand</div>
+              <div className="flex items-center gap-1.5 text-gray-700 text-xs"><IconSpeed /> Kilometerstand</div>
               <span className="text-sm font-semibold text-gray-800">{car.mileage ? Number(car.mileage).toLocaleString("de-DE") + " km" : "—"}</span>
             </div>
             <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-1.5 text-gray-400 text-xs"><IconGear /> Getriebe</div>
+              <div className="flex items-center gap-1.5 text-gray-700 text-xs"><IconGear /> Getriebe</div>
               <span className="text-sm font-semibold text-gray-800">{car.gearbox || "—"}</span>
             </div>
             <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-1.5 text-gray-400 text-xs"><IconFuel /> Kraftstoff</div>
+              <div className="flex items-center gap-1.5 text-gray-700 text-xs"><IconFuel /> Kraftstoff</div>
               <span className="text-sm font-semibold text-gray-800">{car.fuelType || "—"}</span>
             </div>
             <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-1.5 text-gray-400 text-xs"><IconCalendar /> Erstzulassung</div>
+              <div className="flex items-center gap-1.5 text-gray-700 text-xs"><IconCalendar /> Erstzulassung</div>
               <span className="text-sm font-semibold text-gray-800">{car.firstRegistration || "—"}</span>
             </div>
           </div>
