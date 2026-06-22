@@ -41,6 +41,7 @@ export default async function CarPage({
           <CarPriceDisplay
             price={car.price}
             previousPrice={car.previousPrice}
+            showPreviousPrice={car.showPreviousPrice}
             size="lg"
             align="right"
           />

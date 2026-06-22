@@ -4,6 +4,7 @@ export interface Car {
   description: string;
   price: number | string;
   previousPrice?: number | string | null;
+  showPreviousPrice?: boolean;
 
   brand: string;
   model: string;

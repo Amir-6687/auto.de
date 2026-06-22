@@ -59,6 +59,7 @@ export default function Dashboard() {
             title: f.carId.title,
             price: f.carId.price || 0,
             previousPrice: f.carId.previousPrice ?? null,
+            showPreviousPrice: f.carId.showPreviousPrice ?? false,
             description: "",
             stats: [
               { label: "Brand", value: f.carId.brand || "—" },
@@ -114,6 +115,7 @@ export default function Dashboard() {
     title={car.title}
     price={car.price}
     previousPrice={car.previousPrice}
+    showPreviousPrice={car.showPreviousPrice}
     pricePeriod="€"
     description={car.description}
     stats={car.stats}

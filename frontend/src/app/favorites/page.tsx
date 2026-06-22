@@ -13,6 +13,7 @@ type Car = {
   model?: string;
   price?: number;
   previousPrice?: number | null;
+  showPreviousPrice?: boolean;
   coverImage?: string;
   images?: string[];
 };
@@ -68,6 +69,7 @@ export default function FavoritesPage() {
               title={car.title}
               price={car.price || 0}
               previousPrice={car.previousPrice}
+              showPreviousPrice={car.showPreviousPrice}
               pricePeriod="€"
               description=""
               stats={[

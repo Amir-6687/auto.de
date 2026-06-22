@@ -127,6 +127,7 @@ function CarCard({ car }: { car: any }) {
               <CarPriceDisplay
                 price={car.price}
                 previousPrice={car.previousPrice}
+                showPreviousPrice={car.showPreviousPrice}
                 size="md"
               />
               <div className="text-xs text-gray-700 mt-0.5">inkl. 19% MwSt.</div>

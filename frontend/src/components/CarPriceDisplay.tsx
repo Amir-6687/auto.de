@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 type CarPriceDisplayProps = {
   price?: number | string | null;
   previousPrice?: number | string | null;
+  showPreviousPrice?: boolean;
   size?: "sm" | "md" | "lg";
   align?: "left" | "right";
   className?: string;
@@ -10,8 +11,10 @@ type CarPriceDisplayProps = {
 
 export function hasPriceDiscount(
   price?: number | string | null,
-  previousPrice?: number | string | null
+  previousPrice?: number | string | null,
+  showPreviousPrice?: boolean
 ) {
+  if (!showPreviousPrice) return false;
   const current = Number(price);
   const previous = Number(previousPrice);
   return previousPrice != null && !Number.isNaN(previous) && previous > current;
@@ -20,6 +23,7 @@ export function hasPriceDiscount(
 export function CarPriceDisplay({
   price,
   previousPrice,
+  showPreviousPrice = false,
   size = "md",
   align = "right",
   className,
@@ -27,7 +31,7 @@ export function CarPriceDisplay({
   const current = Number(price);
   if (price == null || Number.isNaN(current)) return null;
 
-  const showDiscount = hasPriceDiscount(price, previousPrice);
+  const showDiscount = hasPriceDiscount(price, previousPrice, showPreviousPrice);
 
   const sizeClasses = {
     sm: { current: "text-lg font-bold", old: "text-sm" },

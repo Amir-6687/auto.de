@@ -18,6 +18,7 @@ export interface PropertyCardProps extends React.HTMLAttributes<HTMLDivElement> 
   title: string;
   price: number;
   previousPrice?: number | null;
+  showPreviousPrice?: boolean;
   pricePeriod?: string;
   description: string;
   stats: Stat[];
@@ -36,6 +37,7 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
       title,
       price,
       previousPrice,
+      showPreviousPrice = false,
       pricePeriod = "€",
       description,
       stats,
@@ -93,6 +95,7 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
             <CarPriceDisplay
               price={price}
               previousPrice={previousPrice}
+              showPreviousPrice={showPreviousPrice}
               size="sm"
               align="left"
               className="mt-1"

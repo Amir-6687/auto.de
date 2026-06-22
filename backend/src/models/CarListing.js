@@ -20,6 +20,7 @@ const CarListingSchema = new mongoose.Schema(
     description: String,
     price: Number,
     previousPrice: { type: Number, default: null },
+    showPreviousPrice: { type: Boolean, default: false },
 
     // جزئیات خودرو (مثل Kleinanzeigen)
     brand: String,              // Marke

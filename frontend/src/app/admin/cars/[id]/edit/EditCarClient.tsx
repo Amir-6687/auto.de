@@ -47,6 +47,7 @@ export default function EditCarClient({ id }: { id: string }) {
         description: data.description ?? "",
         price: data.price ?? "",
         previousPrice: data.previousPrice ?? null,
+        showPreviousPrice: data.showPreviousPrice ?? false,
         brand: data.brand ?? "",
         model: data.model ?? "",
         mileage: data.mileage ?? "",
@@ -182,10 +183,23 @@ export default function EditCarClient({ id }: { id: string }) {
     onChange={handleChange}
     className="p-2 border rounded bg-gray-200 text-black"
   />
-  {car.previousPrice != null &&
+  <label className="flex items-center gap-2 text-sm text-[#101828] md:col-span-2">
+    <input
+      type="checkbox"
+      checked={car.showPreviousPrice ?? false}
+      onChange={(e) =>
+        setCar((prev) =>
+          prev ? { ...prev, showPreviousPrice: e.target.checked } : prev
+        )
+      }
+    />
+    Vorherigen Preis für Kunden anzeigen (Preisreduktion)
+  </label>
+  {car.showPreviousPrice &&
+    car.previousPrice != null &&
     Number(car.previousPrice) > Number(car.price) && (
       <p className="text-sm text-zinc-600 md:col-span-2">
-        Angezeigter alter Preis:{" "}
+        Vorschau für Kunden:{" "}
         <span className="text-red-500 line-through font-medium">
           {Number(car.previousPrice).toLocaleString("de-DE")} €
         </span>
@@ -193,10 +207,14 @@ export default function EditCarClient({ id }: { id: string }) {
         <span className="text-[#003399] font-semibold">
           {Number(car.price).toLocaleString("de-DE")} €
         </span>
-        <span className="text-zinc-500">
-          {" "}
-          (wird automatisch gesetzt, wenn der Preis gesenkt wird)
-        </span>
+      </p>
+    )}
+  {car.showPreviousPrice &&
+    (car.previousPrice == null ||
+      Number(car.previousPrice) <= Number(car.price)) && (
+      <p className="text-sm text-zinc-500 md:col-span-2">
+        Der alte Preis wird beim Speichern automatisch gesetzt, wenn der neue
+        Preis niedriger ist.
       </p>
     )}
 </div>

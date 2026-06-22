@@ -81,10 +81,15 @@ exports.updateCar = async (req, res) => {
       return res.status(404).json({ error: "Not found" });
     }
 
+    const showPreviousPrice =
+      req.body.showPreviousPrice === true ||
+      req.body.showPreviousPrice === "true";
+
     const allowed = {
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
+      showPreviousPrice,
       status: req.body.status,
       owner: req.body.owner,
 
@@ -121,14 +126,17 @@ exports.updateCar = async (req, res) => {
       !Number.isNaN(oldPrice)
     ) {
       if (newPrice < oldPrice) {
-        allowed.previousPrice = existing.previousPrice
-          ? Math.max(existing.previousPrice, oldPrice)
-          : oldPrice;
+        if (showPreviousPrice) {
+          allowed.previousPrice = existing.previousPrice
+            ? Math.max(existing.previousPrice, oldPrice)
+            : oldPrice;
+        }
       } else if (
         existing.previousPrice != null &&
         newPrice >= existing.previousPrice
       ) {
         allowed.previousPrice = null;
+        allowed.showPreviousPrice = false;
       }
     }
 
