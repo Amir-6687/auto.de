@@ -19,6 +19,7 @@ const CarListingSchema = new mongoose.Schema(
     title: { type: String, required: true }, // می‌تونه ترکیب Marke + Modell باشه یا جدا نگه داریم
     description: String,
     price: Number,
+    previousPrice: { type: Number, default: null },
 
     // جزئیات خودرو (مثل Kleinanzeigen)
     brand: String,              // Marke

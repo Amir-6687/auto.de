@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { API_URL } from "@/lib/api";
+import { CarPriceDisplay } from "@/components/CarPriceDisplay";
 
 const MODELS_BY_BRAND: Record<string, string[]> = {
   Audi: ["A1","A3","A4","A5","A6","A7","A8","Q2","Q3","Q5","Q7","Q8","TT","R8","S3","S5","SQ5","RS3","RS6 Avant","RS7","Q4 e-tron","e-tron GT","Q8 e-tron"],
@@ -123,9 +124,11 @@ function CarCard({ car }: { car: any }) {
               )}
             </div>
             <div className="text-right flex-shrink-0">
-              <div className="text-2xl font-bold text-[#003399]">
-                {Number(car.price).toLocaleString("de-DE")} €
-              </div>
+              <CarPriceDisplay
+                price={car.price}
+                previousPrice={car.previousPrice}
+                size="md"
+              />
               <div className="text-xs text-gray-700 mt-0.5">inkl. 19% MwSt.</div>
             </div>
           </div>

@@ -8,7 +8,7 @@ exports.getFeatured = async (req, res) => {
     const filter = section ? { section } : {};
     const featured = await FeaturedCar.find(filter)
       .sort({ order: 1 })
-      .populate("carId", "title brand model price coverImage images")
+      .populate("carId", "title brand model price previousPrice coverImage images")
       .lean();
     res.json(featured);
   } catch (err) {

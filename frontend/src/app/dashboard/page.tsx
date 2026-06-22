@@ -58,6 +58,7 @@ export default function Dashboard() {
             imageUrl: f.carId.coverImage || f.carId.images?.[0] || "",
             title: f.carId.title,
             price: f.carId.price || 0,
+            previousPrice: f.carId.previousPrice ?? null,
             description: "",
             stats: [
               { label: "Brand", value: f.carId.brand || "—" },
@@ -112,6 +113,7 @@ export default function Dashboard() {
     imageUrl={car.imageUrl}
     title={car.title}
     price={car.price}
+    previousPrice={car.previousPrice}
     pricePeriod="€"
     description={car.description}
     stats={car.stats}

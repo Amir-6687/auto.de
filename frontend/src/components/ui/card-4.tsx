@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import FavoriteHeartButton from "@/context/FavoriteHeartButton";
+import { CarPriceDisplay } from "@/components/CarPriceDisplay";
 
 interface Stat {
   label: string;
@@ -16,6 +17,7 @@ export interface PropertyCardProps extends React.HTMLAttributes<HTMLDivElement> 
   imageAlt?: string;
   title: string;
   price: number;
+  previousPrice?: number | null;
   pricePeriod?: string;
   description: string;
   stats: Stat[];
@@ -33,6 +35,7 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
       imageAlt,
       title,
       price,
+      previousPrice,
       pricePeriod = "€",
       description,
       stats,
@@ -87,12 +90,13 @@ const PropertyCard = React.forwardRef<HTMLDivElement, PropertyCardProps>(
             >
               {title}
             </h3>
-            <p
-  style={{ fontFamily: "'Quicksand', sans-serif", fontWeight: 700 }}
-  className="mt-1 text-lg text-foreground"
->
-  {Number(price).toLocaleString("de-DE")} {pricePeriod}
-</p>
+            <CarPriceDisplay
+              price={price}
+              previousPrice={previousPrice}
+              size="sm"
+              align="left"
+              className="mt-1"
+            />
             <p
               style={{ fontFamily: "'Quicksand', sans-serif", fontWeight: 400 }}
               className="mt-3 text-sm text-muted-foreground"

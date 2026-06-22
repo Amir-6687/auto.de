@@ -46,6 +46,7 @@ export default function EditCarClient({ id }: { id: string }) {
         title: data.title ?? "",
         description: data.description ?? "",
         price: data.price ?? "",
+        previousPrice: data.previousPrice ?? null,
         brand: data.brand ?? "",
         model: data.model ?? "",
         mileage: data.mileage ?? "",
@@ -181,6 +182,23 @@ export default function EditCarClient({ id }: { id: string }) {
     onChange={handleChange}
     className="p-2 border rounded bg-gray-200 text-black"
   />
+  {car.previousPrice != null &&
+    Number(car.previousPrice) > Number(car.price) && (
+      <p className="text-sm text-zinc-600 md:col-span-2">
+        Angezeigter alter Preis:{" "}
+        <span className="text-red-500 line-through font-medium">
+          {Number(car.previousPrice).toLocaleString("de-DE")} €
+        </span>
+        {" → "}
+        <span className="text-[#003399] font-semibold">
+          {Number(car.price).toLocaleString("de-DE")} €
+        </span>
+        <span className="text-zinc-500">
+          {" "}
+          (wird automatisch gesetzt, wenn der Preis gesenkt wird)
+        </span>
+      </p>
+    )}
 </div>
 
 {/* Brand / Model / Mileage */}

@@ -1,5 +1,6 @@
 import { Car } from "@/types/car";
 import CarImageSlider from "@/components/CarImageSlider";
+import { CarPriceDisplay } from "@/components/CarPriceDisplay";
 
 const API_URL = "http://localhost:5000/api";
 
@@ -37,9 +38,12 @@ export default async function CarPage({
         {/* 🟦 عنوان + قیمت */}
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">{car.title}</h1>
-          <div className="text-2xl font-semibold text-green-700">
-            {car.price} €
-          </div>
+          <CarPriceDisplay
+            price={car.price}
+            previousPrice={car.previousPrice}
+            size="lg"
+            align="right"
+          />
         </div>
 
         {/* 🟩 جدول مشخصات */}

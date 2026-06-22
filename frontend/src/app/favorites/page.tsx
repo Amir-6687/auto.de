@@ -12,6 +12,7 @@ type Car = {
   brand?: string;
   model?: string;
   price?: number;
+  previousPrice?: number | null;
   coverImage?: string;
   images?: string[];
 };
@@ -66,6 +67,7 @@ export default function FavoritesPage() {
               imageUrl={car.coverImage || car.images?.[0] || ""}
               title={car.title}
               price={car.price || 0}
+              previousPrice={car.previousPrice}
               pricePeriod="€"
               description=""
               stats={[

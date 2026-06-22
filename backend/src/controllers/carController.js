@@ -76,6 +76,11 @@ exports.createCar = async (req, res) => {
 // UPDATE
 exports.updateCar = async (req, res) => {
   try {
+    const existing = await CarListing.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ error: "Not found" });
+    }
+
     const allowed = {
       title: req.body.title,
       description: req.body.description,
@@ -102,6 +107,30 @@ exports.updateCar = async (req, res) => {
       images: req.body.images,
       coverImage: req.body.coverImage,
     };
+
+    const newPrice =
+      req.body.price != null && req.body.price !== ""
+        ? Number(req.body.price)
+        : undefined;
+    const oldPrice = existing.price;
+
+    if (
+      newPrice !== undefined &&
+      !Number.isNaN(newPrice) &&
+      oldPrice != null &&
+      !Number.isNaN(oldPrice)
+    ) {
+      if (newPrice < oldPrice) {
+        allowed.previousPrice = existing.previousPrice
+          ? Math.max(existing.previousPrice, oldPrice)
+          : oldPrice;
+      } else if (
+        existing.previousPrice != null &&
+        newPrice >= existing.previousPrice
+      ) {
+        allowed.previousPrice = null;
+      }
+    }
 
     const car = await CarListing.findByIdAndUpdate(req.params.id, allowed, {
       new: true,
