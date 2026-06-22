@@ -27,7 +27,8 @@ export default function AdminShell({
   }, [dark]);
 
   return (
-    <div className="min-h-screen flex bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
+    <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
+      <div className="flex min-h-screen pt-44">
       <aside className="w-56 shrink-0 border-r border-zinc-200 dark:border-zinc-800 p-4 flex flex-col gap-2 bg-white dark:bg-zinc-900">
 
         <div className="font-bold text-lg tracking-tight mb-2">
@@ -69,6 +70,7 @@ export default function AdminShell({
       </aside>
 
       <main className="flex-1 p-6 overflow-auto">{children}</main>
+      </div>
     </div>
   );
 }
