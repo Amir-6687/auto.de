@@ -34,7 +34,7 @@ export function CustomDropdown({
   }, [isOpen]);
 
   return (
-    <div ref={ref} className="w-full">
+    <div ref={ref} className="w-full relative">
       {/* Label */}
       <p className="block text-xs font-medium text-gray-500 mb-1">{label}</p>
 
@@ -45,7 +45,7 @@ export function CustomDropdown({
           "w-full flex items-center justify-between px-3 py-2.5 rounded-xl border cursor-pointer select-none",
           "bg-white text-gray-800 transition-all duration-300",
           isOpen
-            ? "border-blue-400 shadow-md shadow-blue-100 rounded-b-none"
+            ? "border-blue-400 shadow-md shadow-blue-100"
             : "border-gray-300 hover:border-blue-300",
         )}
       >
@@ -60,16 +60,10 @@ export function CustomDropdown({
         />
       </div>
 
-      {/* Dropdown list */}
-      <div
-        className={cn(
-          "grid border-x border-b border-blue-400 rounded-b-xl overflow-hidden",
-          "transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
-          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
-        )}
-      >
-        <div className="overflow-hidden">
-          <div className="max-h-52 overflow-y-auto bg-white py-1 px-1">
+      {/* Dropdown list — absolute تا از flow خارج شه */}
+      {isOpen && (
+        <div className="absolute top-full left-0 right-0 z-50 mt-1 border border-blue-400 rounded-xl overflow-hidden shadow-xl bg-white">
+          <div className="max-h-52 overflow-y-auto py-1 px-1">
             {options.map((opt, index) => (
               <div
                 key={opt}
@@ -79,15 +73,11 @@ export function CustomDropdown({
                 }}
                 className={cn(
                   "flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer text-sm",
-                  "transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
-                  isOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
+                  "transition-colors duration-150",
                   value === opt
                     ? "bg-blue-50 text-blue-700 font-semibold"
                     : "text-gray-700 hover:bg-gray-50 hover:text-blue-600",
                 )}
-                style={{
-                  transitionDelay: isOpen ? `${index * 30}ms` : "0ms",
-                }}
               >
                 {value === opt && (
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-600 flex-shrink-0" />
@@ -97,7 +87,7 @@ export function CustomDropdown({
             ))}
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
