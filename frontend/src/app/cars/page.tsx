@@ -90,12 +90,13 @@ function CarCard({ car }: { car: any }) {
     : <span className="font-bold">{car.title}</span>;
 
   return (
-    <a
-      href={`/cars/${car._id}`}
-      className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200 h-[220px]"
-      style={{ textDecoration: "none" }}
-    >
-      <div className="flex flex-col md:flex-row h-full">
+    
+<a
+  href={`/cars/${car._id}`}
+  className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200"
+  style={{ textDecoration: "none" }}
+>
+  <div className="flex flex-col md:flex-row min-h-[220px]">
         <div className="relative md:w-72 h-full flex-shrink-0 overflow-hidden bg-gray-100">
           {image ? (
             <img src={image} alt={car.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
