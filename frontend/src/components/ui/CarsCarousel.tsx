@@ -11,6 +11,8 @@ type Car = {
   brand?: string;
   model?: string;
   price?: number;
+  previousPrice?: number | null;
+  showPreviousPrice?: boolean;
   coverImage?: string;
   images?: string[];
   description?: string;
@@ -56,8 +58,6 @@ export default function CarsCarousel() {
               imageUrl: f.carId?.coverImage || f.carId?.images?.[0] || "",
               title: f.carId?.title || "",
               price: f.carId?.price || 0,
-              previousPrice: f.carId?.previousPrice ?? null,
-              showPreviousPrice: f.carId?.showPreviousPrice ?? false,
               description: "",
               stats: [
                 { label: "Brand", value: f.carId?.brand || "—" },
@@ -99,8 +99,6 @@ export default function CarsCarousel() {
   imageUrl={car.imageUrl}
   title={car.title}
   price={car.price}
-  previousPrice={car.previousPrice}
-  showPreviousPrice={car.showPreviousPrice}
   pricePeriod="€"
   description={car.description}
   stats={car.stats}
