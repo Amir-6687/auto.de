@@ -8,21 +8,7 @@ import { useNavbar } from "@/context/NavbarContext";
 import { PropertyCard } from "@/components/ui/card-4";
 import CarsCarousel from "@/components/ui/CarsCarousel";
 import { useRouter } from "next/navigation";
-
-type Car = {
-  _id: string;
-  title: string;
-  brand?: string;
-  model?: string;
-  price?: number;
-  coverImage?: string;
-  images?: string[];
-  mileage?: number;
-  fuelType?: string;
-  power?: number;
-  vehicleType?: string;
-  color?: string;
-};
+import type { Car } from "@/types/car";
 
 type Featured = {
   _id: string;
