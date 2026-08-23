@@ -34,7 +34,6 @@ exports.getCar = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 // CREATE
 exports.createCar = async (req, res) => {
   try {
@@ -160,3 +159,4 @@ exports.deleteCar = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
