@@ -1,15 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
+const requireInternal = require("../middleware/requireInternal");
 
-// --- موجود (اگه قبلاً جایی دیگه تعریف شده، این چندتا رو حذف کن) ---
-router.post("/sync-google", userController.syncGoogleUser);
-router.post("/login", userController.loginUser);
-router.post("/register", userController.registerUser);
+// ✅ همه routes با requireInternal محافظت میشن
+router.post("/sync-google", requireInternal, userController.syncGoogleUser);
+router.post("/login", requireInternal, userController.loginUser);
+router.post("/register", requireInternal, userController.registerUser);
 
-// --- ✅ جدید: Favorites ---
-router.get("/:userId/favorites", userController.getFavorites);
-router.post("/:userId/favorites", userController.addFavorite);
-router.delete("/:userId/favorites/:carId", userController.removeFavorite);
+// ✅ favorites هم محافظت شده
+router.get("/:userId/favorites", requireInternal, userController.getFavorites);
+router.post("/:userId/favorites", requireInternal, userController.addFavorite);
+router.delete("/:userId/favorites/:carId", requireInternal, userController.removeFavorite);
 
 module.exports = router;
