@@ -10,7 +10,6 @@ import {
   ReactNode,
 } from "react";
 import { useSession } from "next-auth/react";
-import { API_URL } from "@/lib/api";
 
 interface FavoritesContextType {
   favoriteIds: Set<string>;
@@ -38,7 +37,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     if (status !== "authenticated" || !userId) return;
 
     let active = true;
-    fetch(`${API_URL}/users/${userId}/favorites`)
+    fetch(`/api/favorites/${userId}`)
       .then((res) => res.json())
       .then((data) => {
         if (!active) return;
@@ -81,11 +80,9 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
       try {
         if (alreadyFav) {
-          await fetch(`${API_URL}/users/${userId}/favorites/${carId}`, {
-            method: "DELETE",
-          });
+          await fetch(`/api/favorites/${userId}/${carId}`, { method: "DELETE" })
         } else {
-          await fetch(`${API_URL}/users/${userId}/favorites`, {
+          await fetch(`/api/favorites/${userId}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ carId }),

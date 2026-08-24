@@ -18,9 +18,6 @@ connectDB();
 const carRoutes = require('./routes/carRoutes');
 app.use('/api/cars', carRoutes);
 
-const userRoutes = require('./routes/userRoutes');
-app.use('/api/users', userRoutes);
-
 const uploadRoutes = require('./routes/uploadRoutes');
 app.use('/api/upload', uploadRoutes);
 
